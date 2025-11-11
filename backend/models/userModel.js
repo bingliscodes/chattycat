@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 
 import sequelize from '../utils/database.js';
+import Organization from './organizationModel.js';
 
 const User = sequelize.define(
   'user',
@@ -40,13 +41,15 @@ const User = sequelize.define(
     },
     role: {
       type: DataTypes.STRING,
-      defaultValue: 'User',
+      defaultValue: 'user',
     },
-    organizationId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1,
-    },
+    // organizationId: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: Organization,
+    //     key: 'id',
+    //   },
+    // },
     passwordChangedAt: DataTypes.DATE,
     passwordResetToken: DataTypes.STRING,
     passwordResetExpires: DataTypes.DATE,

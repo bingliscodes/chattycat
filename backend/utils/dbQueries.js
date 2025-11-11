@@ -10,23 +10,23 @@ const runQueries = async () => {
     await Organization.create({
       organizationName: 'Test org',
     });
-    // await User.create({
-    //   firstName: 'Cannoli',
-    //   lastName: 'Garcia',
-    //   email: 'cannoli7@gmail.com',
-    //   password: 'password',
-    //   passwordConfirm: 'password',
-    //   role: 'Admin',
-    //   organizationId: 1,
-    // });
-    // await Channel.create({
-    //   channel_name: 'Test Channel',
-    //   organizationId: 1,
-    // });
-    // // await UserChannel.create({
-    // //   channelId: 1,
-    // //   userId: 1,
-    // // });
+    await User.create({
+      firstName: 'Cannoli',
+      lastName: 'Garcia',
+      email: 'cannoli7@gmail.com',
+      password: 'password',
+      passwordConfirm: 'password',
+      role: 'Admin',
+      organizationId: 1,
+    });
+    await Channel.create({
+      channel_name: 'Test Channel',
+      organizationId: 1,
+    });
+    await UserChannel.create({
+      channelId: 1,
+      userId: 1,
+    });
   } catch (err) {
     console.error(err);
   }

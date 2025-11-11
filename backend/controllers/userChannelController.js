@@ -2,7 +2,6 @@ import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
-import Organization from '../models/organizationModel.js';
 
 export const addToChannel = catchAsync(async (req, res, next) => {
   const { userId, channelName } = req.body;
@@ -11,7 +10,7 @@ export const addToChannel = catchAsync(async (req, res, next) => {
   if (!user) return next(new AppError(`No user found with id ${userId}!`), 404);
 
   const channel = await Channel.findOne({
-    where: { channelName: channelName, organizationId: user.organizationId },
+    where: { channelName, organizationId: user.organizationId },
   });
 
   if (!channel)
@@ -47,9 +46,10 @@ export const removeFromChannel = catchAsync(async (req, res, next) => {
 
   await user.removeChannels(channel);
 
-  res.status(204).json({
+  res.status(200).json({
     status: 'success',
     message: `Removed user ${user.firstName} from channel ${channelName}`,
     data: null,
   });
+  next();
 });
