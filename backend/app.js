@@ -7,9 +7,18 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 
+import User from './models/userModel.js';
+import Channel from './models/channelModel.js';
+import Organization from './models/organizationModel.js';
+import UserChannel from './models/userChannelModel.js';
+import modelRelationships from './dataModeling/entityRelationships.js';
+
 import AppError from './utils/appError.js';
 
 const app = express();
+
+import channelRouter from './routes/channelRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 const corsOptions = {
   origin: ['http://localhost:5173'],
@@ -27,6 +36,11 @@ app.use(compression());
 app.get('/', (req, res) => {
   res.send('<h1>Hello world</h1>');
 });
+
+// ROUTES
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/channels', channelRouter);
+
 // Default error handling
 app.get('/{*any}', (req, res) => {
   res.status(404).json({
