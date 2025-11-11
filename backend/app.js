@@ -19,6 +19,7 @@ const app = express();
 
 import channelRouter from './routes/channelRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import organizationRouter from './routes/organizationRoutes.js';
 
 const corsOptions = {
   origin: ['http://localhost:5173'],
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
 // ROUTES
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/channels', channelRouter);
+app.use('/api/v1/organizations', organizationRouter);
 
 // Default error handling
 app.get('/{*any}', (req, res) => {

@@ -4,11 +4,13 @@ import {
   protect,
   login,
   logout,
+  restrictTo,
 } from '../controllers/authController.js';
 import {
   addToChannel,
   getAllUsers,
   getMe,
+  getUser,
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -18,9 +20,11 @@ router.post('/signup', signup);
 router.get('/logout', logout);
 
 router.get('/', getAllUsers);
-router.post('/addToChannel', addToChannel);
 
 router.use(protect);
-router.get('/me', getMe);
+router.get('/me', getMe, getUser);
+
+router.use(restrictTo('Admin'));
+router.post('/addToChannel', addToChannel);
 
 export default router;

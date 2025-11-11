@@ -33,6 +33,17 @@ export const getMe = catchAsync(async (req, res, next) => {
   next();
 });
 
+export const getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByPk(req.user.id);
+
+  if (!user) return next(new AppError('No user found!', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: user,
+  });
+});
+
 export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt', 'passwordConfirm'] },
