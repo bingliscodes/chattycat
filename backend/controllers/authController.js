@@ -47,13 +47,22 @@ export const login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide email and password!'), 400);
 
   // 2) Check if user exists && password is valid
-  const user = await User.findOne({ where: { email: email } });
+  const user = await User.findOne({ where: { email } });
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
   // 3) Send token to client
   createSendToken(user, 200, req, res);
 });
+
+export const logout = (req, res) => {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+  });
+  res.status(200).json({ status: 'success' });
+};
 
 export const protect = catchAsync(async (req, res, next) => {
   // 1) Get token and check if it's there

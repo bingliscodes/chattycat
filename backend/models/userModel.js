@@ -72,4 +72,15 @@ User.prototype.correctPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+User.prototype.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+    return JWTTimestamp < changedTimestamp;
+  }
+  return false;
+};
+
 export default User;
