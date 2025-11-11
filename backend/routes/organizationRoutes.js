@@ -5,7 +5,7 @@ import { protect, restrictTo } from '../controllers/authController.js';
 const router = express.Router();
 
 router.use(protect);
-router.use(restrictTo('Admin'));
+router.use(restrictTo('superuser'));
 router.post('/', createOrganization);
 
 export default router;

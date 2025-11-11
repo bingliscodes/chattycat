@@ -6,12 +6,11 @@ import {
   logout,
   restrictTo,
 } from '../controllers/authController.js';
+import { getAllUsers, getMe, getUser } from '../controllers/userController.js';
 import {
   addToChannel,
-  getAllUsers,
-  getMe,
-  getUser,
-} from '../controllers/userController.js';
+  removeFromChannel,
+} from '../controllers/userChannelController.js';
 
 const router = express.Router();
 
@@ -24,7 +23,8 @@ router.get('/', getAllUsers);
 router.use(protect);
 router.get('/me', getMe, getUser);
 
-router.use(restrictTo('Admin'));
+router.use(restrictTo('superuser'));
 router.post('/addToChannel', addToChannel);
+router.post('/removeFromChannel', removeFromChannel);
 
 export default router;
