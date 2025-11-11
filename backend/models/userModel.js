@@ -47,6 +47,9 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: 1,
     },
+    passwordChangedAt: DataTypes.DATE,
+    passwordResetToken: DataTypes.STRING,
+    passwordResetExpires: DataTypes.DATE,
   },
   {
     instanceMethods: {},
@@ -58,8 +61,8 @@ User.beforeSave(async (user, options) => {
   const hashedPassword = await bcrypt.hash(user.password, 12);
 
   user.password = hashedPassword;
-
   user.passwordConfirm = undefined;
+  user.passwordChangedAt = Date.now() - 1000;
 });
 
 User.prototype.correctPassword = async function (

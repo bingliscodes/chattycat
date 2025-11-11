@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
+import AppError from '../utils/appError.js';
 
 import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
@@ -10,7 +11,7 @@ const signToken = (id) =>
   });
 
 const createSendToken = (user, statusCode, req, res) => {
-  const token = signToken(user._id);
+  const token = signToken(user.id);
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
@@ -36,4 +37,51 @@ const createSendToken = (user, statusCode, req, res) => {
 export const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   createSendToken(newUser, 201, req, res);
+});
+
+export const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  console.log(email, password);
+  // 1) Check if email and password are populated
+  if (!email || !password)
+    return next(new AppError('Please provide email and password!'), 400);
+
+  // 2) Check if user exists && password is valid
+  const user = await User.findOne({ where: { email: email } });
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError('Incorrect email or password', 401));
+  }
+  // 3) Send token to client
+  createSendToken(user, 200, req, res);
+});
+
+export const protect = catchAsync(async (req, res, next) => {
+  // 1) Get token and check if it's there
+  const token = req.cookies.jwt;
+
+  if (!token)
+    return next(
+      new AppError('You are not logged in! Please log in to get access.', 401),
+    );
+
+  // 2) Verify token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  // 3) Check if user still exists
+  const currentUser = await User.findByPk(decoded.id);
+  if (!currentUser)
+    return next(
+      new AppError('The user belonging to this token no longer exists', 401),
+    );
+
+  // 4) Check if user changed password after token was issued
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recently changed password! Please log in again.', 401),
+    );
+  }
+
+  // Finally grant access to protected route and add user to the request
+  req.user = currentUser;
+  next();
 });

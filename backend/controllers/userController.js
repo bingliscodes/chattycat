@@ -1,0 +1,50 @@
+import User from '../models/userModel.js';
+import Channel from '../models/channelModel.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/appError.js';
+import Organization from '../models/organizationModel.js';
+
+export const addToChannel = catchAsync(async (req, res, next) => {
+  const { userId, channelName } = req.body;
+  const user = await User.findByPk(userId);
+
+  if (!user) return new Error(`No user found!`);
+
+  const channel = await Channel.findOne({
+    where: { channelName: channelName, organizationId: user.organizationId },
+  });
+
+  if (!channel)
+    return next(
+      new AppError(`No channel found by the name of ${channelName}`, 400),
+    );
+
+  await user.addChannels(channel);
+
+  res.status(200).json({
+    status: 'success',
+    data: user,
+  });
+  next();
+});
+
+export const getMe = catchAsync(async (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+});
+
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.findAll({
+    attributes: { exclude: ['createdAt', 'updatedAt', 'passwordConfirm'] },
+    include: [
+      { model: Channel, attributes: ['channelName'] },
+      { model: Organization, attributes: ['organizationName'] },
+    ],
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: users,
+  });
+});
