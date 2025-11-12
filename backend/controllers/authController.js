@@ -104,3 +104,12 @@ export const restrictTo =
       );
     next();
   };
+
+export const sendUser = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: 'success',
+    data: req.user,
+  });
+
+  next();
+});

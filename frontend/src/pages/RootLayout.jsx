@@ -4,11 +4,13 @@ import MainNavigation from "../components/NavBar/MainNavigation";
 
 export default function RootLayout() {
   return (
-    <Center>
-      <MainNavigation />
+    <>
+      <Center>
+        <MainNavigation />
+      </Center>
       <main>
         <Outlet />
       </main>
-    </Center>
+    </>
   );
 }

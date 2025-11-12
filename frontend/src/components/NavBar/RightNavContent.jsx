@@ -3,11 +3,13 @@ import { ColorModeButton } from "@/components/ui/color-mode";
 import { NavLink, useNavigate } from "react-router";
 import { HiMiniUserCircle } from "react-icons/hi2";
 
-export default function RightNavContent() {
-  const isLoggedIn = true;
-  const nav = useNavigate();
+import { useContext } from "react";
+import { UserContext } from "../../store/UserContext";
+import { logout } from "../../utils/js/authentication";
 
-  const logout = () => {};
+export default function RightNavContent() {
+  const { isLoggedIn } = useContext(UserContext);
+  const nav = useNavigate();
 
   return (
     <Flex alignItems="center" gap={2}>
