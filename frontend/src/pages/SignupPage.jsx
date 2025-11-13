@@ -21,9 +21,6 @@ export default function SignupCard() {
       console.error(err);
       setSignupError(true);
     }
-
-    // TODO: Only submit form when all fields are populated. Should I handle this on front end or back end?
-    // Clear form fields upon submission
   }
 
   return (

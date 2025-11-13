@@ -8,7 +8,7 @@ import { UserContext } from "../../store/UserContext";
 import { logout } from "../../utils/js/authentication";
 
 export default function RightNavContent() {
-  const { isLoggedIn } = useContext(UserContext);
+  let { isLoggedIn, disconnectSocket } = useContext(UserContext);
   const nav = useNavigate();
 
   return (
@@ -40,7 +40,10 @@ export default function RightNavContent() {
               color="text.primaryBtn"
               borderRadius="full"
               _hover={{ bg: "bg.navHover" }}
-              onClick={logout}
+              onClick={() => {
+                disconnectSocket();
+                logout();
+              }}
             >
               Log Out
             </Button>
