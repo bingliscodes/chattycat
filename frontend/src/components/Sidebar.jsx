@@ -1,6 +1,6 @@
 "use client";
 import { useContext } from "react";
-import { Box, Text, Accordion, Span } from "@chakra-ui/react";
+import { Box, Text, Accordion, Span, Center } from "@chakra-ui/react";
 
 import { UserContext } from "../store/UserContext";
 import { ChannelContext } from "../store/ChannelContext";
@@ -39,11 +39,19 @@ export default function UserSidebar() {
             {channels &&
               channels.map((ch) => (
                 <Accordion.ItemBody
-                  bg={channel.id === ch.id ? "bg.primaryBtn" : undefined}
                   key={ch.id}
                   onClick={() => handleJoinChannel(ch)}
+                  as={Center}
+                  h="2rem"
+                  bg={channel?.id === ch?.id ? "bg.primaryBtn" : undefined}
+                  rounded="md"
+                  mt={1}
+                  mb={2}
+                  cursor="pointer"
                 >
-                  {ch.channelName}
+                  <Text fontSize="sm" color="text" lineHeight="1" m="0">
+                    {ch.channelName}
+                  </Text>
                 </Accordion.ItemBody>
               ))}
           </Accordion.ItemContent>
