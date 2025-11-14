@@ -3,8 +3,6 @@ import {
   Box,
   Textarea,
   Field,
-  Stack,
-  Input,
   Button,
   Text,
   HStack,
@@ -15,21 +13,53 @@ import { useForm } from "react-hook-form";
 
 import { UserContext } from "../store/UserContext";
 import { ChannelContext } from "../store/ChannelContext";
-import { sendMessage } from "../utils/js/apiCalls";
-import { getCurrentTime } from "../utils/js/helpers";
+import { sendMessage, fetchChannelMessageHistory } from "../utils/js/apiCalls";
 
 export default function ChannelChat() {
   const { userData, socketReady, userSocket } = useContext(UserContext);
   const { channel } = useContext(ChannelContext);
   const { firstName, lastName, id } = userData;
   const [messages, setMessages] = useState([]);
-  console.log("channel is:", channel);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (!channel) return;
+    async function fetchMessageHistoryAsync() {
+      try {
+        setLoading(true);
+        const res = await fetchChannelMessageHistory(channel.id);
+        const mappedMessages = res.data.map((msg) => ({
+          messageBody: msg.messageContent,
+          sender: {
+            firstName: msg.user.firstName,
+            lastName: msg.user.lastName,
+          },
+          channel: msg.channel,
+          timestamp: new Date(msg.createdAt).toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          }),
+        }));
+
+        setMessages(mappedMessages);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMessageHistoryAsync();
+  }, [channel]);
 
   useEffect(() => {
     if (!userSocket) return;
@@ -52,14 +82,17 @@ export default function ChannelChat() {
       return;
     }
     const { message } = data;
-    const timestamp = getCurrentTime();
+    const timestamp = new Date().toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
     const messageContent = {
       messageBody: message,
       sender: {
         firstName,
         lastName,
       },
-      channel: channel.id,
       timestamp,
     };
     userSocket.emit("send-message", messageContent);
@@ -68,8 +101,6 @@ export default function ChannelChat() {
     reset();
   });
 
-  const channelMessages = messages.filter((msg) => msg.channel === channel.id);
-  console.log(channelMessages);
   return (
     <Flex flex="1" direction="column">
       <Box bg="white" p={4} borderBottom="1px solid #e2e8f0">
@@ -85,14 +116,17 @@ export default function ChannelChat() {
         align="stretch"
         bg="gray.50"
       >
-        {channelMessages.map((msg, idx) => (
-          <Box key={idx} bg="white" p={2} borderRadius="md" boxShadow="sm">
-            <Text fontSize="sm" color="gray.500">
-              {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
-            </Text>
-            <Text color="black">{msg.messageBody}</Text>
-          </Box>
-        ))}
+        {loading && <Text>Loading messages...</Text>}
+        {error && <Text>Error loading messages!</Text>}
+        {messages &&
+          messages.map((msg, idx) => (
+            <Box key={idx} bg="white" p={2} borderRadius="md" boxShadow="sm">
+              <Text fontSize="sm" color="gray.500">
+                {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
+              </Text>
+              <Text color="black">{msg.messageBody}</Text>
+            </Box>
+          ))}
       </VStack>
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
       <form onSubmit={onSubmit}>

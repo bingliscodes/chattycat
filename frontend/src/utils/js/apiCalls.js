@@ -38,3 +38,20 @@ export const sendMessage = async (messageContent, userId, channelId) => {
     throw err;
   }
 };
+
+export const fetchChannelMessageHistory = async (channelId) => {
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}channels/${channelId}/messages`,
+      { withCredentials: true }
+    );
+
+    console.log(res);
+    if (res.status !== 200) throw new Error("Failed to fetch message history");
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
