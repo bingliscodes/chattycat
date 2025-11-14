@@ -29,6 +29,9 @@ export const system = createSystem(defaultConfig, {
           menuItem: {
             value: { base: "colors.blue.100", _dark: "colors.gray.900" },
           },
+          sideBar: {
+            value: { base: "#d6b3b8", _dark: "colors.pink.950" },
+          },
         },
         text: {
           DEFAULT: {

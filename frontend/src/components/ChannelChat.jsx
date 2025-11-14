@@ -103,10 +103,8 @@ export default function ChannelChat() {
 
   return (
     <Flex flex="1" direction="column">
-      <Box bg="white" p={4} borderBottom="1px solid #e2e8f0">
-        <Text color="black" fontWeight="bold">
-          {channel?.channelName}
-        </Text>
+      <Box bg="bg.nav" p={4} borderBottom="1px solid #e2e8f0">
+        <Text fontWeight="bold">{channel?.channelName}</Text>
       </Box>
       <VStack
         flex="1"
@@ -114,23 +112,29 @@ export default function ChannelChat() {
         overflowY="auto"
         p={4}
         align="stretch"
-        bg="gray.50"
+        bg="bg.nav"
       >
         {loading && <Text>Loading messages...</Text>}
         {error && <Text>Error loading messages!</Text>}
         {messages &&
           messages.map((msg, idx) => (
-            <Box key={idx} bg="white" p={2} borderRadius="md" boxShadow="sm">
-              <Text fontSize="sm" color="gray.500">
+            <Box
+              textAlign="left"
+              key={idx}
+              p={2}
+              borderRadius="md"
+              boxShadow="sm"
+            >
+              <Text fontSize="sm">
                 {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
               </Text>
-              <Text color="black">{msg.messageBody}</Text>
+              <Text>{msg.messageBody}</Text>
             </Box>
           ))}
       </VStack>
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
       <form onSubmit={onSubmit}>
-        <HStack p={4} bg="white" borderTop="1px solid #e2e8f0">
+        <HStack p={4} borderTop="1px solid #e2e8f0">
           <Field.Root invalid={!!errors.message}>
             <Textarea
               {...register("message", { required: "Message is required" })}

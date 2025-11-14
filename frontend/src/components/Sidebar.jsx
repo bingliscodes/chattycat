@@ -7,7 +7,7 @@ import { ChannelContext } from "../store/ChannelContext";
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
-  const { setChannel } = useContext(ChannelContext);
+  const { channel, setChannel } = useContext(ChannelContext);
 
   const { channels, organization } = userData;
 
@@ -22,27 +22,28 @@ export default function UserSidebar() {
     userSocket.emit("join-room", channel);
   };
   return (
-    <Box width="260px" bg="gray.800" p={4}>
+    <Box rounded="md" width="260px" bg="bg.sideBar" p={4}>
       <Text fontWeight="bold" fontSize="lg" mb={4}>
         {organization?.organizationName}
       </Text>
       {/* Channels */}
       <Accordion.Root multiple>
         <Accordion.Item value="Channels">
-          <Accordion.ItemTrigger>
-            <Span flex="1" color="black">
+          <Accordion.ItemTrigger bg="bg.menuItem">
+            <Span flex="1" color="text">
               Channels
             </Span>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
             {channels &&
-              channels.map((channel) => (
+              channels.map((ch) => (
                 <Accordion.ItemBody
-                  key={channel.id}
-                  onClick={() => handleJoinChannel(channel)}
+                  bg={channel.id === ch.id ? "bg.primaryBtn" : undefined}
+                  key={ch.id}
+                  onClick={() => handleJoinChannel(ch)}
                 >
-                  {channel.channelName}
+                  {ch.channelName}
                 </Accordion.ItemBody>
               ))}
           </Accordion.ItemContent>
@@ -52,8 +53,8 @@ export default function UserSidebar() {
       {/* Direct Messages*/}
       <Accordion.Root multiple>
         <Accordion.Item value="Direct Messages">
-          <Accordion.ItemTrigger>
-            <Span flex="1" color="black">
+          <Accordion.ItemTrigger bg="bg.menuItem">
+            <Span flex="1" color="text">
               Direct Messages
             </Span>
             <Accordion.ItemIndicator />
