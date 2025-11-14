@@ -24,3 +24,16 @@ export const deleteOne = (Model) =>
       data: null,
     });
   });
+
+export const getAll = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const docs = await Model.findAll();
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        results: docs.length,
+        data: docs,
+      },
+    });
+  });

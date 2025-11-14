@@ -5,13 +5,19 @@ import "./index.css";
 import App from "./App.jsx";
 
 import { UserContextProvider } from "./store/UserContext.jsx";
+import { ChannelContextProvider } from "./store/ChannelContext.jsx";
+import { SidebarProvider } from "./store/SidebarContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <UserContextProvider>
-    <BrowserRouter>
-      <Provider>
-        <App />
-      </Provider>
-    </BrowserRouter>
+    <ChannelContextProvider>
+      <SidebarProvider>
+        <BrowserRouter>
+          <Provider>
+            <App />
+          </Provider>
+        </BrowserRouter>
+      </SidebarProvider>
+    </ChannelContextProvider>
   </UserContextProvider>
 );

@@ -10,7 +10,13 @@ export const getMe = catchAsync(async (req, res, next) => {
 });
 
 export const getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findByPk(req.user.id);
+  const user = await User.findByPk(req.user.id, {
+    attributes: { exclude: ['createdAt', 'updatedAt', 'passwordConfirm'] },
+    include: [
+      { model: Channel, attributes: ['channelName'] },
+      { model: Organization, attributes: ['organizationName'] },
+    ],
+  });
 
   if (!user) return next(new AppError('No user found!', 404));
 
