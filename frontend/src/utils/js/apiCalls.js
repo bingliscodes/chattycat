@@ -17,3 +17,24 @@ export const fetchUserData = async () => {
     throw err;
   }
 };
+
+export const sendMessage = async (messageContent, userId, channelId) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}messages`,
+      {
+        messageContent,
+        userId,
+        channelId,
+      },
+      { withCredentials: true }
+    );
+
+    if (res.status !== 201) throw new Error("Failed to create message");
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

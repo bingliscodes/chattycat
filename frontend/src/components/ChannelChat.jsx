@@ -7,18 +7,23 @@ import {
   Input,
   Button,
   Text,
+  HStack,
+  Flex,
 } from "@chakra-ui/react";
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { UserContext } from "../store/UserContext";
 import { ChannelContext } from "../store/ChannelContext";
+import { sendMessage } from "../utils/js/apiCalls";
+import { getCurrentTime } from "../utils/js/helpers";
 
 export default function ChannelChat() {
   const { userData, socketReady, userSocket } = useContext(UserContext);
   const { channel } = useContext(ChannelContext);
-  const { firstName, lastName } = userData;
+  const { firstName, lastName, id } = userData;
   const [messages, setMessages] = useState([]);
+  console.log("channel is:", channel);
   const {
     register,
     handleSubmit,
@@ -47,33 +52,60 @@ export default function ChannelChat() {
       return;
     }
     const { message } = data;
-    userSocket.emit("send-message", message, firstName, lastName, channel);
-    setMessages((prev) => [...prev, `You: ${message}`]);
+    const timestamp = getCurrentTime();
+    const messageContent = {
+      messageBody: message,
+      sender: {
+        firstName,
+        lastName,
+      },
+      channel: channel.id,
+      timestamp,
+    };
+    userSocket.emit("send-message", messageContent);
+    sendMessage(message, id, channel.id);
+    setMessages((prev) => [...prev, messageContent]);
     reset();
   });
 
+  const channelMessages = messages.filter((msg) => msg.channel === channel.id);
+  console.log(channelMessages);
   return (
-    <VStack>
-      <Text mt={4}>Received messages</Text>
-      <Text>Channel: {channel} </Text>
-      <Box>
-        {messages.map((msg, idx) => (
-          <Text key={idx}>{msg}</Text>
-        ))}
+    <Flex flex="1" direction="column">
+      <Box bg="white" p={4} borderBottom="1px solid #e2e8f0">
+        <Text color="black" fontWeight="bold">
+          {channel?.channelName}
+        </Text>
       </Box>
+      <VStack
+        flex="1"
+        spacing={4}
+        overflowY="auto"
+        p={4}
+        align="stretch"
+        bg="gray.50"
+      >
+        {channelMessages.map((msg, idx) => (
+          <Box key={idx} bg="white" p={2} borderRadius="md" boxShadow="sm">
+            <Text fontSize="sm" color="gray.500">
+              {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
+            </Text>
+            <Text color="black">{msg.messageBody}</Text>
+          </Box>
+        ))}
+      </VStack>
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
       <form onSubmit={onSubmit}>
-        <Stack mt={4} gap="4" align="flex-start" maxW="sm">
+        <HStack p={4} bg="white" borderTop="1px solid #e2e8f0">
           <Field.Root invalid={!!errors.message}>
-            <Field.Label>Message</Field.Label>
             <Textarea
               {...register("message", { required: "Message is required" })}
             />
             <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
           </Field.Root>
           <Button type="submit">Send</Button>
-        </Stack>
+        </HStack>
       </form>
-    </VStack>
+    </Flex>
   );
 }

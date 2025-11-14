@@ -29,8 +29,10 @@ export const createConnection = (name, roomId = "chatroom-1") => {
       reject(err);
     });
 
-    socket.on("receive-message", (message) => {
-      console.log("[CLIENT] Message received:", message);
+    socket.on("receive-message", ({ messageBody, sender, channel }) => {
+      console.log(
+        `[CLIENT] Message received from ${sender.firstName} ${sender.lastName}: ${messageBody}`
+      );
     });
   });
 };

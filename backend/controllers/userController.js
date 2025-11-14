@@ -13,7 +13,7 @@ export const getUser = catchAsync(async (req, res, next) => {
   const user = await User.findByPk(req.user.id, {
     attributes: { exclude: ['createdAt', 'updatedAt', 'passwordConfirm'] },
     include: [
-      { model: Channel, attributes: ['channelName'] },
+      { model: Channel, attributes: ['channelName', 'id'] },
       { model: Organization, attributes: ['organizationName'] },
     ],
   });
@@ -30,7 +30,7 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt', 'passwordConfirm'] },
     include: [
-      { model: Channel, attributes: ['channelName'] },
+      { model: Channel, attributes: ['channelName', 'id'] },
       { model: Organization, attributes: ['organizationName'] },
     ],
   });
