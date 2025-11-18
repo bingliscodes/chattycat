@@ -2,27 +2,27 @@ import { useState, useContext, useEffect } from 'react';
 
 import { ChatContext } from '../store/ChatContext';
 import ChatInterface from './ChatInterface';
-import { fetchChannelMessageHistory } from '../utils/js/apiCalls';
+import { fetchUserMessageHistory } from '../utils/js/apiCalls';
 
-export default function ChannelChat() {
-  const { channel } = useContext(ChatContext);
+export default function DirectMessageChat() {
+  const { directMessage } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (!channel) return;
-    async function fetchMessageHistoryAsync() {
+    if (!directMessage) return;
+    async function fetchUserMessageHistoryAsync() {
       try {
         setLoading(true);
-        const res = await fetchChannelMessageHistory(channel.id);
+        const res = await fetchUserMessageHistory(directMessage.id);
         const mappedMessages = res.data.map((msg) => ({
           messageBody: msg.messageContent,
           sender: {
-            firstName: msg.user.firstName,
-            lastName: msg.user.lastName,
+            firstName: msg.Sender.firstName,
+            lastName: msg.Sender.lastName,
           },
-          channel: msg.channel,
+          channel: msg.roomId,
           timestamp: new Date(msg.createdAt).toLocaleTimeString([], {
             hour: 'numeric',
             minute: '2-digit',
@@ -38,16 +38,17 @@ export default function ChannelChat() {
         setLoading(false);
       }
     }
-    fetchMessageHistoryAsync();
-  }, [channel]);
+    fetchUserMessageHistoryAsync();
+  }, [directMessage]);
 
+  if (loading || error) return <h1>Loading...</h1>;
   return (
     <ChatInterface
-      messages={messages}
+      messages={messages ?? []}
       setMessages={setMessages}
-      chatName={channel?.channelName}
-      sendLocation={channel?.id}
-      mode="ch"
+      chatName={`${directMessage?.firstName} ${directMessage?.lastName}`}
+      sendLocation={messages ?? messages[0].channel}
+      mode="dm"
     />
   );
 }

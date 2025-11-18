@@ -5,16 +5,16 @@ import "./index.css";
 import App from "./App.jsx";
 
 import { UserContextProvider } from "./store/UserContext.jsx";
-import { ChannelContextProvider } from "./store/ChannelContext.jsx";
+import { ChatContextProvider } from "./store/ChatContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <UserContextProvider>
-    <ChannelContextProvider>
+    <ChatContextProvider>
       <BrowserRouter>
         <Provider>
           <App />
         </Provider>
       </BrowserRouter>
-    </ChannelContextProvider>
+    </ChatContextProvider>
   </UserContextProvider>
 );

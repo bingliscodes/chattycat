@@ -1,9 +1,30 @@
+import { DataTypes } from 'sequelize';
+
 import sequelize from '../utils/database.js';
 import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import Organization from '../models/organizationModel.js';
 import modelRelationships from './entityRelationships.js';
-import Message from '../models/messageModel.js';
+import {
+  ChannelMessage,
+  DirectMessage,
+  DirectMessageRoom,
+} from '../models/messageModel.js';
+
+// Helper functions to create the DirectMessageRoom from two user ids.
+function normalizeUserPair(id1, id2) {
+  return id1.localeCompare(id2) < 0 ? [id1, id2] : [id2, id1];
+}
+
+async function findOrCreateDMRoom(userAId, userBId) {
+  const [user1Id, user2Id] = normalizeUserPair(userAId, userBId);
+
+  const [room] = await DirectMessageRoom.findOrCreate({
+    where: { user1Id, user2Id },
+  });
+
+  return room;
+}
 
 async function main() {
   await sequelize.sync({ force: true });
@@ -16,24 +37,34 @@ async function main() {
     organizationName: 'Better Organization',
   });
 
-  const cannoli = await User.create({
-    firstName: 'Cannoli',
+  const admin = await User.create({
+    firstName: 'Admin',
     lastName: 'Garcia',
     email: 'admin@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
     role: 'superuser',
-    organizationId: 1,
+    organizationId: testOrg.id,
   });
 
-  const bookie = await User.create({
+  const cannoli = await User.create({
     firstName: 'Cannoli',
     lastName: 'Garcia',
     email: 'cannoli@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
     role: 'user',
-    organizationId: 1,
+    organizationId: testOrg.id,
+  });
+
+  const bookie = await User.create({
+    firstName: 'Bookie',
+    lastName: 'Garcia',
+    email: 'bookie@gmail.com',
+    password: 'password',
+    passwordConfirm: 'password',
+    role: 'user',
+    organizationId: testOrg.id,
   });
 
   const guy = await User.create({
@@ -43,23 +74,39 @@ async function main() {
     password: 'password',
     passwordConfirm: 'password',
     role: 'user',
-    organizationId: 1,
+    organizationId: testOrg.id,
   });
 
   const testChannel = await Channel.create({
     channelName: 'General Chat',
-    organizationId: 1,
+    organizationId: testOrg.id,
   });
 
   const testChannel2 = await Channel.create({
     channelName: 'Private Chat',
-    organizationId: 1,
+    organizationId: testOrg.id,
   });
 
-  const message1 = await Message.create({
+  const message1 = await ChannelMessage.create({
     messageContent: 'Testing!',
-    userId: 1,
-    channelId: 1,
+    userId: admin.id,
+    channelId: testChannel.id,
+  });
+
+  const dmRoom = await findOrCreateDMRoom(cannoli.id, bookie.id);
+
+  const dm = await DirectMessage.create({
+    messageContent: 'Sup fucker',
+    senderId: cannoli.id,
+    receiverId: bookie.id,
+    roomId: dmRoom.id,
+  });
+
+  const dm2 = await DirectMessage.create({
+    messageContent: 'Meowdy pawtner',
+    senderId: bookie.id,
+    receiverId: cannoli.id,
+    roomId: dmRoom.id,
   });
 
   const channels = await Channel.findAll(); // We will use this to get the channels, then we can filter by name or id

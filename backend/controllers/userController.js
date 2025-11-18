@@ -3,6 +3,7 @@ import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import Organization from '../models/organizationModel.js';
+import { DirectMessage } from '../models/messageModel.js';
 
 export const getMe = catchAsync(async (req, res, next) => {
   req.params.id = req.user.id;
@@ -39,5 +40,39 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     status: 'success',
     results: users.length,
     data: users,
+  });
+});
+
+export const getDirectMessageList = catchAsync(async (req, res, next) => {
+  // Retrieves a list of all users that the specified user has dm's with
+  const user = await User.findByPk(req.params.userId);
+
+  const messages = await user.getReceivedMessages({
+    include: [
+      {
+        model: User,
+        as: 'Sender',
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+    ],
+  });
+
+  if (!messages) next(new AppError('Failed to fetch messages for user.'));
+
+  const uniqueUsers = [];
+  const userIds = new Set();
+
+  for (const msg of messages) {
+    const sender = msg.Sender;
+    if (sender && !userIds.has(sender.id)) {
+      userIds.add(sender.id);
+      uniqueUsers.push(sender);
+    }
+  }
+
+  res.status(200).json({
+    status: 'success',
+    results: uniqueUsers.length,
+    data: uniqueUsers,
   });
 });

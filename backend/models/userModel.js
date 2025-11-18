@@ -7,12 +7,11 @@ import Organization from './organizationModel.js';
 const User = sequelize.define(
   'user',
   {
-    // userId: {
-    //   type: DataTypes.BIGINT,
-    //   allowNull: false,
-    //   autoIncrement: true,
-    //   primaryKey: true,
-    // },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -43,13 +42,6 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       defaultValue: 'user',
     },
-    // organizationId: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Organization,
-    //     key: 'id',
-    //   },
-    // },
     passwordChangedAt: DataTypes.DATE,
     passwordResetToken: DataTypes.STRING,
     passwordResetExpires: DataTypes.DATE,

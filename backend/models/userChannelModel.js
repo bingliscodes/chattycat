@@ -8,14 +8,14 @@ const UserChannel = sequelize.define(
   'UserChannel',
   {
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       references: {
         model: User,
         key: 'id',
       },
     },
     channelId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       references: {
         model: Channel,
         key: 'id',

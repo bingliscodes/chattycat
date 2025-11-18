@@ -1,11 +1,11 @@
 import { createOne } from './handlerFactory.js';
-import Message from '../models/messageModel.js';
+import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import Channel from '../models/channelModel.js';
 import User from '../models/userModel.js';
 
 export const getAllMessages = catchAsync(async (req, res, next) => {
-  const messages = await Message.findAll({
+  const messages = await ChannelMessage.findAll({
     include: [
       { model: Channel, attributes: ['channelName', 'id'] },
       { model: User, attributes: ['firstName', 'lastName'] },
@@ -19,12 +19,13 @@ export const getAllMessages = catchAsync(async (req, res, next) => {
   });
 });
 
-export const createMessage = createOne(Message);
+export const createChannelMessage = createOne(ChannelMessage);
+export const createDirectMessage = createOne(DirectMessage);
 
 export const getChannelMessages = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
 
-  const messages = await Message.findAll({
+  const messages = await ChannelMessage.findAll({
     where: { channelId },
     include: [
       { model: Channel, attributes: ['channelName', 'id'] },
@@ -38,3 +39,48 @@ export const getChannelMessages = catchAsync(async (req, res, next) => {
     data: messages,
   });
 });
+
+export const getAllReceivedMessages = catchAsync(async (req, res, next) => {
+  const user = await User.findByPk(req.user.id);
+
+  const messages = await user.getReceivedMessages({
+    include: [
+      {
+        model: User,
+        as: 'Sender',
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+    ],
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: messages.length,
+    data: messages,
+  });
+});
+
+export const getAllReceivedMessagesFromUser = catchAsync(
+  async (req, res, next) => {
+    const senderId = req.params.userId;
+
+    const user = await User.findByPk(req.user.id);
+
+    const messages = await user.getReceivedMessages({
+      where: { senderId },
+      include: [
+        {
+          model: User,
+          as: 'Sender',
+          attributes: ['id', 'firstName', 'lastName'],
+        },
+      ],
+    });
+
+    res.status(200).json({
+      status: 'success',
+      results: messages.length,
+      data: messages,
+    });
+  },
+);

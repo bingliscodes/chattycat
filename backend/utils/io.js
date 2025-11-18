@@ -2,12 +2,22 @@ export const setupIO = (io) => {
   io.on('connection', (socket) => {
     console.log('🔌 [SERVER] User connected:', socket.id);
 
-    socket.on('join-room', ({ id: channelId, channelName }, cb) => {
-      socket.join(channelId);
-      console.log(
-        `✅ [SERVER] Socket ${socket.id} joined room: ${channelName}`,
-      );
-      if (cb) cb(`Joined room: ${channelName}`);
+    socket.on('join-room', (data, mode, cb) => {
+      socket.join(data.id);
+      if (mode === 'ch') {
+        const { channelName } = data;
+        console.log(
+          `✅ [SERVER] Socket ${socket.id} joined room: ${channelName}`,
+        );
+        if (cb) cb(`Joined room: ${channelName}`);
+      }
+      if (mode === 'dm') {
+        const { firstName, lastName } = data;
+        console.log(
+          `✅ [SERVER] Socket ${socket.id} joined private chat with: ${firstName} ${lastName}`,
+        );
+        if (cb) cb(`Joined private chat with: ${firstName} ${lastName}`);
+      }
     });
 
     socket.on('send-message', ({ messageBody, sender, channel, timestamp }) => {
