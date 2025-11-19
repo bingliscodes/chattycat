@@ -35,9 +35,11 @@ export default function UserSidebar() {
 
     if (mode === 'ch') {
       setChannel(data);
+      setDirectMessage(null);
     }
     if (mode === 'dm') {
       setDirectMessage(data);
+      setChannel(null);
     }
 
     userSocket.emit('join-room', data, mode, (ack) => {
@@ -46,7 +48,13 @@ export default function UserSidebar() {
   };
 
   return (
-    <Box rounded="md" width="260px" bg="bg.sideBar" p={4}>
+    <Box
+      rounded="md"
+      width="260px"
+      bg="bg.sideBar"
+      p={4}
+      borderRight="solid 1px white"
+    >
       <Text fontWeight="bold" fontSize="lg" mb={4}>
         {organization?.organizationName}
       </Text>

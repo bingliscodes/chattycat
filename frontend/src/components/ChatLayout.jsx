@@ -1,13 +1,21 @@
 import { Flex } from '@chakra-ui/react';
+import { useContext } from 'react';
+
 import Sidebar from './Sidebar';
 import ChannelChat from './ChannelChat';
 import DirectMessages from './DirectMessages';
+import { ChatContext } from '../store/ChatContext';
+
 export default function ChatLayout() {
+  const { directMessage, channel } = useContext(ChatContext);
+
   return (
-    <Flex h="100vh">
+    <Flex flex="1" overflow="hidden">
       <Sidebar />
-      <ChannelChat />
-      <DirectMessages />
+      <Flex flex="1" overflowY="auto">
+        {channel && <ChannelChat />}
+        {directMessage && <DirectMessages />}
+      </Flex>
     </Flex>
   );
 }
