@@ -1,0 +1,54 @@
+import multer from 'multer';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import User from '../models/userModel.js';
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+export const uploadAvatar = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 3 * 1024 * 1024 },
+}).single('avatar');
+
+export const uploadUserAvatar = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      throw new Error('No file uploaded!');
+    }
+
+    const ext = path.extname(req.file.originalname);
+    const fileName = `avatars/${uuidv4()}${ext}`;
+
+    const uploadParams = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: fileName,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+
+    const command = new PutObjectCommand(uploadParams);
+    await s3.send(command);
+
+    const avatarUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+
+    // Update user in DB
+    const user = await User.findByPk(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    await user.update({ avatarUrl });
+
+    res.status(200).json({
+      status: 'success',
+      data: { avatarUrl },
+    });
+  } catch (err) {
+    next(err);
+  }
+};

@@ -43,6 +43,20 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+export const updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm)
+    return next(new AppError('This route is not for password updates', 400));
+
+  const user = await User.findByPk(req.user.id);
+
+  const updatedUser = await user.update(req.body);
+
+  res.status(200).json({
+    status: 'success',
+    data: updatedUser,
+  });
+});
+
 export const getDirectMessageList = catchAsync(async (req, res, next) => {
   // Retrieves a list of all users that the specified user has dm's with
   const user = await User.findByPk(req.params.userId);

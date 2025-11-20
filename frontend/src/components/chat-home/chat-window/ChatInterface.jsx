@@ -11,9 +11,9 @@ import {
 import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { UserContext } from '../store/UserContext';
-import { sendMessage } from '../utils/js/apiCalls';
-import { ChatContext } from '../store/ChatContext';
+import { UserContext } from '../../../contexts/UserContext';
+import { sendMessage } from '../../../utils/js/apiCalls';
+import { ChatContext } from '../../../contexts/ChatContext';
 
 export default function ChatInterface({
   messages,

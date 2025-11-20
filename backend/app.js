@@ -15,20 +15,20 @@ import modelRelationships from './dataModeling/entityRelationships.js';
 
 import AppError from './utils/appError.js';
 
-const app = express();
-
 import channelRouter from './routes/channelRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import organizationRouter from './routes/organizationRoutes.js';
 import messageRouter from './routes/messageRoutes.js';
 import authRouter from './routes/authRoutes.js';
 
+const app = express();
 const corsOptions = {
   origin: [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    '',
   ],
   credentials: true,
 };

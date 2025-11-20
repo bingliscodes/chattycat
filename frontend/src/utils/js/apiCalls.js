@@ -89,7 +89,7 @@ export const fetchChannelMessageHistory = async (channelId) => {
 export const fetchDirectMessageHistory = async () => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/me/received`,
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/received`,
       { withCredentials: true }
     );
 
@@ -104,7 +104,7 @@ export const fetchDirectMessageHistory = async () => {
 export const fetchUserMessageHistory = async (userId) => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/me/received/${userId}`,
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/received/${userId}`,
       { withCredentials: true }
     );
 
@@ -137,3 +137,56 @@ export const fetchDirectMessageList = async (userId) => {
     throw err;
   }
 };
+
+export const updateAvatar = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/avatar`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    if (res.status !== 200) throw new Error('Failed to update avatar');
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const updateSettings = async (formData) => {
+  const filteredFormData = removeBlankAttributes({ ...formData });
+  try {
+    const updatedUser = await axios.patch(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/updateMe`,
+      filteredFormData,
+      { withCredentials: true }
+    );
+
+    if (!updatedUser.status === 200) {
+      throw new Error('Failed to update settings. Please try again later!');
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+function removeBlankAttributes(obj) {
+  const result = {};
+  for (const key in obj) {
+    if (obj[key] !== '' && obj[key] !== undefined) {
+      result[key] = obj[key];
+    }
+  }
+  return result;
+}

@@ -1,11 +1,11 @@
-import { Flex, Button, Stack } from "@chakra-ui/react";
-import { ColorModeButton } from "@/components/ui/color-mode";
-import { NavLink, useNavigate } from "react-router";
-import { HiMiniUserCircle } from "react-icons/hi2";
+import { Flex, Button, Stack } from '@chakra-ui/react';
+import { ColorModeButton } from '@/components/ui/color-mode';
+import { NavLink, useNavigate } from 'react-router';
+import { HiMiniUserCircle } from 'react-icons/hi2';
 
-import { useContext } from "react";
-import { UserContext } from "../../store/UserContext";
-import { logout } from "../../utils/js/authentication";
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import { logout } from '../../utils/js/authentication';
 
 export default function RightNavContent() {
   let { isLoggedIn, disconnectSocket } = useContext(UserContext);
@@ -18,16 +18,16 @@ export default function RightNavContent() {
           bg="bg.primaryBtn"
           color="text.primaryBtn"
           borderRadius="full"
-          _hover={{ bg: "bg.navHover" }}
+          _hover={{ bg: 'bg.navHover' }}
         />
 
         {!isLoggedIn && (
           <Button
             bg="bg.primaryBtn"
             color="text.primaryBtn"
-            _hover={{ bg: "bg.navHover" }}
+            _hover={{ bg: 'bg.navHover' }}
             borderRadius="full"
-            onClick={() => nav("/login")}
+            onClick={() => nav('/login')}
           >
             Log In / Sign Up
           </Button>
@@ -39,7 +39,7 @@ export default function RightNavContent() {
               bg="bg.primaryBtn"
               color="text.primaryBtn"
               borderRadius="full"
-              _hover={{ bg: "bg.navHover" }}
+              _hover={{ bg: 'bg.navHover' }}
               onClick={() => {
                 disconnectSocket();
                 logout();
@@ -53,7 +53,7 @@ export default function RightNavContent() {
                 bg="bg.primaryBtn"
                 variant="ghost"
                 color="text.primaryBtn"
-                _hover={{ bg: "bg.navHover" }}
+                _hover={{ bg: 'bg.navHover' }}
               >
                 <HiMiniUserCircle />
               </Button>

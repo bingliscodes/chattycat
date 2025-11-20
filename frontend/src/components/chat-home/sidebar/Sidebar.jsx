@@ -2,9 +2,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Text, Accordion, Span, Center } from '@chakra-ui/react';
 
-import { UserContext } from '../store/UserContext';
-import { ChatContext } from '../store/ChatContext';
-import { fetchDirectMessageList } from '../utils/js/apiCalls';
+import { UserContext } from '../../../contexts/UserContext';
+import { ChatContext } from '../../../contexts/ChatContext';
+import { fetchDirectMessageList } from '../../../utils/js/apiCalls';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);

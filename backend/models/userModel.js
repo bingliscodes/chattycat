@@ -38,6 +38,10 @@ const User = sequelize.define(
         },
       },
     },
+    avatarUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     role: {
       type: DataTypes.STRING,
       defaultValue: 'user',
@@ -53,11 +57,13 @@ const User = sequelize.define(
 );
 
 User.beforeSave(async (user, options) => {
-  const hashedPassword = await bcrypt.hash(user.password, 12);
+  if (user.changed('password')) {
+    const hashedPassword = await bcrypt.hash(user.password, 12);
+    user.password = hashedPassword;
 
-  user.password = hashedPassword;
+    if (!user.isNewRecord) user.passwordChangedAt = Date.now() - 1000;
+  }
   user.passwordConfirm = undefined;
-  user.passwordChangedAt = Date.now() - 1000;
 });
 
 User.prototype.correctPassword = async function (

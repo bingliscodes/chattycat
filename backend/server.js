@@ -1,9 +1,8 @@
-import dotenv from 'dotenv';
+import './config/env.js';
 import { Server } from 'socket.io';
 import { setupIO } from './utils/io.js';
-import app from './app.js';
 
-dotenv.config({ path: './config.env' });
+import app from './app.js';
 
 process.on('uncaughtException', (err) => {
   console.log('Uncaught Exception! Shutting down...');

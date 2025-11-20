@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 
-import { ChatContext } from '../store/ChatContext';
+import { ChatContext } from '../../../contexts/ChatContext';
 import ChatInterface from './ChatInterface';
-import { fetchChannelMessageHistory } from '../utils/js/apiCalls';
+import { fetchChannelMessageHistory } from '../../../utils/js/apiCalls';
 
 export default function ChannelChat() {
   const { channel } = useContext(ChatContext);

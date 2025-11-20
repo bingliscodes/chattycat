@@ -11,11 +11,13 @@ import {
   getMe,
   getUser,
   getDirectMessageList,
+  updateMe,
 } from '../controllers/userController.js';
 import {
   addToChannel,
   removeFromChannel,
 } from '../controllers/userChannelController.js';
+import { uploadAvatar, uploadUserAvatar } from '../utils/multerS3.js';
 import {
   getAllReceivedMessages,
   getDirectMessagesWithUser,
@@ -33,8 +35,10 @@ router.get('/:userId/directMessageList', getDirectMessageList);
 
 router.use(protect);
 router.get('/me', getMe, getUser);
-router.get('/me/received', getMe, getAllReceivedMessages);
-router.get('/me/received/:userId', getMe, getDirectMessagesWithUser);
+router.patch('/updateMe', updateMe);
+router.post('/avatar', uploadAvatar, uploadUserAvatar);
+router.get('/received', getAllReceivedMessages);
+router.get('/received/:userId', getDirectMessagesWithUser);
 
 router.use(restrictTo('superuser'));
 router.post('/addToChannel', addToChannel);
