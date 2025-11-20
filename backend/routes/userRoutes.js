@@ -18,7 +18,7 @@ import {
 } from '../controllers/userChannelController.js';
 import {
   getAllReceivedMessages,
-  getAllReceivedMessagesFromUser,
+  getDirectMessagesWithUser,
 } from '../controllers/messageController.js';
 
 const router = express.Router();
@@ -34,7 +34,7 @@ router.get('/:userId/directMessageList', getDirectMessageList);
 router.use(protect);
 router.get('/me', getMe, getUser);
 router.get('/me/received', getMe, getAllReceivedMessages);
-router.get('/me/received/:userId', getMe, getAllReceivedMessagesFromUser);
+router.get('/me/received/:userId', getMe, getDirectMessagesWithUser);
 
 router.use(restrictTo('superuser'));
 router.post('/addToChannel', addToChannel);

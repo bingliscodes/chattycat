@@ -4,6 +4,7 @@ const sequelize = new Sequelize('sys', 'root', 'my-secret-pw', {
   host: '127.0.0.1',
   port: '3306',
   dialect: 'mysql',
+  logging: false,
 });
 
 const connection = async () => {

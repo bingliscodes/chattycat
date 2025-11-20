@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 import { createOne } from './handlerFactory.js';
 import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
 import catchAsync from '../utils/catchAsync.js';
@@ -60,27 +62,31 @@ export const getAllReceivedMessages = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getAllReceivedMessagesFromUser = catchAsync(
-  async (req, res, next) => {
-    const senderId = req.params.userId;
+export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
+  const senderId = req.params.userId;
 
-    const user = await User.findByPk(req.user.id);
+  const user = await User.findByPk(req.user.id);
 
-    const messages = await user.getReceivedMessages({
-      where: { senderId },
-      include: [
-        {
-          model: User,
-          as: 'Sender',
-          attributes: ['id', 'firstName', 'lastName'],
-        },
+  const messages = await DirectMessage.findAll({
+    where: {
+      [Op.or]: [
+        { [Op.and]: [{ senderId }, { receiverId: req.user.id }] },
+        { [Op.and]: [{ senderId: req.user.id }, { receiverId: senderId }] },
       ],
-    });
+    },
+    order: [['createdAt', 'ASC']],
+    include: [
+      {
+        model: User,
+        as: 'Sender',
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+    ],
+  });
 
-    res.status(200).json({
-      status: 'success',
-      results: messages.length,
-      data: messages,
-    });
-  },
-);
+  res.status(200).json({
+    status: 'success',
+    results: messages.length,
+    data: messages,
+  });
+});

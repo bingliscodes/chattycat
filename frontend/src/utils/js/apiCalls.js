@@ -18,8 +18,10 @@ export const fetchUserData = async () => {
   }
 };
 
-export const sendMessage = async (messageContent, userId, channelId, mode) => {
+export const sendMessage = async (messageData, mode) => {
+  console.log('mode is:', mode);
   if (mode === 'ch') {
+    const { messageContent, userId, channelId } = messageData;
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_DEV_API_BASE_URL}messages/channelMessage`,
@@ -31,7 +33,33 @@ export const sendMessage = async (messageContent, userId, channelId, mode) => {
         { withCredentials: true }
       );
 
-      if (res.status !== 201) throw new Error('Failed to create message');
+      if (res.status !== 201)
+        throw new Error('Failed to create channel message');
+
+      return res.data;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
+  if (mode === 'dm') {
+    const { messageContent, senderId, receiverId, roomId } = messageData;
+    console.log(messageData);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_DEV_API_BASE_URL}messages/directMessage`,
+        {
+          messageContent,
+          senderId,
+          receiverId,
+          roomId,
+        },
+        { withCredentials: true }
+      );
+
+      if (res.status !== 201)
+        throw new Error('Failed to create direct message');
 
       return res.data;
     } catch (err) {
@@ -80,10 +108,10 @@ export const fetchUserMessageHistory = async (userId) => {
       { withCredentials: true }
     );
 
+    console.log(res.data);
     if (res.status !== 200)
       throw new Error('Failed to fetch direct message history');
 
-    console.log(res.data);
     return res.data;
   } catch (err) {
     console.error(err);

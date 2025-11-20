@@ -43,12 +43,14 @@ export default function DirectMessageChat() {
 
   if (loading || error) return <h1>Loading...</h1>;
   return (
-    <ChatInterface
-      messages={messages ?? []}
-      setMessages={setMessages}
-      chatName={`${directMessage?.firstName} ${directMessage?.lastName}`}
-      sendLocation={messages ?? messages[0].channel}
-      mode="dm"
-    />
+    messages && (
+      <ChatInterface
+        messages={messages}
+        setMessages={setMessages}
+        chatName={`${directMessage?.firstName} ${directMessage?.lastName}`}
+        sendLocation={messages[0]?.channel}
+        mode="dm"
+      />
+    )
   );
 }

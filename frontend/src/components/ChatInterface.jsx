@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 
 import { UserContext } from '../store/UserContext';
 import { sendMessage } from '../utils/js/apiCalls';
+import { ChatContext } from '../store/ChatContext';
 
 export default function ChatInterface({
   messages,
@@ -22,6 +23,7 @@ export default function ChatInterface({
   mode,
 }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
+  const { channel, directMessage } = useContext(ChatContext);
   const { firstName, lastName, id } = userData;
 
   const {
@@ -66,7 +68,24 @@ export default function ChatInterface({
       timestamp,
     };
     userSocket.emit('send-message', messageContent);
-    sendMessage(message, id, sendLocation, mode);
+    let messageData;
+
+    if (mode === 'ch') {
+      messageData = {
+        messageContent: message,
+        userId: id,
+        channelId: sendLocation,
+      };
+    }
+    if (mode === 'dm') {
+      messageData = {
+        messageContent: message,
+        senderId: id,
+        receiverId: directMessage?.id,
+        roomId: sendLocation,
+      };
+    }
+    sendMessage(messageData, mode);
     setMessages((prev) => [...prev, messageContent]);
     reset();
   });
