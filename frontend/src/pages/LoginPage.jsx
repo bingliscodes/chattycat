@@ -1,13 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Center, Flex, Field, Input, Stack, Button } from "@chakra-ui/react";
-import { NavLink } from "react-router";
+import { useState } from 'react';
+import { Center, Flex, Field, Input, Stack, Button } from '@chakra-ui/react';
+import { NavLink, useNavigate } from 'react-router';
 
-import { login } from "../utils/js/authentication";
+import { toaster } from '@/components/ui/toaster';
+import { login } from '../utils/js/authentication';
 
 export default function LoginCard() {
   const [logInError, setLoginError] = useState(false);
+  const nav = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,11 +17,31 @@ export default function LoginCard() {
     const formData = new FormData(e.target);
     const entries = Object.fromEntries(formData.entries());
 
+    const loginPromise = login(entries);
+
+    toaster.promise(loginPromise, {
+      loading: {
+        title: 'Logging In...',
+        description: 'Checking your credentials.',
+      },
+      success: {
+        title: 'Login Successful!',
+        description: 'Redirecting to homepage.',
+      },
+      error: {
+        title: 'Login Failed',
+        description: 'Invalid email or password.',
+      },
+    });
+
     try {
-      await login(entries);
+      await loginPromise;
+      setLoginError(false);
+
+      nav('/');
     } catch (err) {
-      console.error(err);
       setLoginError(true);
+      console.error(err);
     }
   }
 

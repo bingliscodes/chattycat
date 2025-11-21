@@ -19,7 +19,6 @@ export const fetchUserData = async () => {
 };
 
 export const sendMessage = async (messageData, mode) => {
-  console.log('mode is:', mode);
   if (mode === 'ch') {
     const { messageContent, userId, channelId } = messageData;
     try {
@@ -45,7 +44,6 @@ export const sendMessage = async (messageData, mode) => {
 
   if (mode === 'dm') {
     const { messageContent, senderId, receiverId, roomId } = messageData;
-    console.log(messageData);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_DEV_API_BASE_URL}messages/directMessage`,

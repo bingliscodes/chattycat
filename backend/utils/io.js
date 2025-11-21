@@ -1,5 +1,6 @@
-import sequelize from './database.js';
+import User from '../models/userModel.js';
 import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
+import Channel from '../models/channelModel.js';
 
 export const setupIO = (io) => {
   io.on('connection', (socket) => {
@@ -26,6 +27,15 @@ export const setupIO = (io) => {
     socket.on(
       'send-message',
       ({ messageBody, sender, channel, timestamp }, messageData, mode) => {
+        // Security: Ensure user has permission to send message to a channel
+
+        if (
+          !validateUserPermissions(
+            messageData.senderId ?? messageData.userId,
+            messageData.channelId ?? messageData.roomId,
+          )
+        )
+          return;
         // Send message to DB
         createMessage(messageData, mode);
 
@@ -76,5 +86,19 @@ const createMessage = async (messageData, mode) => {
       console.error(err);
       throw err;
     }
+  }
+};
+
+const validateUserPermissions = async (userId, channelId) => {
+  /* Will check if the user has permission to send messages to the channel */
+  try {
+    const user = await User.findByPk(userId, { include: Channel });
+
+    const channelIds = user.channels.map((ch) => ch.id);
+
+    return channelIds.includes(channelId);
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };

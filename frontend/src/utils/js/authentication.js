@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const signup = async (formData) => {
   const { firstName, lastName, email, password, passwordConfirm } = formData;
@@ -15,14 +15,11 @@ export const signup = async (formData) => {
       { withCredentials: true }
     );
 
-    if (newUserRes.data.status === "success") {
-      alert(
-        "Signed up successfully! You will now be redirected to the home page."
-      );
-      window.setTimeout(() => {
-        location.assign("/");
-      }, 1500);
+    if (!newUserRes.status === 200) {
+      throw new Error('Failed to sign up user! Please try again later.');
     }
+
+    return newUserRes.data;
   } catch (err) {
     console.error(err);
     throw err;
@@ -43,18 +40,11 @@ export const login = async (formData) => {
 
     if (!loggedInUser.status === 200) {
       throw new Error(
-        "Failed to login user. Make sure email and password are correct."
+        'Failed to login user. Make sure email and password are correct.'
       );
     }
 
-    if (loggedInUser.data.status === "success") {
-      alert(
-        "Logged in successfully! You will now be redirected to the home page."
-      );
-      window.setTimeout(() => {
-        location.assign("/");
-      }, 1500);
-    }
+    return loggedInUser.data;
   } catch (err) {
     throw new Error(err);
   }
@@ -68,12 +58,12 @@ export const logout = async () => {
         withCredentials: true,
       }
     );
-    if (res.data.status === "success") {
+    if (res.data.status === 'success') {
       alert(
-        "Logout successfully! You will now be redirected to the home page."
+        'Logout successfully! You will now be redirected to the home page.'
       );
       window.setTimeout(() => {
-        location.assign("/");
+        location.assign('/');
       }, 1500);
     }
   } catch (err) {
@@ -92,7 +82,7 @@ export const verifyJWT = async () => {
     );
 
     if (!res.status === 200)
-      throw new Error("Failed to get logged in user. Please log in.");
+      throw new Error('Failed to get logged in user. Please log in.');
     return res.data;
   } catch (err) {
     console.error(err);

@@ -1,7 +1,7 @@
-import { createContext, useState, useEffect, useCallback, useRef } from "react";
-import { createConnection } from "../utils/js/socket";
-import { fetchUserData } from "../utils/js/apiCalls";
-import { verifyJWT } from "../utils/js/authentication";
+import { createContext, useState, useEffect, useCallback, useRef } from 'react';
+import { createConnection } from '../utils/js/socket';
+import { fetchUserData } from '../utils/js/apiCalls';
+import { verifyJWT } from '../utils/js/authentication';
 
 export const UserContext = createContext();
 
@@ -22,7 +22,7 @@ export const UserContextProvider = ({ children }) => {
   const loadUserData = useCallback(async () => {
     try {
       const currentUser = await verifyJWT();
-      if (currentUser.status !== "success") {
+      if (currentUser.status !== 'success') {
         setUserData({});
         setIsLoggedIn(false);
         return;
