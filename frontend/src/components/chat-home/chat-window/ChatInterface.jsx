@@ -37,7 +37,6 @@ export default function ChatInterface({
     if (!userSocket) return;
 
     const handleReceiveMessage = (msg) => {
-      console.log('📥 [UI] Received:', msg);
       setMessages((prev) => [...prev, msg]);
     };
 
@@ -67,7 +66,7 @@ export default function ChatInterface({
       },
       timestamp,
     };
-    userSocket.emit('send-message', messageContent);
+
     let messageData;
 
     if (mode === 'ch') {
@@ -85,7 +84,10 @@ export default function ChatInterface({
         roomId: sendLocation,
       };
     }
-    sendMessage(messageData, mode);
+
+    userSocket.emit('send-message', messageContent, messageData, mode);
+
+    // sendMessage(messageData, mode);
     setMessages((prev) => [...prev, messageContent]);
     reset();
   });
