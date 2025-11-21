@@ -8,11 +8,12 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "queries": "node ./dataModeling/test.js",
-    "test": "jest"
+    "queries": "node ./dataModeling/demoQueries.js",
+    "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.936.0",
+    "@sequelize/sqlite3": "^7.0.0-alpha.47",
     "bcryptjs": "^3.0.2",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",

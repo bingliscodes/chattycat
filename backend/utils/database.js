@@ -1,11 +1,21 @@
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('sys', 'root', 'my-secret-pw', {
-  host: '127.0.0.1',
-  port: '3306',
-  dialect: 'mysql',
-  logging: false,
-});
+let sequelize;
+
+if (process.env.NODE_ENV === 'test') {
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: ':memory:',
+    logging: false,
+  });
+} else {
+  sequelize = new Sequelize('sys', 'root', 'my-secret-pw', {
+    host: '127.0.0.1',
+    port: '3306',
+    dialect: 'mysql',
+    logging: false,
+  });
+}
 
 const connection = async () => {
   try {

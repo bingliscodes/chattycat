@@ -1,12 +1,33 @@
-/* eslint-disable */
-
-import { Sequelize } from 'sequelize';
-import app from '../app.js';
 import request from 'supertest';
-// const sequelize = new Sequelize('sqlite::memory:');
+import app from '../app.js';
 
-const req = request('http://localhost:3000');
+console.log(process.env.JWT_SECRET);
 
-req.get('/').expect(200, function (err) {
-  console.log(err);
+describe('User API', () => {
+  it('should return all users', async () => {
+    const res = await request(app).get('/api/v1/users');
+
+    expect(res.statusCode).toEqual(200);
+    expect(Array.isArray(res.body.data)).toBe(true);
+  });
+
+  it('should create a new user', async () => {
+    // const testOrg = await Organization.create({ organizationName: 'test Org' });
+
+    const userData = {
+      firstName: 'Cannoli',
+      lastName: 'Garcia',
+      email: 'cannoli1234@gmail.com',
+      password: 'password',
+      passwordConfirm: 'password',
+      organizationId: globalThis.testOrg.id,
+    };
+
+    const res = await request(app).post('/api/v1/users/signup').send(userData);
+
+    console.log('🚨 RESPONSE:', res.statusCode, res.body); // ← Log this
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.data.user.email).toBe(userData.email);
+  });
 });
