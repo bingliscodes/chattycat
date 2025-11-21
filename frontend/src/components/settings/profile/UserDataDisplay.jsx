@@ -1,9 +1,9 @@
 import {
-  Text,
+  Center,
   Container,
-  Button,
   Flex,
   Heading,
+  Box,
   VStack,
 } from '@chakra-ui/react';
 import { useContext } from 'react';
@@ -18,29 +18,34 @@ import { UserContext } from '../../../contexts/UserContext';
 export default function UserDataDisplay() {
   const { userData } = useContext(UserContext);
 
-  if (!userData) return <h1>Loading user data...</h1>;
-  console.log(userData.avatarUrl);
   return (
-    <Container maxW="lg" py={10}>
-      <Heading>User Settings</Heading>
-      <Flex
-        direction={{ base: 'column', md: 'row' }}
-        gap={10}
-        justifyContent="center"
-      >
-        {/* Avatar Section */}
-        <VStack spacing={4}>
+    <Container maxW="full" py={12}>
+      <Heading mb={8} textAlign="center">
+        User Settings
+      </Heading>
+
+      <Flex direction="column" w="full" gap={4} align="center">
+        {/* Avatar */}
+        <Box
+          borderRadius="full"
+          boxSize={{ base: '160px', md: '200px', lg: '240px' }}
+        >
           <UserAvatar
-            size="2xl"
+            size="full"
             avatarUrl={userData.avatarUrl}
             name={`${userData.firstName} ${userData.lastName}`}
           />
-          <FileUploadButton uploadFn={updateAvatar} />
-        </VStack>
-      </Flex>
+        </Box>
 
-      {/* Settings Form */}
-      <UserSettings />
+        {/* Upload Button */}
+        <Box>
+          <FileUploadButton uploadFn={updateAvatar} />
+        </Box>
+        <Box w="50%">
+          <UserSettings userData={userData} />
+        </Box>
+        {/* Settings Form - center inputs too */}
+      </Flex>
     </Container>
   );
 }

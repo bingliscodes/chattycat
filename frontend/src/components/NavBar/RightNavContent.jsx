@@ -6,9 +6,10 @@ import { HiMiniUserCircle } from 'react-icons/hi2';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { logout } from '../../utils/js/authentication';
+import UserAvatar from '../common/Avatar';
 
 export default function RightNavContent() {
-  let { isLoggedIn, disconnectSocket } = useContext(UserContext);
+  let { isLoggedIn, disconnectSocket, userData } = useContext(UserContext);
   const nav = useNavigate();
 
   return (
@@ -49,14 +50,11 @@ export default function RightNavContent() {
             </Button>
 
             <NavLink to="/me">
-              <Button
-                bg="bg.primaryBtn"
-                variant="ghost"
-                color="text.primaryBtn"
-                _hover={{ bg: 'bg.navHover' }}
-              >
-                <HiMiniUserCircle />
-              </Button>
+              <UserAvatar
+                size="lg"
+                avatarUrl={userData.avatarUrl}
+                name={`${userData.firstName} ${userData.lastName}`}
+              />
             </NavLink>
           </>
         )}

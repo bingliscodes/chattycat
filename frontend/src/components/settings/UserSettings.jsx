@@ -1,12 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Flex, Field, Input, Button, Stack } from '@chakra-ui/react';
 
-import { UserContext } from '../../contexts/UserContext';
 import { updateSettings } from '../../utils/js/apiCalls';
 
-export default function UserSettings() {
+export default function UserSettings({ userData }) {
   const [userSettingsError, setUserSettingsError] = useState(false);
-  const { userData } = useContext(UserContext);
 
   const { firstName, lastName, email } = userData;
 
@@ -26,7 +24,7 @@ export default function UserSettings() {
   }
   return (
     <form onSubmit={handleSubmit}>
-      <Flex direction="column" gap="4" py={6} w="50%">
+      <Flex direction="column" gap="4" py={6} w="full">
         <Field.Root>
           <Field.Label>First Name</Field.Label>
           <Input type="text" placeholder={firstName} name="firstName" />

@@ -15,7 +15,7 @@ export function FileUploadButton({ uploadFn }) {
       <FileUpload.HiddenInput />
       <FileUpload.Trigger asChild>
         <Button size="sm">
-          <HiUpload /> Upload file
+          <HiUpload /> Change Avatar
         </Button>
       </FileUpload.Trigger>
       <FileUpload.List />
