@@ -1,8 +1,8 @@
 import { Avatar } from '@chakra-ui/react';
 
-export default function UserAvatar({ size, avatarUrl, name }) {
+export default function UserAvatar({ avatarUrl, name, ...props }) {
   return (
-    <Avatar.Root size={size}>
+    <Avatar.Root {...props}>
       <Avatar.Fallback name={name} />
       <Avatar.Image src={avatarUrl} />
     </Avatar.Root>

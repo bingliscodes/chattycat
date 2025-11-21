@@ -1,25 +1,27 @@
-import { Button, FileUpload, Icon, Box } from '@chakra-ui/react';
+import { Button, FileUpload, Icon, Box, Flex } from '@chakra-ui/react';
 import { HiUpload } from 'react-icons/hi';
 import { LuUpload } from 'react-icons/lu';
 
 export function FileUploadButton({ uploadFn }) {
   return (
-    <FileUpload.Root
-      accept={['image/png', 'image/jpeg']}
-      onFileAccept={async ({ files }) => {
-        if (files.length > 0) {
-          await uploadFn(files[0]);
-        }
-      }}
-    >
-      <FileUpload.HiddenInput />
-      <FileUpload.Trigger asChild>
-        <Button size="sm">
-          <HiUpload /> Change Avatar
-        </Button>
-      </FileUpload.Trigger>
-      <FileUpload.List />
-    </FileUpload.Root>
+    <Flex>
+      <FileUpload.Root
+        accept={['image/png', 'image/jpeg']}
+        onFileAccept={async ({ files }) => {
+          if (files.length > 0) {
+            await uploadFn(files[0]);
+          }
+        }}
+      >
+        <FileUpload.HiddenInput />
+        <FileUpload.Trigger asChild>
+          <Button size="sm">
+            <HiUpload /> Change Avatar
+          </Button>
+        </FileUpload.Trigger>
+        <FileUpload.List />
+      </FileUpload.Root>
+    </Flex>
   );
 }
 

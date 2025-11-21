@@ -38,9 +38,8 @@ export default function UserDataDisplay() {
         </Box>
 
         {/* Upload Button */}
-        <Box>
-          <FileUploadButton uploadFn={updateAvatar} />
-        </Box>
+        <FileUploadButton uploadFn={updateAvatar} />
+
         <Box w="50%">
           <UserSettings userData={userData} />
         </Box>

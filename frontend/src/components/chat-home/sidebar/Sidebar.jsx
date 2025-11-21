@@ -1,10 +1,11 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
-import { Box, Text, Accordion, Span, Center } from '@chakra-ui/react';
+import { Flex, Box, Text, Accordion, Span, Center } from '@chakra-ui/react';
 
 import { UserContext } from '../../../contexts/UserContext';
 import { ChatContext } from '../../../contexts/ChatContext';
 import { fetchDirectMessageList } from '../../../utils/js/apiCalls';
+import DirectMessageRecipient from './DirectMessageRecipient';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
@@ -82,9 +83,11 @@ export default function UserSidebar() {
                   mb={2}
                   cursor="pointer"
                 >
-                  <Text fontSize="sm" color="text" lineHeight="1" m="0">
-                    {ch.channelName}
-                  </Text>
+                  <Flex flex="1" mx={2} justify="left">
+                    <Text fontSize="md" color="text" lineHeight="1" m="0">
+                      # {ch.channelName}
+                    </Text>
+                  </Flex>
                 </Accordion.ItemBody>
               ))}
           </Accordion.ItemContent>
@@ -111,13 +114,15 @@ export default function UserSidebar() {
                   h="2rem"
                   bg={channel?.id === usr?.id ? 'bg.primaryBtn' : undefined}
                   rounded="md"
-                  mt={1}
-                  mb={2}
+                  mt={6}
+                  mb={4}
                   cursor="pointer"
                 >
-                  <Text fontSize="sm" color="text" lineHeight="1" m="0">
-                    {`${usr.firstName} ${usr.lastName}`}
-                  </Text>
+                  <DirectMessageRecipient
+                    firstName={usr.firstName}
+                    lastName={usr.lastName}
+                    avatarUrl={usr.avatarUrl ?? undefined}
+                  />
                 </Accordion.ItemBody>
               ))}
           </Accordion.ItemContent>
