@@ -11,7 +11,6 @@ const signToken = (id) =>
   });
 
 const createSendToken = (user, statusCode, req, res) => {
-  console.log('💡 createSendToken called with user:', user?.id);
   const token = signToken(user.id);
   const cookieOptions = {
     expires: new Date(
@@ -42,7 +41,6 @@ export const signup = catchAsync(async (req, res, next) => {
 
 export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
   // 1) Check if email and password are populated
   if (!email || !password)
     return next(new AppError('Please provide email and password!'), 400);
