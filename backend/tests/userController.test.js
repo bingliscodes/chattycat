@@ -19,6 +19,19 @@ describe('User API', () => {
     passwordConfirm: 'password',
   };
 
+  let jwtCookie;
+  beforeAll(async () => {
+    // Simulate login or generate JWT cookie here
+    const loginRes = await request(app).post('/api/v1/users/login').send({
+      email: 'admin@gmail.com',
+      password: 'password',
+    });
+
+    // Extract JWT cookie from response
+    const cookies = loginRes.headers['set-cookie'];
+    jwtCookie = cookies.find((cookie) => cookie.startsWith('jwt='));
+  });
+
   it('should create a user', async () => {
     const res = await request(app).post('/api/v1/users/signup').send(userData);
 
