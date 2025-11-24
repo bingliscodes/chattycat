@@ -1,11 +1,11 @@
 import request from 'supertest';
 import app from '../app.js';
 
-describe.only('User API', () => {
+describe('User API', () => {
   const superuser = {
     firstName: 'Super',
     lastName: 'User',
-    email: 'admin@gmail.com',
+    email: 'admin2@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
     role: 'superuser',
@@ -37,7 +37,16 @@ describe.only('User API', () => {
 
     expect(res.statusCode).toEqual(200);
     expect(Array.isArray(res.body.data)).toBe(true);
-    expect(res.body.data).toHaveLength(2);
+    expect(res.body.data).toHaveLength(3);
+  });
+
+  it('should login the user', async () => {
+    const res = await request(app).post('/api/v1/users/login').send({
+      email: superuser.email,
+      password: superuser.password,
+    });
+
+    expect(res.statusCode).toBe(200);
   });
 
   it('should access protected route with valid JWT cookie', async () => {
@@ -49,7 +58,6 @@ describe.only('User API', () => {
     expect(loginRes.statusCode).toEqual(200);
 
     // Extract JWT cookie from response
-
     const cookies = loginRes.headers['set-cookie'];
     const jwtCookie = cookies.find((cookie) => cookie.startsWith('jwt='));
 
@@ -57,7 +65,6 @@ describe.only('User API', () => {
       .get('/api/v1/users/me')
       .set('Cookie', jwtCookie);
 
-    console.log(res.body);
     expect(res.statusCode).toBe(200);
     expect(res.body.data.email).toBe(superuser.email);
   });
