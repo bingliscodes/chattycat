@@ -2,12 +2,6 @@ import request from 'supertest';
 import app from '../app.js';
 import Organization from '../models/organizationModel.js';
 
-// const jwtCookie = beforeEach(async () => {
-//   // Get a cookie value that can be used to add to the request
-//
-//   return jwtCookie;
-// });
-
 describe('Organization API', () => {
   let jwtCookie;
   beforeAll(async () => {
@@ -17,13 +11,12 @@ describe('Organization API', () => {
       password: 'password',
     });
 
-    //   // Extract JWT cookie from response
+    // Extract JWT cookie from response
     const cookies = loginRes.headers['set-cookie'];
     jwtCookie = cookies.find((cookie) => cookie.startsWith('jwt='));
   });
 
   it('should create a new organization', async () => {
-    // Create the org, using the cookie
     const org = {
       organizationName: 'Test Org',
     };
