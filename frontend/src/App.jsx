@@ -6,7 +6,6 @@ import Signup from './pages/SignupPage';
 import HomePage from './pages/HomePage';
 import UserProfile from './pages/UserProfile';
 import './App.css';
-import AdminConsole from './pages/AdminConsolePage';
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/me" element={<UserProfile />} />
-        <Route path="admin-console" element={<AdminConsole />} />
       </Route>
     </Routes>
   );

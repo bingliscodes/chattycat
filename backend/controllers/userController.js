@@ -28,13 +28,19 @@ export const getUser = catchAsync(async (req, res, next) => {
 });
 
 export const getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.findAll({
+  const orgId = req.query.orgId;
+
+  const queryOptions = {
     attributes: { exclude: ['createdAt', 'updatedAt', 'passwordConfirm'] },
     include: [
       { model: Channel, attributes: ['channelName', 'id'] },
       { model: Organization, attributes: ['organizationName'] },
     ],
-  });
+  };
+
+  if (orgId) queryOptions.where = { organizationId: orgId };
+
+  const users = await User.findAll(queryOptions);
 
   res.status(200).json({
     status: 'success',

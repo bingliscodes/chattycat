@@ -6,6 +6,7 @@ import { UserContext } from '../../../contexts/UserContext';
 import { ChatContext } from '../../../contexts/ChatContext';
 import { fetchDirectMessageList } from '../../../utils/js/apiCalls';
 import DirectMessageRecipient from './DirectMessageRecipient';
+import AddToChannelButton from './AddToChannelButton';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
@@ -83,10 +84,17 @@ export default function UserSidebar() {
                   mb={2}
                   cursor="pointer"
                 >
-                  <Flex flex="1" mx={2} justify="left">
-                    <Text fontSize="md" color="text" lineHeight="1" m="0">
+                  <Flex flex="1" mx={2} justify="left" align="center">
+                    <Text
+                      fontSize="md"
+                      color="text"
+                      lineHeight="1"
+                      m="0"
+                      marginRight="2"
+                    >
                       # {ch.channelName}
                     </Text>
+                    <AddToChannelButton channel={ch} />
                   </Flex>
                 </Accordion.ItemBody>
               ))}

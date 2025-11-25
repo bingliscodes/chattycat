@@ -188,3 +188,14 @@ function removeBlankAttributes(obj) {
   }
   return result;
 }
+
+export const fetchOrganizationUsers = async (organizationId) => {
+  // Retrieves a list of all users within an organization
+
+  try {
+    const users = axios.get(`${import.meta.env.VITE_DEV_API_BASE_URL}users`);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
