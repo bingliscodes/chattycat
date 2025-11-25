@@ -1,38 +1,70 @@
 import { Input, Center, Box, Menu, Portal } from '@chakra-ui/react';
-import { useRef, useState, useContext } from 'react';
+import { useRef, useState, useContext, useEffect } from 'react';
 import { debounce } from 'lodash';
 
-import { fetchUsers } from '@/utils/apiCalls';
+import { fetchOrganizationUsers } from '@/utils/js/apiCalls';
+import { UserContext } from '../../../contexts/UserContext';
 
 export default function UserSearch() {
   const [searchResults, setSearchResults] = useState();
+  const [organizationUsers, setOrganizationUsers] = useState();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const inputRef = useRef();
 
-  const fetchSearchResults = () => {};
+  const { userData } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!userData) return;
+    async function fetchOrganizationUsersAsync() {
+      try {
+        setLoading(true);
+        const res = await fetchOrganizationUsers(userData.organizationId);
+
+        setOrganizationUsers(res);
+        setSearchResults(res);
+        setMenuIsOpen(true);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrganizationUsersAsync();
+  }, [userData, setOrganizationUsers]);
+
   const debounceOnChange = debounce(async (e) => {
-    const searchRes = await fetchSearchResults(e.target.value);
-    setSearchResults(searchRes.slice(0, 10));
-    setMenuIsOpen(searchRes.length === 0 ? false : true);
+    const input = e.target.value.trim();
+
+    const filteredResults = organizationUsers.filter((usr) => {
+      const firstName = usr.firstName?.toLowerCase() || '';
+      const lastName = usr.lastName?.toLowerCase() || '';
+      const fullName = `${firstName} ${lastName}`;
+      const email = usr.email?.toLowerCase() || '';
+
+      return (
+        firstName.includes(input) ||
+        lastName.includes(input) ||
+        fullName.includes(input) ||
+        email.includes(input)
+      );
+    });
+    setSearchResults(filteredResults);
+    setMenuIsOpen(organizationUsers.length === 0 ? false : true);
   }, 500);
 
   const getAnchorRect = () => inputRef.current.getBoundingClientRect();
 
   return (
-    <Center flexDirection="column" w="full">
-      <Box textAlign="left">
-        <Box position="relative">
+    <Center flexDirection="column">
+      <Box>
+        <Box>
           <Input
             placeholder="Search for a user"
-            variant="outline"
-            size="lg"
             ref={inputRef}
             onChange={debounceOnChange}
-            _focus={{
-              borderColor: 'blue.400',
-              boxShadow: '0 0 0 1px blue.400',
-            }}
-            _hover={{ borderColor: 'gray.400' }}
           />
 
           <Menu.Root
@@ -43,8 +75,8 @@ export default function UserSearch() {
             onEscapeKeyDown={() => setMenuIsOpen(false)}
           >
             <Portal>
-              <Menu.Positioner w="width.form">
-                <Menu.Content bg="bg.menu" boxShadow="xl" borderRadius="md">
+              <Menu.Positioner>
+                <Menu.Content>
                   {searchResults &&
                     searchResults.map((res) => (
                       <Menu.Item
@@ -54,7 +86,9 @@ export default function UserSearch() {
                           setMenuIsOpen(false);
                         }}
                         onSelect={(e) => e.preventDefault()}
-                      ></Menu.Item>
+                      >
+                        {res.firstName} {res.lastName}
+                      </Menu.Item>
                     ))}
                 </Menu.Content>
               </Menu.Positioner>

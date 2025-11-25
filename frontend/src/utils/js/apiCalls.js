@@ -189,11 +189,20 @@ function removeBlankAttributes(obj) {
   return result;
 }
 
-export const fetchOrganizationUsers = async (organizationId) => {
+export const fetchOrganizationUsers = async (orgId) => {
   // Retrieves a list of all users within an organization
 
   try {
-    const users = axios.get(`${import.meta.env.VITE_DEV_API_BASE_URL}users`);
+    const users = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users?orgId=${orgId}`,
+      { withCredentials: true }
+    );
+
+    if (!users.status === 200) {
+      throw new Error(`Failed to retrieve users in organization ${orgId}`);
+    }
+
+    return users.data.data;
   } catch (err) {
     console.error(err);
     throw err;
