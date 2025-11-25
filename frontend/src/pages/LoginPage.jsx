@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Center, Flex, Field, Input, Stack, Button } from '@chakra-ui/react';
 import { NavLink, useNavigate } from 'react-router';
 
 import { toaster } from '@/components/ui/toaster';
 import { login } from '../utils/js/authentication';
+import { UserContext } from '../contexts/UserContext';
 
 export default function LoginCard() {
   const [logInError, setLoginError] = useState(false);
+  const { refreshUserData } = useContext(UserContext);
   const nav = useNavigate();
 
   async function handleSubmit(e) {
@@ -37,7 +39,7 @@ export default function LoginCard() {
     try {
       await loginPromise;
       setLoginError(false);
-
+      await refreshUserData();
       nav('/');
     } catch (err) {
       setLoginError(true);

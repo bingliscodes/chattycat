@@ -1,7 +1,7 @@
 import { Flex, Button, Stack } from '@chakra-ui/react';
 import { ColorModeButton } from '@/components/ui/color-mode';
 import { NavLink, useNavigate } from 'react-router';
-import { HiMiniUserCircle } from 'react-icons/hi2';
+import { DiAptana } from 'react-icons/di';
 
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
@@ -56,6 +56,12 @@ export default function RightNavContent() {
                 name={`${userData.firstName} ${userData.lastName}`}
               />
             </NavLink>
+
+            {userData?.role === 'superuser' && (
+              <NavLink to="/admin">
+                <DiAptana size="2rem" />
+              </NavLink>
+            )}
           </>
         )}
       </Stack>

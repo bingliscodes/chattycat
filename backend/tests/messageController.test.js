@@ -22,11 +22,14 @@ describe('Message API', () => {
     const testOrg = await Organization.create({
       organizationName: 'Test Organization',
     });
+
     testChannel = await Channel.create({
       channelName: 'Test Channnel',
       organizationId: testOrg.id,
     });
   });
 
-  it('should create a new Channel message', () => {});
+  it('should create a new Channel message', async () => {
+    const res = await request(app).post('/api/v1/messages/channelMessage');
+  });
 });

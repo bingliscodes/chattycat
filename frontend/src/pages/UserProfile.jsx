@@ -1,5 +1,4 @@
-import UserDataDisplay from '../components/settings/profile/UserDataDisplay';
-import UserSettings from '../components/settings/UserSettings';
+import UserDataDisplay from '../components/profile/UserDataDisplay';
 
 export default function UserProfile() {
   return <UserDataDisplay />;

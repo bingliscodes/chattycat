@@ -1,19 +1,12 @@
-import {
-  Center,
-  Container,
-  Flex,
-  Heading,
-  Box,
-  VStack,
-} from '@chakra-ui/react';
+import { Container, Flex, Heading, Box, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
 
-import UserAvatar from '../../common/Avatar';
-import UserSettings from '../UserSettings';
-import { FileUploadButton } from '../../common/FileUploadButton';
-import { updateAvatar } from '../../../utils/js/apiCalls';
+import UserAvatar from '../common/Avatar';
+import UserSettings from './settings/UserSettings';
+import { FileUploadButton } from '../common/FileUploadButton';
+import { updateAvatar } from '../../utils/js/apiCalls';
 
-import { UserContext } from '../../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function UserDataDisplay() {
   const { userData } = useContext(UserContext);
@@ -40,10 +33,10 @@ export default function UserDataDisplay() {
         {/* Upload Button */}
         <FileUploadButton uploadFn={updateAvatar} />
 
+        <Text>Role: {userData.role}</Text>
         <Box w="50%">
           <UserSettings userData={userData} />
         </Box>
-        {/* Settings Form - center inputs too */}
       </Flex>
     </Container>
   );

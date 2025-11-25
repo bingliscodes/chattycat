@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Flex, Field, Input, Button, Stack } from '@chakra-ui/react';
 
-import { updateSettings } from '../../utils/js/apiCalls';
+import { updateSettings } from '@/utils/js/apiCalls';
 
 export default function UserSettings({ userData }) {
   const [userSettingsError, setUserSettingsError] = useState(false);
