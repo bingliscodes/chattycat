@@ -208,3 +208,36 @@ export const fetchOrganizationUsers = async (orgId) => {
     throw err;
   }
 };
+
+export const addUserToChannel = async (userId, channelId) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/addToChannel`,
+      { userId, channelId },
+      { withCredentials: true }
+    );
+
+    if (res.status === 200) {
+      throw new Error('Failed to add user to channel!');
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const fetchChannelUsers = async (channelId) => {
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}channels/${channelId}/allUsers`,
+      { withCredentials: true }
+    );
+    if (!res.status === 200) {
+      throw new Error('Failed to fetch users!');
+    }
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

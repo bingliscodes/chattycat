@@ -1,11 +1,12 @@
-import { Input, Center, Box, Menu, Portal } from '@chakra-ui/react';
+import { Input, Flex, Menu } from '@chakra-ui/react';
 import { useRef, useState, useContext, useEffect } from 'react';
 import { debounce } from 'lodash';
 
 import { fetchOrganizationUsers } from '@/utils/js/apiCalls';
-import { UserContext } from '../../../contexts/UserContext';
+import { UserContext } from '@/contexts/UserContext';
+import UserCard from './UserCard';
 
-export default function UserSearch() {
+export default function UserSearch({ channel }) {
   const [searchResults, setSearchResults] = useState();
   const [organizationUsers, setOrganizationUsers] = useState();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -23,8 +24,6 @@ export default function UserSearch() {
         const res = await fetchOrganizationUsers(userData.organizationId);
 
         setOrganizationUsers(res);
-        setSearchResults(res);
-        setMenuIsOpen(true);
       } catch (err) {
         console.error(err);
         setError(err);
@@ -58,44 +57,31 @@ export default function UserSearch() {
   const getAnchorRect = () => inputRef.current.getBoundingClientRect();
 
   return (
-    <Center flexDirection="column">
-      <Box>
-        <Box>
-          <Input
-            placeholder="Search for a user"
-            ref={inputRef}
-            onChange={debounceOnChange}
-          />
+    <Flex direction="column">
+      <Input
+        placeholder="Enter a name or email"
+        ref={inputRef}
+        onChange={debounceOnChange}
+      />
 
-          <Menu.Root
-            open={menuIsOpen}
-            positioning={{ getAnchorRect }}
-            onOpenChange={(change) => setMenuIsOpen(change.open)}
-            onInteractOutside={() => setMenuIsOpen(false)}
-            onEscapeKeyDown={() => setMenuIsOpen(false)}
-          >
-            <Portal>
-              <Menu.Positioner>
-                <Menu.Content>
-                  {searchResults &&
-                    searchResults.map((res) => (
-                      <Menu.Item
-                        key={res.id}
-                        value={res.id}
-                        onClick={() => {
-                          setMenuIsOpen(false);
-                        }}
-                        onSelect={(e) => e.preventDefault()}
-                      >
-                        {res.firstName} {res.lastName}
-                      </Menu.Item>
-                    ))}
-                </Menu.Content>
-              </Menu.Positioner>
-            </Portal>
-          </Menu.Root>
-        </Box>
-      </Box>
-    </Center>
+      <Menu.Root
+        open={menuIsOpen}
+        positioning={{ getAnchorRect }}
+        onOpenChange={(change) => setMenuIsOpen(change.open)}
+        onInteractOutside={() => setMenuIsOpen(false)}
+        onEscapeKeyDown={() => setMenuIsOpen(false)}
+      >
+        <Menu.Positioner>
+          <Menu.Content>
+            {searchResults &&
+              searchResults.map((usr) => (
+                <Menu.Item key={usr.id} value={usr.id}>
+                  <UserCard user={usr} />
+                </Menu.Item>
+              ))}
+          </Menu.Content>
+        </Menu.Positioner>
+      </Menu.Root>
+    </Flex>
   );
 }

@@ -6,7 +6,7 @@ import { UserContext } from '../../../contexts/UserContext';
 import { ChatContext } from '../../../contexts/ChatContext';
 import { fetchDirectMessageList } from '../../../utils/js/apiCalls';
 import DirectMessageRecipient from './DirectMessageRecipient';
-import AddToChannelButton from './AddToChannelButton';
+import AddToChannelButton from './channels/AddToChannelButton';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);

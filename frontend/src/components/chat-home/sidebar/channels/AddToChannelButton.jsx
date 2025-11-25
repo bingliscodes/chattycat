@@ -8,17 +8,19 @@ export default function AddToChannelButton({ channel }) {
     <VStack alignItems="start">
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <AiFillPlusCircle cursor="pointer" size="1.5rem" />
+          <AiFillPlusCircle size="1.5rem" />
         </Dialog.Trigger>
         <Portal>
           <Dialog.Backdrop />
           <Dialog.Positioner>
             <Dialog.Content>
               <Dialog.Header>
-                <Dialog.Title>Add User to Channel:</Dialog.Title>
+                <Dialog.Title>
+                  Add people to #{channel.channelName}
+                </Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
-                <UserSearch />
+                <UserSearch channel={channel} />
               </Dialog.Body>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="xs" color="black" />
