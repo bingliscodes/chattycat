@@ -11,9 +11,8 @@ import {
 import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { UserContext } from '../../../contexts/UserContext';
-import { sendMessage } from '../../../utils/js/apiCalls';
-import { ChatContext } from '../../../contexts/ChatContext';
+import { UserContext } from '@/contexts/UserContext';
+import { ChatContext } from '@/contexts/ChatContext';
 
 export default function ChatInterface({
   messages,
@@ -87,7 +86,6 @@ export default function ChatInterface({
 
     userSocket.emit('send-message', messageContent, messageData, mode);
 
-    // sendMessage(messageData, mode);
     setMessages((prev) => [...prev, messageContent]);
     reset();
   });

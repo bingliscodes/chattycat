@@ -1,17 +1,25 @@
+// Sidebar.jsx
 'use client';
 import { useContext, useEffect, useState } from 'react';
 import { Flex, Box, Text, Accordion, Span, Center } from '@chakra-ui/react';
 
-import { UserContext } from '../../../contexts/UserContext';
-import { ChatContext } from '../../../contexts/ChatContext';
+import { UserContext } from '@/contexts/UserContext';
+import { ChatContext } from '@/contexts/ChatContext';
 import { fetchDirectMessageList } from '../../../utils/js/apiCalls';
-import DirectMessageRecipient from './DirectMessageRecipient';
+import DirectMessageRecipient from './direct-messages/DirectMessageRecipient';
 import AddToChannelButton from './channels/AddToChannelButton';
+import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
-  const { channel, setChannel, directMessage, setDirectMessage } =
-    useContext(ChatContext);
+  const {
+    channel,
+    setChannel,
+    directMessage,
+    setDirectMessage,
+    newChat,
+    setNewChat,
+  } = useContext(ChatContext);
   const [directMessageList, setDirectMessageList] = useState();
   const { channels, organization, id } = userData;
 
@@ -29,6 +37,7 @@ export default function UserSidebar() {
   }, [id]);
 
   if (!userData) return <h1>Loading...</h1>;
+
   const handleJoinRoom = (data, mode) => {
     if (!userSocket?.connected) {
       console.warn('Socket not connected yet.');
@@ -38,9 +47,16 @@ export default function UserSidebar() {
     if (mode === 'ch') {
       setChannel(data);
       setDirectMessage(null);
+      setNewChat(false);
     }
     if (mode === 'dm') {
       setDirectMessage(data);
+      setChannel(null);
+      setNewChat(false);
+    }
+    if (mode === 'new') {
+      setNewChat(true);
+      setDirectMessage(null);
       setChannel(null);
     }
 
@@ -48,7 +64,6 @@ export default function UserSidebar() {
       console.log(ack);
     });
   };
-
   return (
     <Box
       rounded="md"
@@ -102,7 +117,6 @@ export default function UserSidebar() {
         </Accordion.Item>
       </Accordion.Root>
 
-      {/* Since PMs are just created using rooms, we can likely handle the same way as channels, but will need to generate unique ids for each sender/receiver pair */}
       {/* Direct Messages */}
       <Accordion.Root multiple>
         <Accordion.Item value="Direct Messages">
@@ -113,6 +127,12 @@ export default function UserSidebar() {
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
+            <Accordion.ItemBody key="ROOT">
+              <Flex align="center" gap={2}>
+                <Text cursor="default">Start new conversation</Text>
+                <StartPrivateChatButton cursor="pointer" />
+              </Flex>
+            </Accordion.ItemBody>
             {directMessageList &&
               directMessageList.map((usr) => (
                 <Accordion.ItemBody
@@ -122,7 +142,6 @@ export default function UserSidebar() {
                   h="2rem"
                   bg={channel?.id === usr?.id ? 'bg.primaryBtn' : undefined}
                   rounded="md"
-                  mt={6}
                   mb={4}
                   cursor="pointer"
                 >

@@ -8,8 +8,10 @@ export const ChatContextProvider = ({ children }) => {
   const [channel, setChannel] = useState(null);
   const [directMessage, setDirectMessage] = useState(null);
   const [channelUsers, setChannelUsers] = useState(null);
+  const [newChat, setNewChat] = useState(false);
 
   useEffect(() => {
+    if (!channel) return;
     async function fetchChannelUsersAsync() {
       try {
         const res = await fetchChannelUsers(channel.id);
@@ -31,6 +33,8 @@ export const ChatContextProvider = ({ children }) => {
         setDirectMessage,
         channelUsers,
         setChannelUsers,
+        newChat,
+        setNewChat,
       }}
     >
       {children}

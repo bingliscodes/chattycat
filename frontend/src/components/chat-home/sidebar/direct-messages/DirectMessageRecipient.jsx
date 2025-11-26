@@ -1,6 +1,6 @@
 import { Text, Flex } from '@chakra-ui/react';
 
-import UserAvatar from '../../common/Avatar';
+import UserAvatar from '@/components/common/Avatar';
 
 export default function DirectMessageRecipient({
   firstName,

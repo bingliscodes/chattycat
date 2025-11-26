@@ -1,3 +1,4 @@
+// App.jsx
 import { Routes, Route } from 'react-router';
 
 import RootLayout from './pages/RootLayout';

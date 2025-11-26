@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from 'react-router';
 
 import { toaster } from '@/components/ui/toaster';
 import { login } from '../utils/js/authentication';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '@/contexts/UserContext';
 
 export default function LoginCard() {
   const [logInError, setLoginError] = useState(false);

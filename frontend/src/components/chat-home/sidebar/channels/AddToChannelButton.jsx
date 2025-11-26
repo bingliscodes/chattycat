@@ -20,7 +20,7 @@ export default function AddToChannelButton({ channel }) {
                 </Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
-                <UserSearch channel={channel} />
+                <UserSearch />
               </Dialog.Body>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="xs" color="black" />

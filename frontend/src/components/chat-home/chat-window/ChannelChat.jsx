@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 
-import { ChatContext } from '../../../contexts/ChatContext';
+import { ChatContext } from '@/contexts/ChatContext';
 import ChatInterface from './ChatInterface';
 import { fetchChannelMessageHistory } from '../../../utils/js/apiCalls';
 

@@ -6,7 +6,7 @@ import { fetchOrganizationUsers } from '@/utils/js/apiCalls';
 import { UserContext } from '@/contexts/UserContext';
 import UserCard from './UserCard';
 
-export default function UserSearch({ channel }) {
+export default function UserSearch() {
   const [searchResults, setSearchResults] = useState();
   const [organizationUsers, setOrganizationUsers] = useState();
   const [menuIsOpen, setMenuIsOpen] = useState(false);

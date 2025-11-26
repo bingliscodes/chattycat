@@ -3,7 +3,7 @@ import { AiFillPlusCircle } from 'react-icons/ai';
 import { useContext } from 'react';
 
 import { addUserToChannel } from '@/utils/js/apiCalls';
-import { ChatContext } from '../../../../contexts/ChatContext';
+import { ChatContext } from '@/contexts/ChatContext';
 import UserAvatar from '@/components/common/Avatar';
 
 export default function UserCard({ user }) {

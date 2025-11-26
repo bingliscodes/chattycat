@@ -6,7 +6,7 @@ import UserSettings from './settings/UserSettings';
 import { FileUploadButton } from '../common/FileUploadButton';
 import { updateAvatar } from '../../utils/js/apiCalls';
 
-import { UserContext } from '../../contexts/UserContext';
+import { UserContext } from '@/contexts/UserContext';
 
 export default function UserDataDisplay() {
   const { userData } = useContext(UserContext);

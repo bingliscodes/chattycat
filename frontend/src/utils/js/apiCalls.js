@@ -105,8 +105,6 @@ export const fetchUserMessageHistory = async (userId) => {
       `${import.meta.env.VITE_DEV_API_BASE_URL}users/received/${userId}`,
       { withCredentials: true }
     );
-
-    console.log(res.data);
     if (res.status !== 200)
       throw new Error('Failed to fetch direct message history');
 
