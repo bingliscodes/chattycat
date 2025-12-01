@@ -239,3 +239,22 @@ export const fetchChannelUsers = async (channelId) => {
     throw err;
   }
 };
+
+export const findOrCreateDMRoom = async (user1Id, user2Id) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}messages/privateRoomId`,
+      { user1Id, user2Id },
+      { withCredentials: true }
+    );
+
+    if (!res.status === 200) {
+      throw new Error('Failed to get private room id!');
+    }
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

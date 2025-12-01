@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router';
 import { DiAptana } from 'react-icons/di';
 
 import { useContext } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+import { UserContext } from '@/contexts/UserContext';
 import { logout } from '../../utils/js/authentication';
 import UserAvatar from '../common/Avatar';
 

@@ -21,7 +21,7 @@ import {
 } from '../../../utils/js/apiCalls';
 
 export default function DirectMessageChat() {
-  const { directMessage, setDirectMessage, newChat, setNewChat } =
+  const { directMessage, setDirectMessage, newChat, setNewChat, roomId } =
     useContext(ChatContext);
   const { userData } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
@@ -90,10 +90,10 @@ export default function DirectMessageChat() {
         <ChatInterface
           key={newChat ? 'new' : directMessage.id}
           messages={[]}
-          setMessages={() => {}}
-          chatName="New chat"
-          sendLocation="na"
-          mode="new"
+          setMessages={setMessages}
+          chatName={`New chat with ${directMessage?.firstName} ${directMessage?.lastName}`}
+          sendLocation={roomId} // need to create a room?
+          mode="dm"
         />
       ) : (
         messages && (
@@ -102,7 +102,7 @@ export default function DirectMessageChat() {
             messages={messages}
             setMessages={setMessages}
             chatName={`${directMessage?.firstName} ${directMessage?.lastName}`}
-            sendLocation={messages[0]?.channel}
+            sendLocation={roomId}
             mode="dm"
           />
         )

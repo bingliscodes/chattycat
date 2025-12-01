@@ -6,12 +6,13 @@ import { addUserToChannel } from '@/utils/js/apiCalls';
 import { ChatContext } from '@/contexts/ChatContext';
 import UserAvatar from '@/components/common/Avatar';
 
-export default function UserCard({ user }) {
-  const { channel, channelUsers } = useContext(ChatContext);
+export default function UserCard({ user, mode }) {
+  const { channel, channelUsers, handleSetDirectMessage } =
+    useContext(ChatContext);
 
   const isInChannel = channelUsers?.includes(user.id);
 
-  return (
+  return mode === 'ch' ? (
     <Flex align="center" gap={2}>
       <UserAvatar
         avatarUrl={user.avatarUrl}
@@ -35,6 +36,23 @@ export default function UserCard({ user }) {
           onClick={() => addUserToChannel(user.id, channel.id)}
         />
       )}
+    </Flex>
+  ) : (
+    <Flex align="center" gap={2}>
+      <UserAvatar
+        avatarUrl={user.avatarUrl}
+        name={`${user.firstName} ${user.lastName}`}
+        size="sm"
+      />
+      <Text>
+        {user.firstName} {user.lastName}
+      </Text>
+
+      <AiFillPlusCircle
+        cursor="pointer"
+        size="1.5rem"
+        onClick={() => handleSetDirectMessage(user)}
+      />
     </Flex>
   );
 }

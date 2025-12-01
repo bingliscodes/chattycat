@@ -16,7 +16,7 @@ export default function UserSidebar() {
     channel,
     setChannel,
     directMessage,
-    setDirectMessage,
+    handleSetDirectMessage,
     newChat,
     setNewChat,
   } = useContext(ChatContext);
@@ -46,18 +46,13 @@ export default function UserSidebar() {
 
     if (mode === 'ch') {
       setChannel(data);
-      setDirectMessage(null);
+      handleSetDirectMessage(null);
       setNewChat(false);
     }
     if (mode === 'dm') {
-      setDirectMessage(data);
+      handleSetDirectMessage(data);
       setChannel(null);
       setNewChat(false);
-    }
-    if (mode === 'new') {
-      setNewChat(true);
-      setDirectMessage(null);
-      setChannel(null);
     }
 
     userSocket.emit('join-room', data, mode, (ack) => {

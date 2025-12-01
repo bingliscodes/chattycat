@@ -1,7 +1,7 @@
 import { Dialog, Portal, CloseButton, VStack } from '@chakra-ui/react';
 import { AiFillPlusCircle } from 'react-icons/ai';
 
-import UserSearch from './UserSearch';
+import UserSearch from '../UserSearch';
 
 export default function AddToChannelButton({ channel }) {
   return (
@@ -20,7 +20,7 @@ export default function AddToChannelButton({ channel }) {
                 </Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
-                <UserSearch />
+                <UserSearch mode="ch" />
               </Dialog.Body>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="xs" color="black" />

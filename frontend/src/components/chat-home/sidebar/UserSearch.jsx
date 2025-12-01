@@ -6,7 +6,7 @@ import { fetchOrganizationUsers } from '@/utils/js/apiCalls';
 import { UserContext } from '@/contexts/UserContext';
 import UserCard from './UserCard';
 
-export default function UserSearch() {
+export default function UserSearch({ mode }) {
   const [searchResults, setSearchResults] = useState();
   const [organizationUsers, setOrganizationUsers] = useState();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -76,7 +76,7 @@ export default function UserSearch() {
             {searchResults &&
               searchResults.map((usr) => (
                 <Menu.Item key={usr.id} value={usr.id}>
-                  <UserCard user={usr} />
+                  <UserCard user={usr} mode={mode} />
                 </Menu.Item>
               ))}
           </Menu.Content>

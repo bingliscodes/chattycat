@@ -1,3 +1,4 @@
+// ChatInterface.jsx
 import {
   VStack,
   Box,
@@ -7,8 +8,9 @@ import {
   Text,
   HStack,
   Flex,
+  Splitter,
 } from '@chakra-ui/react';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { UserContext } from '@/contexts/UserContext';
@@ -24,6 +26,7 @@ export default function ChatInterface({
   const { userData, socketReady, userSocket } = useContext(UserContext);
   const { channel, directMessage } = useContext(ChatContext);
   const { firstName, lastName, id } = userData;
+  const [sizes, setSizes] = useState([50, 50]);
 
   const {
     register,

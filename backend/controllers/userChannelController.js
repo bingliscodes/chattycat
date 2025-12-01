@@ -2,6 +2,7 @@ import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
+import { findOrCreateDMRoom } from '../utils/createRoom.js';
 
 export const addToChannel = catchAsync(async (req, res, next) => {
   const { userId, channelId } = req.body;
@@ -62,5 +63,23 @@ export const getAllChannelUsers = catchAsync(async (req, res, next) => {
     status: 'success',
     results: channel.users.length,
     data: channel.users,
+  });
+});
+
+export const getPrivateMessageRoomId = catchAsync(async (req, res, next) => {
+  const { user1Id, user2Id } = req.body;
+
+  const roomId = await findOrCreateDMRoom(user1Id, user2Id);
+  if (!roomId)
+    return next(
+      new AppError(
+        `An unexpected error has occured creating the room. Please try again later`,
+      ),
+      400,
+    );
+
+  return res.status(200).json({
+    status: 'success',
+    data: roomId,
   });
 });
