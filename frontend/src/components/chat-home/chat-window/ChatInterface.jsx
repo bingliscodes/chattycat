@@ -24,9 +24,13 @@ export default function ChatInterface({
   mode,
 }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
-  const { channel, directMessage } = useContext(ChatContext);
+  const { channel, directMessage, directMessageList } = useContext(ChatContext);
   const { firstName, lastName, id } = userData;
   const [sizes, setSizes] = useState([50, 50]);
+
+  const isNewDM = !directMessageList.some(
+    (user) => user.id === directMessage?.id
+  );
 
   const {
     register,
@@ -88,7 +92,12 @@ export default function ChatInterface({
     }
 
     userSocket.emit('send-message', messageContent, messageData, mode);
-    userSocket.emit('new-dm', { senderId: id, receiverId: directMessage?.id });
+
+    if (isNewDM)
+      userSocket.emit('new-dm', {
+        senderId: id,
+        receiverId: directMessage?.id,
+      });
 
     setMessages((prev) => [...prev, messageContent]);
     reset();

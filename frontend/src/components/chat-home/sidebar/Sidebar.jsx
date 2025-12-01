@@ -37,7 +37,6 @@ export default function UserSidebar() {
     });
   };
 
-  console.log(directMessageList);
   return (
     <Box
       rounded="md"

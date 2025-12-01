@@ -56,8 +56,7 @@ export const ChatContextProvider = ({ children }) => {
   useEffect(() => {
     if (!userSocket) return;
 
-    const handleNewDM = async ({ senderId }) => {
-      console.log('📥 [ChatContext] new DM from:', senderId);
+    const handleNewDM = async () => {
       await fetchDirectMessages(); // update sidebar
     };
 
