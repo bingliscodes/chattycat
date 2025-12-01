@@ -1,40 +1,19 @@
 // Sidebar.jsx
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { Flex, Box, Text, Accordion, Span, Center } from '@chakra-ui/react';
 
 import { UserContext } from '@/contexts/UserContext';
 import { ChatContext } from '@/contexts/ChatContext';
-import { fetchDirectMessageList } from '../../../utils/js/apiCalls';
 import DirectMessageRecipient from './direct-messages/DirectMessageRecipient';
 import AddToChannelButton from './channels/AddToChannelButton';
 import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
-  const {
-    channel,
-    setChannel,
-    directMessage,
-    handleSetDirectMessage,
-    newChat,
-    setNewChat,
-  } = useContext(ChatContext);
-  const [directMessageList, setDirectMessageList] = useState();
-  const { channels, organization, id } = userData;
-
-  useEffect(() => {
-    if (!id) return;
-    async function fetchDirectMessageListAsync() {
-      try {
-        const directMessageListRes = await fetchDirectMessageList(id);
-        setDirectMessageList(directMessageListRes.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchDirectMessageListAsync();
-  }, [id]);
+  const { channel, setChannel, handleSetDirectMessage, directMessageList } =
+    useContext(ChatContext);
+  const { channels, organization } = userData;
 
   if (!userData) return <h1>Loading...</h1>;
 
@@ -47,18 +26,18 @@ export default function UserSidebar() {
     if (mode === 'ch') {
       setChannel(data);
       handleSetDirectMessage(null);
-      setNewChat(false);
     }
     if (mode === 'dm') {
       handleSetDirectMessage(data);
       setChannel(null);
-      setNewChat(false);
     }
 
     userSocket.emit('join-room', data, mode, (ack) => {
       console.log(ack);
     });
   };
+
+  console.log(directMessageList);
   return (
     <Box
       rounded="md"
@@ -122,7 +101,7 @@ export default function UserSidebar() {
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
-            <Accordion.ItemBody key="ROOT">
+            <Accordion.ItemBody>
               <Flex align="center" gap={2}>
                 <Text cursor="default">Start new conversation</Text>
                 <StartPrivateChatButton cursor="pointer" />

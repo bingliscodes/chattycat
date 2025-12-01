@@ -67,26 +67,44 @@ export const getDirectMessageList = catchAsync(async (req, res, next) => {
   // Retrieves a list of all users that the specified user has dm's with
   const user = await User.findByPk(req.params.userId);
 
-  const messages = await user.getReceivedMessages({
-    include: [
-      {
-        model: User,
-        as: 'Sender',
-        attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
-      },
-    ],
-  });
-
-  if (!messages) next(new AppError('Failed to fetch messages for user.'));
+  const [receivedMessages, sentMessages] = await Promise.all([
+    user.getReceivedMessages({
+      include: [
+        {
+          model: User,
+          as: 'Sender',
+          attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
+        },
+      ],
+    }),
+    user.getSentMessages({
+      include: [
+        {
+          model: User,
+          as: 'Receiver',
+          attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
+        },
+      ],
+    }),
+  ]);
 
   const uniqueUsers = [];
   const userIds = new Set();
+  console.log(receivedMessages, sentMessages);
 
-  for (const msg of messages) {
+  for (const msg of receivedMessages) {
     const sender = msg.Sender;
     if (sender && !userIds.has(sender.id)) {
       userIds.add(sender.id);
       uniqueUsers.push(sender);
+    }
+  }
+
+  for (const msg of sentMessages) {
+    const receiver = msg.Receiver;
+    if (receiver && !userIds.has(receiver.id)) {
+      userIds.add(receiver.id);
+      uniqueUsers.push(receiver);
     }
   }
 
