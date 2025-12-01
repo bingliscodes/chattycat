@@ -20,7 +20,6 @@ export const ChatContextProvider = ({ children }) => {
   const [channel, setChannel] = useState(null);
   const [directMessage, setDirectMessage] = useState(null);
   const [channelUsers, setChannelUsers] = useState(null);
-  const [newChat, setNewChat] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [directMessageList, setDirectMessageList] = useState([]);
 
@@ -79,7 +78,6 @@ export const ChatContextProvider = ({ children }) => {
         roomId,
         channelUsers,
         setChannelUsers,
-        newChat,
         handleSetDirectMessage,
         directMessageList,
         fetchDirectMessages,
