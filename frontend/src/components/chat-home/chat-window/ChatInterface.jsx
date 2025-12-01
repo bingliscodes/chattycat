@@ -88,6 +88,7 @@ export default function ChatInterface({
     }
 
     userSocket.emit('send-message', messageContent, messageData, mode);
+    userSocket.emit('new-dm', { senderId: id, receiverId: directMessage?.id });
 
     setMessages((prev) => [...prev, messageContent]);
     reset();

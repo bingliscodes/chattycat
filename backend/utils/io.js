@@ -3,6 +3,8 @@ import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
 import Channel from '../models/channelModel.js';
 
 export const setupIO = (io) => {
+  const userSocketMap = new Map(); // socketId -> userId
+
   io.on('connection', (socket) => {
     console.log('🔌 [SERVER] User connected:', socket.id);
 
@@ -21,6 +23,20 @@ export const setupIO = (io) => {
           `✅ [SERVER] Socket ${socket.id} joined private chat with: ${firstName} ${lastName}`,
         );
         if (cb) cb(`Joined private chat with: ${firstName} ${lastName}`);
+      }
+    });
+
+    socket.on('register-user', (userId) => {
+      userSocketMap.set(userId, socket.id);
+    });
+
+    socket.on('new-dm', ({ senderId, receiverId }) => {
+      const senderSocketId = userSocketMap.get(senderId);
+      if (senderSocketId) {
+        console.log(
+          `[SERVER] Notifying ${senderId} of new DM from ${receiverId}`,
+        );
+        io.to(senderSocketId).emit('new-dm', { receiverId });
       }
     });
 

@@ -35,7 +35,7 @@ export default function UserSearch({ mode }) {
   }, [userData, setOrganizationUsers]);
 
   const debounceOnChange = debounce(async (e) => {
-    const input = e.target.value.trim();
+    const input = e.target.value.trim().toLowerCase();
 
     const filteredResults = organizationUsers.filter((usr) => {
       const firstName = usr.firstName?.toLowerCase() || '';

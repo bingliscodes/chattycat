@@ -5,11 +5,8 @@ import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import Organization from '../models/organizationModel.js';
 import modelRelationships from './entityRelationships.js';
-import {
-  ChannelMessage,
-  DirectMessage,
-  DirectMessageRoom,
-} from '../models/messageModel.js';
+import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
+import { findOrCreateDMRoom } from '../utils/createRoom.js';
 
 async function main() {
   await sequelize.sync({ force: true });

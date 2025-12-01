@@ -17,8 +17,7 @@ import ChatInterface from './ChatInterface';
 import { fetchUserMessageHistory } from '../../../utils/js/apiCalls';
 
 export default function DirectMessageChat() {
-  const { directMessage, handleSetDirectMessage, roomId } =
-    useContext(ChatContext);
+  const { directMessage, roomId } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);

@@ -23,7 +23,7 @@ export const ChatContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState(null);
   const [directMessageList, setDirectMessageList] = useState([]);
 
-  const { userData } = useContext(UserContext);
+  const { userData, userSocket } = useContext(UserContext);
 
   useEffect(() => {
     if (!channel) return;
@@ -52,6 +52,21 @@ export const ChatContextProvider = ({ children }) => {
   useEffect(() => {
     fetchDirectMessages();
   }, [fetchDirectMessages]);
+
+  useEffect(() => {
+    if (!userSocket) return;
+
+    const handleNewDM = async ({ senderId }) => {
+      console.log('📥 [ChatContext] new DM from:', senderId);
+      await fetchDirectMessages(); // update sidebar
+    };
+
+    userSocket.on('new-dm', handleNewDM);
+
+    return () => {
+      userSocket.off('new-dm', handleNewDM);
+    };
+  }, [userSocket, fetchDirectMessages]);
 
   const handleSetDirectMessage = async (user) => {
     if (user === null) {

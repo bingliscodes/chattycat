@@ -90,7 +90,6 @@ export const getDirectMessageList = catchAsync(async (req, res, next) => {
 
   const uniqueUsers = [];
   const userIds = new Set();
-  console.log(receivedMessages, sentMessages);
 
   for (const msg of receivedMessages) {
     const sender = msg.Sender;
