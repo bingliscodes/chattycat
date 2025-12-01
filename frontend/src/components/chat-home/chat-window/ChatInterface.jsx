@@ -8,7 +8,6 @@ import {
   Text,
   HStack,
   Flex,
-  Splitter,
 } from '@chakra-ui/react';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,7 +25,6 @@ export default function ChatInterface({
   const { userData, socketReady, userSocket } = useContext(UserContext);
   const { channel, directMessage, directMessageList } = useContext(ChatContext);
   const { firstName, lastName, id } = userData;
-  const [sizes, setSizes] = useState([50, 50]);
 
   const isNewDM = !directMessageList.some(
     (user) => user.id === directMessage?.id
@@ -104,7 +102,7 @@ export default function ChatInterface({
   });
 
   return (
-    <Flex flex="1" direction="column">
+    <Flex flex="1" direction="column" h="100vh">
       <Box bg="bg.nav" p={4} borderBottom="1px solid #e2e8f0">
         <Text fontWeight="bold">{chatName}</Text>
       </Box>
@@ -132,20 +130,23 @@ export default function ChatInterface({
             </Box>
           ))}
       </VStack>
+
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
 
       {/* Chat Input*/}
-      <form onSubmit={onSubmit}>
-        <HStack p={4} borderTop="1px solid #e2e8f0">
-          <Field.Root invalid={!!errors.message}>
-            <Textarea
-              {...register('message', { required: 'Message is required' })}
-            />
-            <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
-          </Field.Root>
-          <Button type="submit">Send</Button>
-        </HStack>
-      </form>
+      <Box borderTop="1px solid #e2e8f0" bg="bg.nav">
+        <form onSubmit={onSubmit}>
+          <HStack p={4}>
+            <Field.Root invalid={!!errors.message}>
+              <Textarea
+                {...register('message', { required: 'Message is required' })}
+              />
+              <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
+            </Field.Root>
+            <Button type="submit">Send</Button>
+          </HStack>
+        </form>
+      </Box>
     </Flex>
   );
 }

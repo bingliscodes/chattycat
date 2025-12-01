@@ -40,10 +40,10 @@ export default function UserSidebar() {
   return (
     <Box
       rounded="md"
-      width="260px"
       bg="bg.sideBar"
       p={4}
       borderRight="solid 1px white"
+      h="100%"
     >
       <Text fontWeight="bold" fontSize="lg" mb={4}>
         {organization?.organizationName}
