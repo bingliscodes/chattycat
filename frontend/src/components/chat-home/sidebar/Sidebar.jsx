@@ -57,7 +57,7 @@ export default function UserSidebar() {
             </Span>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
-          <Accordion.ItemContent marginLeft={5}>
+          <Accordion.ItemContent>
             {channels &&
               channels.map((ch) => (
                 <Accordion.ItemBody
@@ -88,9 +88,9 @@ export default function UserSidebar() {
             </Span>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
-          <Accordion.ItemContent marginLeft={5}>
+          <Accordion.ItemContent>
             <Accordion.ItemBody>
-              <Flex align="center" gap={2} h="1rem">
+              <Flex align="center" gap={2} h="1rem" mb={1} mx={3} pt={3}>
                 <Text cursor="default">Start new conversation</Text>
                 <StartPrivateChatButton cursor="pointer" />
               </Flex>
