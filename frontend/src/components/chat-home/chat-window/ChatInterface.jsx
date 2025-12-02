@@ -56,11 +56,16 @@ export default function ChatInterface({
       return;
     }
     const { message } = data;
-    const timestamp = new Date().toLocaleTimeString([], {
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
-    });
+    };
+    const timestamp = new Date().toLocaleDateString('en-US', options);
     const messageContent = {
       messageBody: message,
       sender: {
@@ -100,6 +105,7 @@ export default function ChatInterface({
     reset();
   });
 
+  console.log(messages);
   return (
     <Flex direction="column" flex="1" minH="0">
       {/* Chat Header */}

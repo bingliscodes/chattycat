@@ -28,6 +28,15 @@ export default function DirectMessageChat() {
       try {
         setLoading(true);
         const res = await fetchUserMessageHistory(directMessage.id);
+        const options = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        };
         const mappedMessages = res.data.map((msg) => ({
           messageBody: msg.messageContent,
           sender: {
@@ -35,11 +44,10 @@ export default function DirectMessageChat() {
             lastName: msg.Sender.lastName,
           },
           channel: msg.roomId,
-          timestamp: new Date(msg.createdAt).toLocaleTimeString([], {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-          }),
+          timestamp: new Date(msg.createdAt).toLocaleTimeString(
+            'en-US',
+            options
+          ),
         }));
 
         setMessages(mappedMessages);
