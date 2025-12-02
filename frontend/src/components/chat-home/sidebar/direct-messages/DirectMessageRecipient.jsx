@@ -8,7 +8,7 @@ export default function DirectMessageRecipient({
   avatarUrl,
 }) {
   return (
-    <Flex w="full" gap={2} px={2} align="center">
+    <Flex w="full" gap={2} mb={1} mx={3} pt={3} align="center" h="1rem">
       <UserAvatar
         shape="rounded"
         size="sm"

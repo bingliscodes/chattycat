@@ -11,8 +11,13 @@ import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
-  const { channel, setChannel, handleSetDirectMessage, directMessageList } =
-    useContext(ChatContext);
+  const {
+    channel,
+    setChannel,
+    handleSetDirectMessage,
+    directMessageList,
+    directMessage,
+  } = useContext(ChatContext);
   const { channels, organization } = userData;
 
   if (!userData) return <h1>Loading...</h1>;
@@ -44,7 +49,7 @@ export default function UserSidebar() {
       </Text>
 
       {/* Channels */}
-      <Accordion.Root multiple px={2}>
+      <Accordion.Root multiple mb={2}>
         <Accordion.Item value="Channels" border="none">
           <Accordion.ItemTrigger bg="bg.menuItem">
             <Span flex="1" color="text">
@@ -52,28 +57,18 @@ export default function UserSidebar() {
             </Span>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
-          <Accordion.ItemContent>
+          <Accordion.ItemContent marginLeft={5}>
             {channels &&
               channels.map((ch) => (
                 <Accordion.ItemBody
                   key={ch.id}
                   onClick={() => handleJoinRoom(ch, 'ch')}
-                  as={Center}
-                  h="2rem"
                   bg={channel?.id === ch?.id ? 'bg.primaryBtn' : undefined}
                   rounded="md"
-                  mt={1}
-                  mb={2}
                   cursor="pointer"
                 >
-                  <Flex flex="1" mx={2} justify="left" align="center">
-                    <Text
-                      fontSize="md"
-                      color="text"
-                      lineHeight="1"
-                      m="0"
-                      marginRight="2"
-                    >
+                  <Flex mb={1} mx={3} pt={3} gap={2} align="center" h="1rem">
+                    <Text fontSize="md" color="text" lineHeight="1">
                       # {ch.channelName}
                     </Text>
                     <AddToChannelButton channel={ch} />
@@ -85,7 +80,7 @@ export default function UserSidebar() {
       </Accordion.Root>
 
       {/* Direct Messages */}
-      <Accordion.Root multiple px={2}>
+      <Accordion.Root multiple>
         <Accordion.Item value="Direct Messages" border="none">
           <Accordion.ItemTrigger bg="bg.menuItem">
             <Span flex="1" color="text">
@@ -93,9 +88,9 @@ export default function UserSidebar() {
             </Span>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
-          <Accordion.ItemContent>
+          <Accordion.ItemContent marginLeft={5}>
             <Accordion.ItemBody>
-              <Flex align="center" gap={2}>
+              <Flex align="center" gap={2} h="1rem">
                 <Text cursor="default">Start new conversation</Text>
                 <StartPrivateChatButton cursor="pointer" />
               </Flex>
@@ -105,11 +100,10 @@ export default function UserSidebar() {
                 <Accordion.ItemBody
                   key={usr.id}
                   onClick={() => handleJoinRoom(usr, 'dm')}
-                  as={Center}
-                  h="2rem"
-                  bg={channel?.id === usr?.id ? 'bg.primaryBtn' : undefined}
+                  bg={
+                    directMessage?.id === usr?.id ? 'bg.primaryBtn' : undefined
+                  }
                   rounded="md"
-                  mb={4}
                   cursor="pointer"
                 >
                   <DirectMessageRecipient
