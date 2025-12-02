@@ -147,6 +147,7 @@ export default function ChatInterface({
                 p={2}
                 borderRadius="md"
                 boxShadow="sm"
+                mb={1}
               >
                 <Flex align="flex-end" gap={2}>
                   <Text fontSize="sm" fontWeight="bold">
