@@ -17,11 +17,13 @@ export const addToChannel = catchAsync(async (req, res, next) => {
     return next(new AppError(`No channel found with id ${channelId}`), 404);
 
   await user.addChannels(channel);
-  userChannelMap.addChannel(userId, channelId);
+  const updatedChannels = await user.getChannels({ attributes: ['id'] });
+  const channelIds = updatedChannels.map((ch) => ch.id);
+  userChannelMap.data.set(userId, channelIds);
 
   res.status(200).json({
     status: 'success',
-    message: `Added user ${user.firstName} to channel ${channelName}`,
+    message: `Added user ${user.firstName} to channel ${channelId}`,
     data: null,
   });
   next();
@@ -40,7 +42,12 @@ export const removeFromChannel = catchAsync(async (req, res, next) => {
     return next(new AppError(`No channel found with id ${channelId}`, 404));
 
   await user.removeChannels(channel);
-  userChannelMap.removeChannel(userId, channelId);
+  const updatedChannels = await user.getChannels({ attributes: ['id'] });
+  const channelIds = updatedChannels.map((ch) => ch.id);
+
+  // Set the channels as the new channels a user is a part of
+  userChannelMap.data.set(userId, channelIds);
+  console.log(userChannelMap);
 
   res.status(200).json({
     status: 'success',
