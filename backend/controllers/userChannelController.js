@@ -3,6 +3,7 @@ import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import { findOrCreateDMRoom } from '../utils/createRoom.js';
+import userChannelMap from '../utils/userChannelMap.js';
 
 export const addToChannel = catchAsync(async (req, res, next) => {
   const { userId, channelId } = req.body;
@@ -16,6 +17,7 @@ export const addToChannel = catchAsync(async (req, res, next) => {
     return next(new AppError(`No channel found with id ${channelId}`), 404);
 
   await user.addChannels(channel);
+  userChannelMap.addChannel(userId, channelId);
 
   res.status(200).json({
     status: 'success',
@@ -38,6 +40,7 @@ export const removeFromChannel = catchAsync(async (req, res, next) => {
     return next(new AppError(`No channel found with id ${channelId}`, 404));
 
   await user.removeChannels(channel);
+  userChannelMap.removeChannel(userId, channelId);
 
   res.status(200).json({
     status: 'success',
@@ -56,8 +59,6 @@ export const getAllChannelUsers = catchAsync(async (req, res, next) => {
 
   if (!channel)
     return next(new AppError(`No channel found with id ${channelId}!`), 404);
-
-  // const channelUsers = channel.map((ch) => ch.users);
 
   res.status(200).json({
     status: 'success',
