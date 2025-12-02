@@ -114,6 +114,7 @@ export default function ChatInterface({
       </Box>
 
       {/* Messages (scrollable) */}
+
       <Box flex="1" overflowY="auto" minH="0" p={4} bg="bg.nav">
         {messages?.map((msg, idx) => (
           <Box
@@ -123,9 +124,14 @@ export default function ChatInterface({
             borderRadius="md"
             boxShadow="sm"
           >
-            <Text fontSize="sm">
-              {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
-            </Text>
+            <Flex align="flex-end" gap={2}>
+              <Text fontSize="sm" fontWeight="bold">
+                {`${msg.sender.firstName} ${msg.sender.lastName}`}
+              </Text>
+              <Text fontSize="xs" fontWeight="light">
+                {msg.timestamp}
+              </Text>
+            </Flex>
             <Text>{msg.messageBody}</Text>
           </Box>
         ))}
