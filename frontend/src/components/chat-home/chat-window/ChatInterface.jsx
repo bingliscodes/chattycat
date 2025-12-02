@@ -166,7 +166,19 @@ export default function ChatInterface({
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
 
       {/* Chat Input (fixed inside chat box) */}
-      <Box as="form" onSubmit={onSubmit} p={4} borderTop="1px solid #e2e8f0">
+      <Box
+        as="form"
+        onSubmit={onSubmit}
+        p={4}
+        borderTop="1px solid #e2e8f0"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            onSubmit(e);
+          }
+        }}
+      >
         <HStack>
           <Field.Root invalid={!!errors.message}>
             <Textarea
