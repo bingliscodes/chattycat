@@ -18,6 +18,7 @@ export default function ChatLayout() {
           {channel && <ChannelChat />}
           {directMessage && <DirectMessages />}
         </Flex>
+        <Flex flex="1" h="100%"></Flex>
       </ComponentSplitter>
     </Flex>
   );

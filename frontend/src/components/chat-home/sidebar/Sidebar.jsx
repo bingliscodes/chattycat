@@ -38,20 +38,14 @@ export default function UserSidebar() {
   };
 
   return (
-    <Box
-      rounded="md"
-      bg="bg.sideBar"
-      p={4}
-      borderRight="solid 1px white"
-      h="100%"
-    >
+    <Box rounded="md" bg="bg.sideBar" p={4} h="100%">
       <Text fontWeight="bold" fontSize="lg" mb={4}>
         {organization?.organizationName}
       </Text>
 
       {/* Channels */}
-      <Accordion.Root multiple>
-        <Accordion.Item value="Channels">
+      <Accordion.Root multiple px={2}>
+        <Accordion.Item value="Channels" border="none">
           <Accordion.ItemTrigger bg="bg.menuItem">
             <Span flex="1" color="text">
               Channels
@@ -91,8 +85,8 @@ export default function UserSidebar() {
       </Accordion.Root>
 
       {/* Direct Messages */}
-      <Accordion.Root multiple>
-        <Accordion.Item value="Direct Messages">
+      <Accordion.Root multiple px={2}>
+        <Accordion.Item value="Direct Messages" border="none">
           <Accordion.ItemTrigger bg="bg.menuItem">
             <Span flex="1" color="text">
               Direct Messages

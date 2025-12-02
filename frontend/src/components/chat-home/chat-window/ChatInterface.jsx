@@ -8,7 +8,7 @@ import {
   HStack,
   Flex,
 } from '@chakra-ui/react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { UserContext } from '@/contexts/UserContext';
