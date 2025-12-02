@@ -8,13 +8,29 @@ if (process.env.NODE_ENV === 'test') {
     storage: ':memory:',
     logging: false,
   });
-} else {
-  sequelize = new Sequelize('sys', 'root', 'my-secret-pw', {
-    host: '127.0.0.1',
-    port: '3306',
+} else if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'mysql',
     logging: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   });
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_NAME || 'sys',
+    process.env.DB_USER || 'root',
+    process.env.DB_PASSWORD || 'my-secret-pw',
+    {
+      host: process.env.DB_HOST || '127.0.0.1',
+      port: process.env.DB_PORT || 3306,
+      dialect: 'mysql',
+      logging: false,
+    },
+  );
 }
 
 const connection = async () => {

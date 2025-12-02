@@ -47,7 +47,6 @@ export const removeFromChannel = catchAsync(async (req, res, next) => {
 
   // Set the channels as the new channels a user is a part of
   userChannelMap.data.set(userId, channelIds);
-  console.log(userChannelMap);
 
   res.status(200).json({
     status: 'success',

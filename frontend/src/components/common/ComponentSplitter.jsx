@@ -26,8 +26,8 @@ export default function ComponentSplitter({ children, ...props }) {
             as={Box}
             flex="1"
             minW="1px"
+            minH="0"
             h="100%"
-            overflow="hidden"
           >
             <Box w="100%" h="100%">
               {child}

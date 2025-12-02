@@ -1,6 +1,5 @@
 // ChatInterface.jsx
 import {
-  VStack,
   Box,
   Textarea,
   Field,
@@ -102,50 +101,43 @@ export default function ChatInterface({
   });
 
   return (
-    <Flex flex="1" direction="column" h="100vh">
-      <Box bg="bg.nav" p={4} borderBottom="1px solid #e2e8f0">
+    <Flex direction="column" flex="1" minH="0">
+      {/* Chat Header */}
+      <Box p={4} borderBottom="1px solid #e2e8f0">
         <Text fontWeight="bold">{chatName}</Text>
       </Box>
-      <VStack
-        flex="1"
-        spacing={4}
-        overflowY="auto"
-        p={4}
-        align="stretch"
-        bg="bg.nav"
-      >
-        {messages &&
-          messages.map((msg, idx) => (
-            <Box
-              textAlign="left"
-              key={idx}
-              p={2}
-              borderRadius="md"
-              boxShadow="sm"
-            >
-              <Text fontSize="sm">
-                {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
-              </Text>
-              <Text>{msg.messageBody}</Text>
-            </Box>
-          ))}
-      </VStack>
+
+      {/* Messages (scrollable) */}
+      <Box flex="1" overflowY="auto" minH="0" p={4} bg="bg.nav">
+        {messages?.map((msg, idx) => (
+          <Box
+            key={idx}
+            textAlign="left"
+            p={2}
+            borderRadius="md"
+            boxShadow="sm"
+          >
+            <Text fontSize="sm">
+              {`${msg.sender.firstName} ${msg.sender.lastName}   ·  ${msg.timestamp}`}
+            </Text>
+            <Text>{msg.messageBody}</Text>
+          </Box>
+        ))}
+      </Box>
 
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
 
-      {/* Chat Input*/}
-      <Box borderTop="1px solid #e2e8f0" bg="bg.nav">
-        <form onSubmit={onSubmit}>
-          <HStack p={4}>
-            <Field.Root invalid={!!errors.message}>
-              <Textarea
-                {...register('message', { required: 'Message is required' })}
-              />
-              <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
-            </Field.Root>
-            <Button type="submit">Send</Button>
-          </HStack>
-        </form>
+      {/* Chat Input (fixed inside chat box) */}
+      <Box as="form" onSubmit={onSubmit} p={4} borderTop="1px solid #e2e8f0">
+        <HStack>
+          <Field.Root invalid={!!errors.message}>
+            <Textarea
+              {...register('message', { required: 'Message is required' })}
+            />
+            <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
+          </Field.Root>
+          <Button type="submit">Send</Button>
+        </HStack>
       </Box>
     </Flex>
   );

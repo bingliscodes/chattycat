@@ -1,18 +1,18 @@
-import { Flex, Box, Image } from "@chakra-ui/react";
-import { NavLink } from "react-router";
+import { Flex, Box, Image } from '@chakra-ui/react';
+import { NavLink } from 'react-router';
 
-import logo from "../../assets/ChattyCatLogo.svg";
+import logo from '../../assets/ChattyCatLogo.svg';
 
 export default function LeftNavContent() {
   return (
-    <Flex alignItems="center" justifyContent="space-between" gap={4}>
+    <Flex alignItems="center">
       {/* Left side: Logo / Home */}
-      <NavLink to="/" style={{ textDecoration: "none" }}>
+      <NavLink to="/" style={{ textDecoration: 'none' }}>
         <Box
           fontSize="2xl"
           fontWeight="bold"
           color="logoColor"
-          _hover={{ textDecoration: "none", color: "blue.400" }}
+          _hover={{ textDecoration: 'none', color: 'blue.400' }}
         >
           <Flex align="center">
             ChattyCat
