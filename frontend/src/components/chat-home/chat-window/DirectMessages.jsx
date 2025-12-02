@@ -28,15 +28,7 @@ export default function DirectMessageChat() {
       try {
         setLoading(true);
         const res = await fetchUserMessageHistory(directMessage.id);
-        const options = {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-        };
+
         const mappedMessages = res.data.map((msg) => ({
           messageBody: msg.messageContent,
           sender: {
@@ -44,10 +36,17 @@ export default function DirectMessageChat() {
             lastName: msg.Sender.lastName,
           },
           channel: msg.roomId,
-          timestamp: new Date(msg.createdAt).toLocaleTimeString(
-            'en-US',
-            options
-          ),
+          datestamp: new Date(msg.createdAt).toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }),
+          timestamp: new Date(msg.createdAt).toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+          }),
         }));
 
         setMessages(mappedMessages);
@@ -63,6 +62,7 @@ export default function DirectMessageChat() {
 
   if (loading) return <Spinner />;
   if (error) return <Text color="red.500">Error loading messages</Text>;
+
   return (
     messages && (
       <ChatInterface

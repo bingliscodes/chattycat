@@ -56,16 +56,22 @@ export default function ChatInterface({
       return;
     }
     const { message } = data;
-    const options = {
+
+    const now = new Date();
+
+    const datestamp = now.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+    });
+
+    const timestamp = now.toLocaleTimeString([], {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
-    };
-    const timestamp = new Date().toLocaleDateString('en-US', options);
+    });
+
     const messageContent = {
       messageBody: message,
       sender: {
@@ -73,6 +79,7 @@ export default function ChatInterface({
         lastName,
       },
       timestamp,
+      datestamp,
     };
 
     let messageData;
@@ -105,7 +112,15 @@ export default function ChatInterface({
     reset();
   });
 
-  console.log(messages);
+  const messageMap = new Map();
+
+  messages.forEach((msg) => {
+    if (!messageMap.has(msg.datestamp)) messageMap.set(msg.datestamp, [msg]);
+    else {
+      messageMap.get(msg.datestamp).push(msg);
+    }
+  });
+
   return (
     <Flex direction="column" flex="1" minH="0">
       {/* Chat Header */}
@@ -114,25 +129,36 @@ export default function ChatInterface({
       </Box>
 
       {/* Messages (scrollable) */}
-
       <Box flex="1" overflowY="auto" minH="0" p={4} bg="bg.nav">
-        {messages?.map((msg, idx) => (
-          <Box
-            key={idx}
-            textAlign="left"
-            p={2}
-            borderRadius="md"
-            boxShadow="sm"
-          >
-            <Flex align="flex-end" gap={2}>
-              <Text fontSize="sm" fontWeight="bold">
-                {`${msg.sender.firstName} ${msg.sender.lastName}`}
+        {[...messageMap.entries()].map(([date, msgs]) => (
+          <Box key={date} mb={6}>
+            <Flex align="center" my={4}>
+              <Box flex="1" h="1px" bg="gray.300" />
+              <Text mx={3} fontSize="xs" color="gray.600">
+                {date}
               </Text>
-              <Text fontSize="xs" fontWeight="light">
-                {msg.timestamp}
-              </Text>
+              <Box flex="1" h="1px" bg="gray.300" />
             </Flex>
-            <Text>{msg.messageBody}</Text>
+
+            {msgs.map((msg, idx) => (
+              <Box
+                key={idx}
+                textAlign="left"
+                p={2}
+                borderRadius="md"
+                boxShadow="sm"
+              >
+                <Flex align="flex-end" gap={2}>
+                  <Text fontSize="sm" fontWeight="bold">
+                    {`${msg.sender.firstName} ${msg.sender.lastName}`}
+                  </Text>
+                  <Text fontSize="xs" fontWeight="light">
+                    {msg.timestamp}
+                  </Text>
+                </Flex>
+                <Text>{msg.messageBody}</Text>
+              </Box>
+            ))}
           </Box>
         ))}
       </Box>

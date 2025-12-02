@@ -42,7 +42,11 @@ export const setupIO = (io) => {
 
     socket.on(
       'send-message',
-      ({ messageBody, sender, channel, timestamp }, messageData, mode) => {
+      (
+        { messageBody, sender, channel, timestamp, datestamp },
+        messageData,
+        mode,
+      ) => {
         // Security: Ensure user has permission to send message to a channel
 
         if (
@@ -62,6 +66,7 @@ export const setupIO = (io) => {
             sender,
             channel,
             timestamp,
+            datestamp,
           });
           console.log(`📤 Broadcasted to room ${channel}: ${messageBody}`);
         } else {
@@ -70,6 +75,7 @@ export const setupIO = (io) => {
             sender,
             channel,
             timestamp,
+            datestamp,
           });
           console.log('📤 Broadcasted globally:', messageBody);
         }
