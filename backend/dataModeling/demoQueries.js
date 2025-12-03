@@ -1,5 +1,3 @@
-import { DataTypes } from 'sequelize';
-
 import sequelize from '../utils/database.js';
 import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
@@ -9,7 +7,7 @@ import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
 import { findOrCreateDMRoom } from '../utils/createRoom.js';
 
 async function main() {
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ force: false });
 
   const testOrg = await Organization.create({
     organizationName: 'Test Org',

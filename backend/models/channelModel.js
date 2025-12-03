@@ -18,7 +18,6 @@ const Channel = sequelize.define(
     organizationId: {
       type: DataTypes.UUID,
       allowNull: false,
-      defaultValue: 1,
     },
   },
   {
