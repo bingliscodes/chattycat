@@ -2,7 +2,9 @@ import { io } from 'socket.io-client';
 
 export const createConnection = (userId, roomId = 'chatroom-1') => {
   return new Promise((resolve, reject) => {
-    const socket = io(import.meta.env.VITE_SERVER_URL);
+    const socket = io(import.meta.env.VITE_SERVER_URL, {
+      withCredentials: true,
+    });
 
     socket.on('connect', () => {
       console.log('🔌 [CLIENT] Connected with socket ID:', socket.id);
