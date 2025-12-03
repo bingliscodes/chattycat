@@ -48,9 +48,9 @@ export default function LoginCard() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Center>
-        <Flex direction="column" gap="4" py={6} width="width.form">
+    <Flex direction="column" gap={4} py={2} align="center" flex="1">
+      <Flex as="form" onSubmit={handleSubmit} justify="center" w="100%">
+        <Flex direction="column" gap={4} py={6} w="50%">
           <Field.Root>
             <Field.Label>Email Address</Field.Label>
             <Input type="email" placeholder="email address" name="email" />
@@ -69,7 +69,7 @@ export default function LoginCard() {
             Don't have an account yet? <NavLink to="/signup">Signup</NavLink>
           </Stack>
         </Flex>
-      </Center>
-    </form>
+      </Flex>
+    </Flex>
   );
 }

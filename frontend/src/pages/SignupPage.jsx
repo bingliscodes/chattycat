@@ -1,15 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Center,
-  Field,
-  Input,
-  Stack,
-  Button,
-  Flex,
-  Text,
-} from '@chakra-ui/react';
+import { Field, Input, Stack, Button, Flex, Text } from '@chakra-ui/react';
 import { NavLink } from 'react-router';
 import { useContext } from 'react';
 
@@ -54,54 +46,52 @@ export default function SignupCard() {
     }
   }
   return (
-    <Flex direction="column" py={2}>
+    <Flex direction="column" py={2} align="center" flex="1">
       <Text fontSize="lg" fontWeight="bold">
         Create an account to get started
       </Text>
-      <form onSubmit={handleSubmit}>
-        <Center width="width">
-          <Flex direction="column" gap="4" py={6} w="50%">
-            <Field.Root>
-              <Field.Label>First Name</Field.Label>
-              <Input type="text" placeholder="first name" name="firstName" />
-              <Field.ErrorText></Field.ErrorText>
-            </Field.Root>
+      <Flex as="form" onSubmit={handleSubmit} w="100%" justify="center">
+        <Flex direction="column" gap={4} py={6} w="50%">
+          <Field.Root>
+            <Field.Label>First Name</Field.Label>
+            <Input type="text" placeholder="first name" name="firstName" />
+            <Field.ErrorText></Field.ErrorText>
+          </Field.Root>
 
-            <Field.Root>
-              <Field.Label>Last Name</Field.Label>
-              <Input type="text" placeholder="last name" name="lastName" />
-              <Field.ErrorText></Field.ErrorText>
-            </Field.Root>
+          <Field.Root>
+            <Field.Label>Last Name</Field.Label>
+            <Input type="text" placeholder="last name" name="lastName" />
+            <Field.ErrorText></Field.ErrorText>
+          </Field.Root>
 
-            <Field.Root>
-              <Field.Label>Email Address</Field.Label>
-              <Input type="email" placeholder="email address" name="email" />
-              <Field.ErrorText></Field.ErrorText>
-            </Field.Root>
+          <Field.Root>
+            <Field.Label>Email Address</Field.Label>
+            <Input type="email" placeholder="email address" name="email" />
+            <Field.ErrorText></Field.ErrorText>
+          </Field.Root>
 
-            <Field.Root>
-              <Field.Label>Password</Field.Label>
-              <Input type="text" placeholder="password" name="password" />
-              <Field.ErrorText></Field.ErrorText>
-            </Field.Root>
+          <Field.Root>
+            <Field.Label>Password</Field.Label>
+            <Input type="text" placeholder="password" name="password" />
+            <Field.ErrorText></Field.ErrorText>
+          </Field.Root>
 
-            <Field.Root>
-              <Field.Label>Confirm Password</Field.Label>
-              <Input
-                type="text"
-                placeholder="confirm password"
-                name="passwordConfirm"
-              />
-              <Field.ErrorText></Field.ErrorText>
-            </Field.Root>
+          <Field.Root>
+            <Field.Label>Confirm Password</Field.Label>
+            <Input
+              type="text"
+              placeholder="confirm password"
+              name="passwordConfirm"
+            />
+            <Field.ErrorText></Field.ErrorText>
+          </Field.Root>
 
-            <Button type="submit">Sign Up</Button>
-            <Stack pt={6}>
-              Already a user? <NavLink to="/login">Login</NavLink>
-            </Stack>
-          </Flex>
-        </Center>
-      </form>
+          <Button type="submit">Sign Up</Button>
+          <Stack pt={6}>
+            Already a user? <NavLink to="/login">Login</NavLink>
+          </Stack>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }
