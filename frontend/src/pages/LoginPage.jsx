@@ -79,12 +79,17 @@ export default function LoginCard() {
           p={6}
           borderRadius="1rem"
         >
-          <Text fontSize="3xl" fontWeight="bold">
+          <Text fontSize="3xl" fontWeight="bold" color="text.formHeader">
             Login
           </Text>
           <Field.Root px={4}>
             <Field.Label>Email Address</Field.Label>
-            <Input type="email" placeholder="email address" name="email" />
+            <Input
+              type="email"
+              placeholder="email address"
+              name="email"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
+            />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
@@ -94,6 +99,7 @@ export default function LoginCard() {
               type={checked ? 'text' : 'password'}
               placeholder="password"
               name="password"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
@@ -107,7 +113,13 @@ export default function LoginCard() {
             <Checkbox.Label>Show password</Checkbox.Label>
           </Checkbox.Root>
 
-          <Button mx={4} type="submit">
+          <Button
+            mx={4}
+            type="submit"
+            bg="bg.primaryBtn"
+            textStyle="xl"
+            _hover={{ bg: 'bg.navHover' }}
+          >
             Log In
           </Button>
 

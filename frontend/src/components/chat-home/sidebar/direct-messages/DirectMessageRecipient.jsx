@@ -8,14 +8,14 @@ export default function DirectMessageRecipient({
   avatarUrl,
 }) {
   return (
-    <Flex w="full" gap={2} mb={1} mx={3} pt={3} align="center" h="1rem">
+    <Flex w="full" gap={2} ml={6} mt={2} align="center" h="1rem">
       <UserAvatar
         shape="rounded"
         size="sm"
         name={`${firstName} ${lastName}`}
         avatarUrl={avatarUrl}
       ></UserAvatar>
-      <Text fontSize="md" color="text" lineHeight="1" m="0">
+      <Text fontSize="md" color="text" lineHeight="1">
         {firstName} {lastName}
       </Text>
     </Flex>

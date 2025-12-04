@@ -70,25 +70,45 @@ export default function SignupCard() {
           </Text>
           <Field.Root px={4}>
             <Field.Label>First Name</Field.Label>
-            <Input type="text" placeholder="first name" name="firstName" />
+            <Input
+              type="text"
+              placeholder="first name"
+              name="firstName"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
+            />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
           <Field.Root px={4}>
             <Field.Label>Last Name</Field.Label>
-            <Input type="text" placeholder="last name" name="lastName" />
+            <Input
+              type="text"
+              placeholder="last name"
+              name="lastName"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
+            />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
           <Field.Root px={4}>
             <Field.Label>Email Address</Field.Label>
-            <Input type="email" placeholder="email address" name="email" />
+            <Input
+              type="email"
+              placeholder="email address"
+              name="email"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
+            />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
           <Field.Root px={4}>
             <Field.Label>Password</Field.Label>
-            <Input type="text" placeholder="password" name="password" />
+            <Input
+              type="text"
+              placeholder="password"
+              name="password"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
+            />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
@@ -98,11 +118,18 @@ export default function SignupCard() {
               type="text"
               placeholder="confirm password"
               name="passwordConfirm"
+              _focus={{ borderColor: 'bg.primaryBtn' }}
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Button mx={4} type="submit">
+          <Button
+            mx={4}
+            type="submit"
+            bg="bg.primaryBtn"
+            textStyle="xl"
+            _hover={{ bg: 'bg.navHover' }}
+          >
             Sign Up
           </Button>
           <Stack pt={6}>

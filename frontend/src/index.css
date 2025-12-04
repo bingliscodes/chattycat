@@ -48,14 +48,6 @@ button {
   transition: border-color 0.25s;
 }
 
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -84,12 +76,12 @@ body,
 
 /* Respect Chakra v3's color mode class */
 html.light {
-  background-color: #F5F5F0;
+  background-color: #FFF7DD;
   color: "black";
 }
 
 html.dark {
-  background-color: #1a202c;
+  background-color: #13151b;
   /* theme(tokens.colors.gray.900) */
   color: #e2e8f0;
 }

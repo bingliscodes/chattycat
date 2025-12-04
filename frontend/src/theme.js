@@ -9,13 +9,13 @@ export const system = createSystem(defaultConfig, {
             value: { base: 'colors.gray.100', _dark: 'colors.blue.300' },
           },
           nav: {
-            value: { base: 'colors.gray.100', _dark: 'colors.gray.900' },
+            value: { base: '#80A1BA', _dark: '#13151b' },
           },
           primaryBtn: {
-            value: { base: 'colors.blue.200', _dark: 'colors.blue.900' },
+            value: { base: '#91C4C3', _dark: '{#A64D79/90}' },
           },
           navHover: {
-            value: { base: 'colors.white', _dark: 'colors.gray.700' },
+            value: { base: '{#91C4C3/60}', _dark: '{#A64D79/60}' },
           },
           stack: {
             value: { base: 'colors.white', _dark: 'colors.gray.900' },
@@ -30,10 +30,13 @@ export const system = createSystem(defaultConfig, {
             value: { base: 'colors.blue.100', _dark: 'colors.gray.900' },
           },
           sideBar: {
-            value: { base: '#d6b3b8', _dark: 'colors.pink.950' },
+            value: { base: '#d6b3b8', _dark: '{#670D2F/50}' },
           },
           form: {
-            value: { base: 'colors.gray.400', _dark: '{colors.pink.950/80}' },
+            value: { base: '{#80A1BA/90}', _dark: '{#3B1C32/90}' },
+          },
+          itemHover: {
+            value: { base: '#d6b3b8', _dark: 'colors.gray.900' },
           },
         },
         text: {
@@ -41,7 +44,13 @@ export const system = createSystem(defaultConfig, {
             value: { base: 'colors.black', _dark: 'colors.white' },
           },
           primaryBtn: {
-            value: { base: 'colors.gray.600', _dark: 'colors.blue.300' },
+            value: { base: '#FFF7DD', _dark: '#1A1A1D' },
+          },
+          logo: {
+            value: { base: '#FFF7DD', _dark: '#A64D79' },
+          },
+          formHeader: {
+            value: { base: '#FFF7DD', _dark: 'colors.gray.300' },
           },
         },
 

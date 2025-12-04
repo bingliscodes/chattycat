@@ -43,16 +43,20 @@ export default function UserSidebar() {
   };
 
   return (
-    <Box rounded="md" bg="bg.sideBar" p={4} h="100%">
-      <Text fontWeight="bold" fontSize="lg" mb={4}>
+    <Flex direction="column" rounded="md" bg="bg.sideBar" pt={2} h="100%">
+      <Text fontWeight="bold" fontSize="2xl" mb={4}>
         {organization?.organizationName}
       </Text>
 
       {/* Channels */}
-      <Accordion.Root multiple mb={2}>
+      <Accordion.Root multiple mb={2} px={2}>
         <Accordion.Item value="Channels" border="none">
-          <Accordion.ItemTrigger bg="bg.menuItem">
-            <Span flex="1" color="text">
+          <Accordion.ItemTrigger
+            bg="none"
+            rounded="full"
+            _hover={{ bg: 'bg.itemHover' }}
+          >
+            <Span flex="1" color="text" textStyle="2xl">
               Channels
             </Span>
             <Accordion.ItemIndicator />
@@ -64,10 +68,13 @@ export default function UserSidebar() {
                   key={ch.id}
                   onClick={() => handleJoinRoom(ch, 'ch')}
                   bg={channel?.id === ch?.id ? 'bg.primaryBtn' : undefined}
-                  rounded="md"
+                  rounded="full"
                   cursor="pointer"
+                  mx={3}
+                  mb={1}
+                  _hover={{ bg: 'bg.itemHover', rounded: 'full' }}
                 >
-                  <Flex mb={1} mx={3} pt={3} gap={2} align="center" h="1rem">
+                  <Flex ml={6} gap={2} align="center" h="1rem" mt={2}>
                     <Text fontSize="md" color="text" lineHeight="1">
                       # {ch.channelName}
                     </Text>
@@ -82,16 +89,22 @@ export default function UserSidebar() {
       {/* Direct Messages */}
       <Accordion.Root multiple>
         <Accordion.Item value="Direct Messages" border="none">
-          <Accordion.ItemTrigger bg="bg.menuItem">
-            <Span flex="1" color="text">
+          <Accordion.ItemTrigger bg="none" _hover={{ bg: 'bg.itemHover' }}>
+            <Span flex="1" color="text" textStyle="2xl">
               Direct Messages
             </Span>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
-            <Accordion.ItemBody>
-              <Flex align="center" gap={2} h="1rem" mb={1} mx={3} pt={3}>
-                <Text cursor="default">Start new conversation</Text>
+            <Accordion.ItemBody
+              _hover={{ bg: 'bg.itemHover' }}
+              rounded="full"
+              mx={3}
+            >
+              <Flex ml={6} align="center" gap={2}>
+                <Text cursor="default" fontSize="md">
+                  Start new conversation
+                </Text>
                 <StartPrivateChatButton cursor="pointer" />
               </Flex>
             </Accordion.ItemBody>
@@ -103,8 +116,10 @@ export default function UserSidebar() {
                   bg={
                     directMessage?.id === usr?.id ? 'bg.primaryBtn' : undefined
                   }
-                  rounded="md"
+                  _hover={{ bg: 'bg.itemHover' }}
+                  rounded="full"
                   cursor="pointer"
+                  mx={3}
                 >
                   <DirectMessageRecipient
                     firstName={usr.firstName}
@@ -116,6 +131,6 @@ export default function UserSidebar() {
           </Accordion.ItemContent>
         </Accordion.Item>
       </Accordion.Root>
-    </Box>
+    </Flex>
   );
 }

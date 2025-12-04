@@ -14,7 +14,7 @@ export default function LeftNavContent() {
           color="logoColor"
           _hover={{ textDecoration: 'none', color: 'blue.400' }}
         >
-          <Flex align="center">
+          <Flex align="center" color="text.logo">
             ChattyCat
             <Image
               marginLeft={4}
