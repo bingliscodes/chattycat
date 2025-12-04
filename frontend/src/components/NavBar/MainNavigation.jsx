@@ -7,7 +7,12 @@ import RightNavContent from './RightNavContent';
 
 export default function MainNavigation() {
   return (
-    <Box bg="bg.nav" position="sticky" borderBottom="solid 1px white">
+    <Box
+      bg="bg.nav"
+      position="sticky"
+      borderBottom="solid 2px"
+      borderColor="borders"
+    >
       <HStack justify="space-between" mx={4}>
         <LeftNavContent />
         <RightNavContent />

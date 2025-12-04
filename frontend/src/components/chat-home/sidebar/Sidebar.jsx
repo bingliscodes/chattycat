@@ -43,8 +43,21 @@ export default function UserSidebar() {
   };
 
   return (
-    <Flex direction="column" rounded="md" bg="bg.sideBar" pt={2} h="100%">
-      <Text fontWeight="bold" fontSize="2xl" mb={4}>
+    <Flex
+      align="flex-start"
+      direction="column"
+      rounded="md"
+      bg="bg.sideBar"
+      pt={2}
+      h="100%"
+    >
+      <Text
+        ml={4}
+        fontWeight="bold"
+        fontSize="4xl"
+        mb={4}
+        color="text.sidebarHeader"
+      >
         {organization?.organizationName}
       </Text>
 
@@ -56,10 +69,10 @@ export default function UserSidebar() {
             rounded="full"
             _hover={{ bg: 'bg.itemHover' }}
           >
+            <Accordion.ItemIndicator />
             <Span flex="1" color="text" textStyle="2xl">
               Channels
             </Span>
-            <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
             {channels &&
@@ -94,10 +107,10 @@ export default function UserSidebar() {
             rounded="full"
             _hover={{ bg: 'bg.itemHover' }}
           >
+            <Accordion.ItemIndicator />
             <Span flex="1" color="text" textStyle="2xl">
               Direct Messages
             </Span>
-            <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
             <Accordion.ItemBody

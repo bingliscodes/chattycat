@@ -76,7 +76,8 @@ body,
 
 /* Respect Chakra v3's color mode class */
 html.light {
-  background-color: #FFF7DD;
+  
+  background-color: rgb(from #FFF7DD r g b / 10%);
   color: "black";
 }
 

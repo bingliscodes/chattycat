@@ -124,16 +124,18 @@ export default function ChatInterface({
   return (
     <Flex direction="column" flex="1" minH="0">
       {/* Chat Header */}
-      <Box p={4} borderBottom="1px solid #e2e8f0">
-        <Text fontWeight="bold">{chatName}</Text>
+      <Box p={3} borderBottom="1px solid" borderColor="borders">
+        <Text fontWeight="bold" fontSize="xl">
+          {chatName}
+        </Text>
       </Box>
 
       {/* Messages (scrollable) */}
-      <Box flex="1" overflowY="auto" minH="0" p={4} bg="bg.nav">
+      <Box flex="1" overflowY="auto" minH="0" p={4}>
         {[...messageMap.entries()].map(([date, msgs]) => (
           <Box key={date} mb={6}>
             <Flex align="center" my={4}>
-              <Box flex="1" h="1px" bg="gray.300" />
+              <Box flex="1" h="1px" />
               <Text mx={3} fontSize="xs" color="gray.600">
                 {date}
               </Text>
@@ -171,7 +173,12 @@ export default function ChatInterface({
         as="form"
         onSubmit={onSubmit}
         p={4}
-        borderTop="1px solid #e2e8f0"
+        border="1px solid"
+        borderColor="borders"
+        bg="bg.chatBox"
+        rounded="md"
+        mx={4}
+        mb={3}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -183,11 +190,18 @@ export default function ChatInterface({
         <HStack>
           <Field.Root invalid={!!errors.message}>
             <Textarea
+              border="none"
+              placeholder={`Message ${
+                (directMessage && directMessage.firstName) ||
+                (channel && channel.channelName)
+              } `}
               {...register('message', { required: 'Message is required' })}
             />
             <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
           </Field.Root>
-          <Button type="submit">Send</Button>
+          <Button bg="bg.primaryBtn" type="submit">
+            Send
+          </Button>
         </HStack>
       </Box>
     </Flex>

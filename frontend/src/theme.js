@@ -41,6 +41,9 @@ export const system = createSystem(defaultConfig, {
           selectedItem: {
             value: { base: '{#91C4C3/90}', _dark: '{colors.gray.900/90}' },
           },
+          chatBox: {
+            value: { base: '{#FFF7DD/40}', _dark: '{colors.gray.900/80}' },
+          },
         },
         text: {
           DEFAULT: {
@@ -55,11 +58,14 @@ export const system = createSystem(defaultConfig, {
           formHeader: {
             value: { base: '#FFF7DD', _dark: 'colors.gray.300' },
           },
+          sidebarHeader: {
+            value: { base: 'colors.gray.600', _dark: 'colors.gray.400' },
+          },
         },
 
-        border: {
+        borders: {
           DEFAULT: {
-            value: { base: 'colors.gray.200', _dark: 'colors.gray.700' },
+            value: { base: 'colors.black', _dark: 'colors.gray.400' },
           },
         },
       },
