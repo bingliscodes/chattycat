@@ -51,8 +51,17 @@ export default function SignupCard() {
         Create an account to get started
       </Text>
       <Flex as="form" onSubmit={handleSubmit} w="100%" justify="center">
-        <Flex direction="column" gap={4} py={6} w="50%">
-          <Field.Root>
+        <Flex
+          mt={2}
+          direction="column"
+          gap={4}
+          py={6}
+          w="50%"
+          bg="bg.form"
+          p={4}
+          borderRadius="1rem"
+        >
+          <Field.Root zIndex={1}>
             <Field.Label>First Name</Field.Label>
             <Input type="text" placeholder="first name" name="firstName" />
             <Field.ErrorText></Field.ErrorText>

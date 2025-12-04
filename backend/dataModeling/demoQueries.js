@@ -7,7 +7,7 @@ import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
 import { findOrCreateDMRoom } from '../utils/createRoom.js';
 
 async function main() {
-  await sequelize.sync({ force: false });
+  await sequelize.sync({ force: true });
 
   const testOrg = await Organization.create({
     organizationName: 'Test Org',

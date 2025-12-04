@@ -1,7 +1,6 @@
 import '../config/env.js';
 import { Sequelize } from 'sequelize';
 
-console.log('Env variables:', process.env.NEON_DB_HOST);
 let sequelize;
 
 if (process.env.NODE_ENV === 'test') {
@@ -9,17 +8,6 @@ if (process.env.NODE_ENV === 'test') {
     dialect: 'sqlite',
     storage: ':memory:',
     logging: false,
-  });
-} else if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'mysql',
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
   });
 } else if (process.env.NODE_ENV === 'development') {
   sequelize = new Sequelize(
@@ -34,7 +22,6 @@ if (process.env.NODE_ENV === 'test') {
     },
   );
 } else if (process.env.NODE_ENV === 'production') {
-  // Use PostGres for production?
   sequelize = new Sequelize(
     process.env.NEON_DB_NAME,
     process.env.NEON_DB_USER,
