@@ -135,7 +135,7 @@ export default function ChatInterface({
         {[...messageMap.entries()].map(([date, msgs]) => (
           <Box key={date} mb={6}>
             <Flex align="center" my={4}>
-              <Box flex="1" h="1px" />
+              <Box flex="1" h="1px" bg="gray.300" />
               <Text mx={3} fontSize="xs" color="gray.600">
                 {date}
               </Text>
@@ -172,7 +172,8 @@ export default function ChatInterface({
       <Box
         as="form"
         onSubmit={onSubmit}
-        p={4}
+        py={2}
+        px={1}
         border="1px solid"
         borderColor="borders"
         bg="bg.chatBox"
@@ -190,14 +191,16 @@ export default function ChatInterface({
         <HStack>
           <Field.Root invalid={!!errors.message}>
             <Textarea
-              border="none"
+              border={0}
+              outline={0}
+              resize="none"
               placeholder={`Message ${
                 (directMessage && directMessage.firstName) ||
                 (channel && channel.channelName)
               } `}
               {...register('message', { required: 'Message is required' })}
             />
-            <Field.ErrorText>{errors.message?.message}</Field.ErrorText>
+            <Field.ErrorText ml={3}>{errors.message?.message}</Field.ErrorText>
           </Field.Root>
           <Button bg="bg.primaryBtn" type="submit">
             Send
