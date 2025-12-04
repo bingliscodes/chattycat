@@ -1,6 +1,7 @@
 // StartPrivateChatButton.jsx
 import { Dialog, Portal, CloseButton, VStack } from '@chakra-ui/react';
 import { AiFillPlusCircle } from 'react-icons/ai';
+import { Tooltip } from '@/components/ui/tooltip';
 
 import UserSearch from '../UserSearch';
 
@@ -9,7 +10,13 @@ export default function StartPrivateChatButton() {
     <VStack alignItems="start">
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <AiFillPlusCircle size="1.5rem" cursor="pointer" />
+          <Tooltip
+            showArrow
+            content="start a new chat with a user in your organization"
+            positioning={{ placement: 'right-end' }}
+          >
+            <AiFillPlusCircle size="1.5rem" cursor="pointer" />
+          </Tooltip>
         </Dialog.Trigger>
         <Portal>
           <Dialog.Backdrop />

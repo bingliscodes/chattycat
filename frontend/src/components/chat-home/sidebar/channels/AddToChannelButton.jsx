@@ -1,5 +1,6 @@
 import { Dialog, Portal, CloseButton, VStack } from '@chakra-ui/react';
 import { AiFillPlusCircle } from 'react-icons/ai';
+import { Tooltip } from '@/components/ui/tooltip';
 
 import UserSearch from '../UserSearch';
 
@@ -8,7 +9,13 @@ export default function AddToChannelButton({ channel }) {
     <VStack alignItems="start">
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <AiFillPlusCircle size="1.5rem" />
+          <Tooltip
+            showArrow
+            content="add users to channel"
+            positioning={{ placement: 'right-end' }}
+          >
+            <AiFillPlusCircle size="1.5rem" />
+          </Tooltip>
         </Dialog.Trigger>
         <Portal>
           <Dialog.Backdrop />
