@@ -50,9 +50,11 @@ export default function RightNavContent() {
 
             <NavLink to="/me">
               <UserAvatar
+                bg="bg.primaryBtn"
                 size="lg"
                 avatarUrl={userData.avatarUrl}
                 name={`${userData.firstName} ${userData.lastName}`}
+                _hover={{ bg: 'bg.navHover' }}
               />
             </NavLink>
           </>
