@@ -1,7 +1,16 @@
 'use client';
 
 import { useState, useContext } from 'react';
-import { Text, Flex, Field, Input, Stack, Button } from '@chakra-ui/react';
+import {
+  Checkbox,
+  useCheckbox,
+  Text,
+  Flex,
+  Field,
+  Input,
+  Stack,
+  Button,
+} from '@chakra-ui/react';
 import { NavLink, useNavigate } from 'react-router';
 
 import { toaster } from '@/components/ui/toaster';
@@ -11,6 +20,7 @@ import { UserContext } from '@/contexts/UserContext';
 export default function LoginCard() {
   const [logInError, setLoginError] = useState(false);
   const { refreshUserData } = useContext(UserContext);
+  const [checked, setChecked] = useState(false);
   const nav = useNavigate();
 
   async function handleSubmit(e) {
@@ -80,14 +90,27 @@ export default function LoginCard() {
 
           <Field.Root px={4}>
             <Field.Label>Password</Field.Label>
-            <Input type="text" placeholder="password" name="password" />
+            <Input
+              type={checked ? 'text' : 'password'}
+              placeholder="password"
+              name="password"
+            />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-          <div>{logInError && <p>Username or password is invalid.</p>}</div>
+          <Checkbox.Root
+            px={4}
+            checked={checked}
+            onCheckedChange={(e) => setChecked(!!e.checked)}
+          >
+            <Checkbox.HiddenInput />
+            <Checkbox.Control />
+            <Checkbox.Label>Show password</Checkbox.Label>
+          </Checkbox.Root>
 
           <Button mx={4} type="submit">
             Log In
           </Button>
+
           <Stack pt={6}>
             Don't have an account yet? <NavLink to="/signup">Signup</NavLink>
           </Stack>
