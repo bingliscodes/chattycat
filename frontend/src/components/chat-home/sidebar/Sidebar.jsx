@@ -106,7 +106,7 @@ export default function UserSidebar() {
               mx={3}
               mb={1}
             >
-              <Flex ml={6} align="center" gap={2}>
+              <Flex ml={6} align="center" gap={2} mt={2} h="1rem">
                 <Text cursor="default" fontSize="md">
                   Start new conversation
                 </Text>
