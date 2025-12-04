@@ -7,9 +7,11 @@ import {
   Text,
   HStack,
   Flex,
+  IconButton,
 } from '@chakra-ui/react';
 import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { AiOutlineSend } from 'react-icons/ai';
 
 import { UserContext } from '@/contexts/UserContext';
 import { ChatContext } from '@/contexts/ChatContext';
@@ -202,9 +204,9 @@ export default function ChatInterface({
             />
             <Field.ErrorText ml={3}>{errors.message?.message}</Field.ErrorText>
           </Field.Root>
-          <Button bg="bg.primaryBtn" type="submit">
-            Send
-          </Button>
+          <IconButton bg="bg.primaryBtn" type="submit" mr={2}>
+            <AiOutlineSend />
+          </IconButton>
         </HStack>
       </Box>
     </Flex>

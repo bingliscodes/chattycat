@@ -43,14 +43,7 @@ export default function UserSidebar() {
   };
 
   return (
-    <Flex
-      align="flex-start"
-      direction="column"
-      rounded="md"
-      bg="bg.sideBar"
-      pt={2}
-      h="100%"
-    >
+    <Flex align="flex-start" direction="column" bg="bg.sideBar" pt={2} h="100%">
       <Text
         ml={4}
         fontWeight="bold"
