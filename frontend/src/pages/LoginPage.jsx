@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useContext } from 'react';
-import { Center, Flex, Field, Input, Stack, Button } from '@chakra-ui/react';
+import { Text, Flex, Field, Input, Stack, Button } from '@chakra-ui/react';
 import { NavLink, useNavigate } from 'react-router';
 
 import { toaster } from '@/components/ui/toaster';
@@ -48,23 +48,46 @@ export default function LoginCard() {
   }
 
   return (
-    <Flex direction="column" gap={4} py={2} align="center" flex="1">
+    <Flex
+      direction="column"
+      gap={4}
+      py={2}
+      align="center"
+      justify="center"
+      flex="1"
+      mt="-8rem"
+    >
       <Flex as="form" onSubmit={handleSubmit} justify="center" w="100%">
-        <Flex direction="column" gap={4} py={6} w="50%">
-          <Field.Root>
+        <Flex
+          mt={2}
+          justify="center"
+          direction="column"
+          gap={4}
+          py={6}
+          w="50%"
+          bg="bg.form"
+          p={6}
+          borderRadius="1rem"
+        >
+          <Text fontSize="3xl" fontWeight="bold">
+            Login
+          </Text>
+          <Field.Root px={4}>
             <Field.Label>Email Address</Field.Label>
             <Input type="email" placeholder="email address" name="email" />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Field.Root>
+          <Field.Root px={4}>
             <Field.Label>Password</Field.Label>
             <Input type="text" placeholder="password" name="password" />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
           <div>{logInError && <p>Username or password is invalid.</p>}</div>
 
-          <Button type="submit">Log In</Button>
+          <Button mx={4} type="submit">
+            Log In
+          </Button>
           <Stack pt={6}>
             Don't have an account yet? <NavLink to="/signup">Signup</NavLink>
           </Stack>

@@ -46,10 +46,14 @@ export default function SignupCard() {
     }
   }
   return (
-    <Flex direction="column" py={2} align="center" flex="1">
-      <Text fontSize="lg" fontWeight="bold">
-        Create an account to get started
-      </Text>
+    <Flex
+      direction="column"
+      py={2}
+      align="center"
+      mt="-12rem"
+      flex="1"
+      justify="center"
+    >
       <Flex as="form" onSubmit={handleSubmit} w="100%" justify="center">
         <Flex
           mt={2}
@@ -58,34 +62,37 @@ export default function SignupCard() {
           py={6}
           w="50%"
           bg="bg.form"
-          p={4}
+          p={6}
           borderRadius="1rem"
         >
-          <Field.Root zIndex={1}>
+          <Text fontSize="xl" fontWeight="bold">
+            Create an account to get started
+          </Text>
+          <Field.Root px={4}>
             <Field.Label>First Name</Field.Label>
             <Input type="text" placeholder="first name" name="firstName" />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Field.Root>
+          <Field.Root px={4}>
             <Field.Label>Last Name</Field.Label>
             <Input type="text" placeholder="last name" name="lastName" />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Field.Root>
+          <Field.Root px={4}>
             <Field.Label>Email Address</Field.Label>
             <Input type="email" placeholder="email address" name="email" />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Field.Root>
+          <Field.Root px={4}>
             <Field.Label>Password</Field.Label>
             <Input type="text" placeholder="password" name="password" />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Field.Root>
+          <Field.Root px={4}>
             <Field.Label>Confirm Password</Field.Label>
             <Input
               type="text"
@@ -95,7 +102,9 @@ export default function SignupCard() {
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Button type="submit">Sign Up</Button>
+          <Button mx={4} type="submit">
+            Sign Up
+          </Button>
           <Stack pt={6}>
             Already a user? <NavLink to="/login">Login</NavLink>
           </Stack>
