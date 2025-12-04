@@ -49,7 +49,7 @@ export default function UserSidebar() {
       </Text>
 
       {/* Channels */}
-      <Accordion.Root multiple mb={2} px={2}>
+      <Accordion.Root multiple px={2}>
         <Accordion.Item value="Channels" border="none">
           <Accordion.ItemTrigger
             bg="none"
@@ -67,7 +67,7 @@ export default function UserSidebar() {
                 <Accordion.ItemBody
                   key={ch.id}
                   onClick={() => handleJoinRoom(ch, 'ch')}
-                  bg={channel?.id === ch?.id ? 'bg.primaryBtn' : undefined}
+                  bg={channel?.id === ch?.id ? 'bg.selectedItem' : undefined}
                   rounded="full"
                   cursor="pointer"
                   mx={3}
@@ -87,9 +87,13 @@ export default function UserSidebar() {
       </Accordion.Root>
 
       {/* Direct Messages */}
-      <Accordion.Root multiple>
+      <Accordion.Root multiple px={2}>
         <Accordion.Item value="Direct Messages" border="none">
-          <Accordion.ItemTrigger bg="none" _hover={{ bg: 'bg.itemHover' }}>
+          <Accordion.ItemTrigger
+            bg="none"
+            rounded="full"
+            _hover={{ bg: 'bg.itemHover' }}
+          >
             <Span flex="1" color="text" textStyle="2xl">
               Direct Messages
             </Span>
@@ -100,6 +104,7 @@ export default function UserSidebar() {
               _hover={{ bg: 'bg.itemHover' }}
               rounded="full"
               mx={3}
+              mb={1}
             >
               <Flex ml={6} align="center" gap={2}>
                 <Text cursor="default" fontSize="md">
@@ -114,7 +119,9 @@ export default function UserSidebar() {
                   key={usr.id}
                   onClick={() => handleJoinRoom(usr, 'dm')}
                   bg={
-                    directMessage?.id === usr?.id ? 'bg.primaryBtn' : undefined
+                    directMessage?.id === usr?.id
+                      ? 'bg.selectedItem'
+                      : undefined
                   }
                   _hover={{ bg: 'bg.itemHover' }}
                   rounded="full"

@@ -36,7 +36,10 @@ export const system = createSystem(defaultConfig, {
             value: { base: '{#80A1BA/90}', _dark: '{#3B1C32/90}' },
           },
           itemHover: {
-            value: { base: '#d6b3b8', _dark: 'colors.gray.900' },
+            value: { base: '{#91C4C3/40}', _dark: 'colors.gray.700' },
+          },
+          selectedItem: {
+            value: { base: '{#91C4C3/90}', _dark: '{colors.gray.900/90}' },
           },
         },
         text: {
