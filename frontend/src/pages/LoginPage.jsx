@@ -116,6 +116,7 @@ export default function LoginCard() {
 
           <Button
             mx={4}
+            mt={2}
             type="submit"
             bg="bg.primaryBtn"
             textStyle="xl"
@@ -124,7 +125,7 @@ export default function LoginCard() {
             Log In
           </Button>
 
-          <Stack pt={6}>
+          <Stack pt={3}>
             Don't have an account yet? <NavLink to="/signup">Signup</NavLink>
           </Stack>
         </Flex>

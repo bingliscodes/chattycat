@@ -66,7 +66,7 @@ export default function SignupCard() {
           borderRadius="1rem"
         >
           <Text fontSize="xl" fontWeight="bold">
-            Create an account to get started
+            Create an account to get started!
           </Text>
           <Field.Root px={4}>
             <Field.Label>First Name</Field.Label>
@@ -130,6 +130,7 @@ export default function SignupCard() {
 
           <Button
             mx={4}
+            mt={2}
             type="submit"
             bg="bg.primaryBtn"
             textStyle="xl"
@@ -137,7 +138,7 @@ export default function SignupCard() {
           >
             Sign Up
           </Button>
-          <Stack pt={6}>
+          <Stack pt={3}>
             Already a user? <NavLink to="/login">Login</NavLink>
           </Stack>
         </Flex>
