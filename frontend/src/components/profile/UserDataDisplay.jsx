@@ -1,4 +1,4 @@
-import { Container, Flex, Heading, Box, Text } from '@chakra-ui/react';
+import { Container, Flex, Heading, Box, Text, Spinner } from '@chakra-ui/react';
 import { useContext } from 'react';
 
 import UserAvatar from '../common/Avatar';
@@ -11,6 +11,7 @@ import { UserContext } from '@/contexts/UserContext';
 export default function UserDataDisplay() {
   const { userData } = useContext(UserContext);
 
+  if (!userData) return <Spinner />;
   return (
     <Container maxW="full" py={12}>
       <Heading fontSize="3xl" mb={8} textAlign="center">

@@ -85,7 +85,6 @@ export default function RightNavContent() {
             <NavLink to="/me">
               <UserAvatar
                 bg="bg.primaryBtn"
-                borderRadius="lg"
                 size="md"
                 color="text.primaryBtn"
                 avatarUrl={userData.avatarUrl}
