@@ -30,21 +30,22 @@ export default function SignupCard() {
         title: 'Signup Successful!',
         description: 'Redirecting to homepage.',
       },
-      error: {
+      error: (err) => ({
         title: 'Signup Failed',
-        description: 'An unexpected error has occurred! Please try again later',
-      },
+        description: err.message || 'An unexpected error occurred!',
+      }),
     });
 
     try {
       await signupPromise;
       setSignupError(false);
-
       await refreshUserData();
     } catch (err) {
-      console.error(err); // exit early if signup fails
+      setSignupError(err);
+      console.error(err);
     }
   }
+
   return (
     <Flex
       direction="column"
@@ -82,7 +83,6 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-
           <Field.Root px={4}>
             <Field.Label color="text.sidebar">Last Name</Field.Label>
             <Input
@@ -97,7 +97,6 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-
           <Field.Root px={4}>
             <Field.Label color="text.sidebar">Email Address</Field.Label>
             <Input
@@ -112,7 +111,6 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-
           <Field.Root px={4}>
             <Field.Label color="text.sidebar"> Password</Field.Label>
             <Input
@@ -127,7 +125,6 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-
           <Field.Root px={4}>
             <Field.Label color="text.sidebar">Confirm Password</Field.Label>
             <Input
@@ -142,7 +139,7 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-
+          {signupError && <Text>{signupError.message}</Text>}
           <Button
             mx={4}
             mt={2}

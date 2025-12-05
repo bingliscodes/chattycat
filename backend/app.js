@@ -52,6 +52,19 @@ app.use('/api/v1/organizations', organizationRouter);
 app.use('/api/v1/messages', messageRouter);
 app.use('/api/v1/auth', authRouter);
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  const statusCode = err.statusCode || 500;
+  const status = err.status || 'error';
+
+  res.status(statusCode).json({
+    status,
+    message: err.message,
+  });
+});
+
 // Default error handling
 app.get('/{*any}', (req, res) => {
   res.status(404).json({

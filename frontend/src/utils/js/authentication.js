@@ -21,8 +21,12 @@ export const signup = async (formData) => {
 
     return newUserRes.data;
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      console.log('Entire err:', err);
+      throw new Error('Failed to sign up user: ' + err.message);
+    }
   }
 };
 
