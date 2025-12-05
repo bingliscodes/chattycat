@@ -15,16 +15,11 @@ export const signup = async (formData) => {
       { withCredentials: true }
     );
 
-    if (!newUserRes.status === 200) {
-      throw new Error('Failed to sign up user! Please try again later.');
-    }
-
     return newUserRes.data;
   } catch (err) {
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      console.log('Entire err:', err);
       throw new Error('Failed to sign up user: ' + err.message);
     }
   }
@@ -50,7 +45,11 @@ export const login = async (formData) => {
 
     return loggedInUser.data;
   } catch (err) {
-    throw new Error(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to sign up user: ' + err.message);
+    }
   }
 };
 

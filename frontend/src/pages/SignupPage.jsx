@@ -139,7 +139,11 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-          {signupError && <Text>{signupError.message}</Text>}
+          {signupError && (
+            <Text fontSize="sm" color="red.400">
+              {signupError.message}
+            </Text>
+          )}
           <Button
             mx={4}
             mt={2}

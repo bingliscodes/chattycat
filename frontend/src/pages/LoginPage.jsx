@@ -17,7 +17,7 @@ import { login } from '../utils/js/authentication';
 import { UserContext } from '@/contexts/UserContext';
 
 export default function LoginCard() {
-  const [logInError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState(false);
   const { refreshUserData } = useContext(UserContext);
   const [checked, setChecked] = useState(false);
   const nav = useNavigate();
@@ -39,10 +39,10 @@ export default function LoginCard() {
         title: 'Login Successful!',
         description: 'Redirecting to homepage.',
       },
-      error: {
+      error: (err) => ({
         title: 'Login Failed',
-        description: 'Invalid email or password.',
-      },
+        description: err.message || 'An unexpected error occured!',
+      }),
     });
 
     try {
@@ -51,7 +51,7 @@ export default function LoginCard() {
       await refreshUserData();
       nav('/');
     } catch (err) {
-      setLoginError(true);
+      setLoginError(err);
       console.error(err);
     }
   }
@@ -120,7 +120,11 @@ export default function LoginCard() {
             <Checkbox.Control />
             <Checkbox.Label>Show password</Checkbox.Label>
           </Checkbox.Root>
-
+          {loginError && (
+            <Text fontSize="sm" color="red.400">
+              {loginError.message}
+            </Text>
+          )}
           <Button
             mx={4}
             mt={2}
