@@ -13,7 +13,7 @@ export default function UserDataDisplay() {
 
   return (
     <Container maxW="full" py={12}>
-      <Heading mb={8} textAlign="center">
+      <Heading fontSize="3xl" mb={8} textAlign="center">
         User Settings
       </Heading>
 
@@ -21,6 +21,7 @@ export default function UserDataDisplay() {
         {/* Avatar */}
         <Box
           borderRadius="full"
+          fontSize="3xl"
           boxSize={{ base: '160px', md: '200px', lg: '240px' }}
         >
           <UserAvatar
@@ -33,7 +34,12 @@ export default function UserDataDisplay() {
         {/* Upload Button */}
         <FileUploadButton uploadFn={updateAvatar} />
 
-        <Text>Role: {userData.role}</Text>
+        <Flex gap={1} align="center">
+          <Text fontSize="lg" fontWeight="bold">
+            Role:
+          </Text>
+          <Text>{userData.role}</Text>
+        </Flex>
         <Box w="50%">
           <UserSettings userData={userData} />
         </Box>
