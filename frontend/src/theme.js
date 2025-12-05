@@ -67,6 +67,9 @@ export const system = createSystem(defaultConfig, {
           DEFAULT: {
             value: { base: 'colors.black', _dark: 'colors.gray.400' },
           },
+          signupInput: {
+            value: { base: 'colors.gray.900', _dark: 'colors.gray.200' },
+          },
         },
       },
       sizes: {

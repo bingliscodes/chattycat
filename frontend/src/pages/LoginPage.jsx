@@ -84,6 +84,7 @@ export default function LoginCard() {
           <Field.Root px={4}>
             <Field.Label>Email Address</Field.Label>
             <Input
+              borderColor="borders"
               type="email"
               placeholder="email address"
               name="email"
@@ -95,6 +96,7 @@ export default function LoginCard() {
           <Field.Root px={4}>
             <Field.Label>Password</Field.Label>
             <Input
+              borderColor="borders"
               type={checked ? 'text' : 'password'}
               placeholder="password"
               name="password"

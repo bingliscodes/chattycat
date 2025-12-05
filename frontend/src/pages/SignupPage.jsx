@@ -71,6 +71,7 @@ export default function SignupCard() {
           <Field.Root px={4}>
             <Field.Label>First Name</Field.Label>
             <Input
+              borderColor="borders"
               type="text"
               placeholder="first name"
               name="firstName"
@@ -82,6 +83,7 @@ export default function SignupCard() {
           <Field.Root px={4}>
             <Field.Label>Last Name</Field.Label>
             <Input
+              borderColor="borders"
               type="text"
               placeholder="last name"
               name="lastName"
@@ -93,6 +95,7 @@ export default function SignupCard() {
           <Field.Root px={4}>
             <Field.Label>Email Address</Field.Label>
             <Input
+              borderColor="borders"
               type="email"
               placeholder="email address"
               name="email"
@@ -104,6 +107,7 @@ export default function SignupCard() {
           <Field.Root px={4}>
             <Field.Label>Password</Field.Label>
             <Input
+              borderColor="borders"
               type="text"
               placeholder="password"
               name="password"
@@ -115,6 +119,7 @@ export default function SignupCard() {
           <Field.Root px={4}>
             <Field.Label>Confirm Password</Field.Label>
             <Input
+              borderColor="borders"
               type="text"
               placeholder="confirm password"
               name="passwordConfirm"
