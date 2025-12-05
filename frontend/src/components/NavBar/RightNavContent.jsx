@@ -1,15 +1,48 @@
 import { Flex, Button, Stack } from '@chakra-ui/react';
-import { ColorModeButton } from '@/components/ui/color-mode';
 import { NavLink, useNavigate } from 'react-router';
+import { useContext, useState } from 'react';
 
-import { useContext } from 'react';
+import { ColorModeButton } from '@/components/ui/color-mode';
+import { toaster } from '@/components/ui/toaster';
 import { UserContext } from '@/contexts/UserContext';
 import { logout } from '../../utils/js/authentication';
 import UserAvatar from '../common/Avatar';
 
 export default function RightNavContent() {
-  let { isLoggedIn, disconnectSocket, userData } = useContext(UserContext);
+  let { isLoggedIn, disconnectSocket, userData, refreshUserData } =
+    useContext(UserContext);
+  const [logoutError, setLogoutError] = useState(false);
+
   const nav = useNavigate();
+
+  async function handleLogout() {
+    const logoutPromise = logout();
+
+    toaster.promise(logoutPromise, {
+      loading: {
+        title: 'Logging Out...',
+        description: 'Processing logout request.',
+      },
+      success: {
+        title: 'Logout Successful!',
+        description: 'Redirecting to homepage',
+      },
+      error: {
+        title: 'Logout Failed!',
+        description: 'Oh no, an error has occurred while logging out!',
+      },
+    });
+
+    try {
+      await logoutPromise;
+      setLogoutError(false);
+      await refreshUserData();
+      nav('/');
+    } catch (err) {
+      setLogoutError(true);
+      console.error(err);
+    }
+  }
 
   return (
     <Flex>
@@ -42,7 +75,7 @@ export default function RightNavContent() {
               _hover={{ bg: 'bg.navHover' }}
               onClick={() => {
                 disconnectSocket();
-                logout();
+                handleLogout();
               }}
             >
               Log Out

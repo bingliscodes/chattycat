@@ -58,14 +58,10 @@ export const logout = async () => {
         withCredentials: true,
       }
     );
-    if (res.data.status === 'success') {
-      alert(
-        'Logout successfully! You will now be redirected to the home page.'
+    if (!res.status == 200)
+      throw new Error(
+        'Failed to login user. Make sure email and password are correct.'
       );
-      window.setTimeout(() => {
-        location.assign('/');
-      }, 1500);
-    }
   } catch (err) {
     console.error(err);
     throw err;
@@ -83,6 +79,7 @@ export const verifyJWT = async () => {
 
     if (!res.status === 200)
       throw new Error('Failed to get logged in user. Please log in.');
+
     return res.data;
   } catch (err) {
     console.error(err);

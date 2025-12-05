@@ -3,7 +3,6 @@
 import { useState, useContext } from 'react';
 import {
   Checkbox,
-  useCheckbox,
   Text,
   Flex,
   Field,
