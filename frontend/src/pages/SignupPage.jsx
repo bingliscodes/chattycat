@@ -69,8 +69,8 @@ export default function SignupCard() {
           <Text fontSize="xl" fontWeight="bold" color="text.sidebar">
             Create an account to get started!
           </Text>
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar">First Name</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label>First Name</Field.Label>
             <Input
               borderColor="borders"
               type="text"
@@ -83,8 +83,8 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar">Last Name</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label>Last Name</Field.Label>
             <Input
               borderColor="borders"
               type="text"
@@ -97,8 +97,8 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar">Email Address</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label>Email Address</Field.Label>
             <Input
               borderColor="borders"
               type="email"
@@ -111,8 +111,8 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar"> Password</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label> Password</Field.Label>
             <Input
               borderColor="borders"
               type="text"
@@ -125,8 +125,8 @@ export default function SignupCard() {
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar">Confirm Password</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label>Confirm Password</Field.Label>
             <Input
               borderColor="borders"
               type="text"

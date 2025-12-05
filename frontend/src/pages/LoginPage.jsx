@@ -81,8 +81,8 @@ export default function LoginCard() {
           <Text fontSize="3xl" fontWeight="bold" color="text.sidebar">
             Login
           </Text>
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar">Email Address</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label>Email Address</Field.Label>
             <Input
               borderColor="borders"
               type="email"
@@ -96,8 +96,8 @@ export default function LoginCard() {
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          <Field.Root px={4}>
-            <Field.Label color="text.sidebar">Password</Field.Label>
+          <Field.Root px={4} color="text.sidebar">
+            <Field.Label>Password</Field.Label>
             <Input
               borderColor="borders"
               type={checked ? 'text' : 'password'}
