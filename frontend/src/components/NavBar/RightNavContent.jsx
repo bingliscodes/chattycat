@@ -50,7 +50,8 @@ export default function RightNavContent() {
         <ColorModeButton
           bg="bg.primaryBtn"
           color="text.primaryBtn"
-          borderRadius="full"
+          borderRadius="lg"
+          size="md"
           _hover={{ bg: 'bg.navHover' }}
         />
 
@@ -59,7 +60,7 @@ export default function RightNavContent() {
             bg="bg.primaryBtn"
             color="text.primaryBtn"
             _hover={{ bg: 'bg.navHover' }}
-            borderRadius="full"
+            borderRadius="lg"
             onClick={() => nav('/login')}
           >
             Log In / Sign Up
@@ -71,7 +72,7 @@ export default function RightNavContent() {
             <Button
               bg="bg.primaryBtn"
               color="text.primaryBtn"
-              borderRadius="full"
+              borderRadius="lg"
               _hover={{ bg: 'bg.navHover' }}
               onClick={() => {
                 disconnectSocket();
@@ -84,7 +85,9 @@ export default function RightNavContent() {
             <NavLink to="/me">
               <UserAvatar
                 bg="bg.primaryBtn"
-                size="lg"
+                borderRadius="lg"
+                size="md"
+                color="text.primaryBtn"
                 avatarUrl={userData.avatarUrl}
                 name={`${userData.firstName} ${userData.lastName}`}
                 _hover={{ bg: 'bg.navHover' }}

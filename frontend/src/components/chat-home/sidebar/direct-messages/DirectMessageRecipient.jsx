@@ -6,6 +6,7 @@ export default function DirectMessageRecipient({
   firstName,
   lastName,
   avatarUrl,
+  isSelected,
 }) {
   return (
     <Flex w="full" gap={2} ml={6} mt={2} align="center" h="1rem">
@@ -15,7 +16,11 @@ export default function DirectMessageRecipient({
         name={`${firstName} ${lastName}`}
         avatarUrl={avatarUrl}
       ></UserAvatar>
-      <Text fontSize="md" color="text" lineHeight="1">
+      <Text
+        fontSize="md"
+        color={isSelected ? 'text.selectedItem' : 'text.sidebar'}
+        lineHeight="1"
+      >
         {firstName} {lastName}
       </Text>
     </Flex>

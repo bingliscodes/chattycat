@@ -8,13 +8,13 @@ export default function AddToChannelButton({ channel }) {
   return (
     <VStack align="start">
       <Dialog.Root>
-        <Dialog.Trigger as={Box}>
+        <Dialog.Trigger as={Box} color="text.sidebar">
           <Tooltip
             showArrow
             content="add users to channel"
             positioning={{ placement: 'right-end' }}
           >
-            <AiFillPlusCircle size="1.5rem" />
+            <AiFillPlusCircle size="1.5rem" cursor="pointer" />
           </Tooltip>
         </Dialog.Trigger>
         <Portal>

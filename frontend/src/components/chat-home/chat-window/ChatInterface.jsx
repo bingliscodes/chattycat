@@ -179,7 +179,7 @@ export default function ChatInterface({
         border="1px solid"
         borderColor="borders"
         bg="bg.chatBox"
-        rounded="md"
+        rounded="lg"
         mx={4}
         mb={3}
         onKeyDown={(e) => {

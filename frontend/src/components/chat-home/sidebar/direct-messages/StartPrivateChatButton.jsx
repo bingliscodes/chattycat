@@ -9,7 +9,7 @@ export default function StartPrivateChatButton() {
   return (
     <VStack align="start">
       <Dialog.Root>
-        <Dialog.Trigger as={Box}>
+        <Dialog.Trigger as={Box} color="text.sidebar">
           <Tooltip
             showArrow
             content="start a new chat with a user in your organization"

@@ -9,13 +9,13 @@ export const system = createSystem(defaultConfig, {
             value: { base: 'colors.gray.100', _dark: 'colors.blue.300' },
           },
           nav: {
-            value: { base: '#80A1BA', _dark: '#13151b' },
+            value: { base: '#FFFEFC', _dark: '#1A1D21' },
           },
           primaryBtn: {
-            value: { base: '#91C4C3', _dark: '{#A64D79/90}' },
+            value: { base: '#59295A', _dark: '#201024' },
           },
           navHover: {
-            value: { base: '{#91C4C3/60}', _dark: '{#A64D79/60}' },
+            value: { base: '{#59295A/60}', _dark: '{#A64D79/40}' },
           },
           stack: {
             value: { base: 'colors.white', _dark: 'colors.gray.900' },
@@ -29,20 +29,20 @@ export const system = createSystem(defaultConfig, {
           menuItem: {
             value: { base: 'colors.blue.100', _dark: 'colors.gray.900' },
           },
-          sideBar: {
+          sidebar: {
             value: { base: '#d6b3b8', _dark: '{#670D2F/50}' },
           },
           form: {
             value: { base: '{#80A1BA/90}', _dark: '{#3B1C32/90}' },
           },
           itemHover: {
-            value: { base: '{#91C4C3/40}', _dark: 'colors.gray.700' },
+            value: { base: '{colors.gray.500/60}', _dark: 'colors.gray.700' },
           },
           selectedItem: {
-            value: { base: '{#91C4C3/90}', _dark: '{colors.gray.900/90}' },
+            value: { base: '#F9EDFF', _dark: '{colors.gray.300/90}' },
           },
           chatBox: {
-            value: { base: '{#FFF7DD/40}', _dark: '{colors.gray.900/80}' },
+            value: { base: 'colors.gray.100', _dark: '{colors.gray.800/40}' },
           },
         },
         text: {
@@ -50,16 +50,22 @@ export const system = createSystem(defaultConfig, {
             value: { base: 'colors.black', _dark: 'colors.white' },
           },
           primaryBtn: {
-            value: { base: '#FFF7DD', _dark: '#1A1A1D' },
+            value: { base: '#FFFEFC', _dark: '#FFFEFC' },
           },
           logo: {
-            value: { base: '#FFF7DD', _dark: '#A64D79' },
+            value: { base: '#1A1A1D', _dark: 'colors.gray.200' },
           },
           formHeader: {
             value: { base: '#FFF7DD', _dark: 'colors.gray.300' },
           },
-          sidebarHeader: {
-            value: { base: 'colors.gray.600', _dark: 'colors.gray.400' },
+          sidebar: {
+            value: { base: '#DCC9E1', _dark: 'colors.gray.400' },
+          },
+          selectedItem: {
+            value: {
+              base: '#7B557D',
+              _dark: 'colors.gray.900',
+            },
           },
         },
 
@@ -69,6 +75,14 @@ export const system = createSystem(defaultConfig, {
           },
           signupInput: {
             value: { base: 'colors.gray.900', _dark: 'colors.gray.200' },
+          },
+        },
+      },
+      gradients: {
+        sidebar: {
+          value: {
+            base: 'linear-gradient(to right, #572759, #59295A)',
+            _dark: 'linear-gradient(to right, #1B0F1E, #201024)',
           },
         },
       },
@@ -102,7 +116,6 @@ export const system = createSystem(defaultConfig, {
         primary: { value: 'black' },
         secondary: { value: 'colors.gray.100' },
       },
-      // (you can also define other token groups: spacing, sizes, etc.)
     },
   },
 });

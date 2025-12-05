@@ -76,13 +76,12 @@ body,
 
 /* Respect Chakra v3's color mode class */
 html.light {
-  
-  background-color: rgb(from #FFF7DD r g b / 10%);
+  background-color: '#FFFEFC';
   color: "black";
 }
 
 html.dark {
-  background-color: #13151b;
+  background-color: #1A1D21;
   /* theme(tokens.colors.gray.900) */
   color: #e2e8f0;
 }

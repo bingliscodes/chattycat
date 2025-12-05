@@ -1,7 +1,7 @@
 // Sidebar.jsx
 'use client';
 import { useContext } from 'react';
-import { Flex, Box, Text, Accordion, Span, Center } from '@chakra-ui/react';
+import { Flex, Text, Accordion, Span } from '@chakra-ui/react';
 
 import { UserContext } from '@/contexts/UserContext';
 import { ChatContext } from '@/contexts/ChatContext';
@@ -43,14 +43,14 @@ export default function UserSidebar() {
   };
 
   return (
-    <Flex align="flex-start" direction="column" bg="bg.sideBar" pt={2} h="100%">
-      <Text
-        ml={4}
-        fontWeight="bold"
-        fontSize="4xl"
-        mb={4}
-        color="text.sidebarHeader"
-      >
+    <Flex
+      align="flex-start"
+      direction="column"
+      bgGradient="sidebar"
+      pt={2}
+      h="100%"
+    >
+      <Text ml={4} fontWeight="bold" fontSize="4xl" mb={4} color="text.sidebar">
         {organization?.organizationName}
       </Text>
 
@@ -59,11 +59,11 @@ export default function UserSidebar() {
         <Accordion.Item value="Channels" border="none">
           <Accordion.ItemTrigger
             bg="none"
-            rounded="full"
+            rounded="lg"
             _hover={{ bg: 'bg.itemHover' }}
           >
             <Accordion.ItemIndicator />
-            <Span flex="1" color="text" textStyle="2xl">
+            <Span flex="1" color="text.sidebar" textStyle="2xl">
               Channels
             </Span>
           </Accordion.ItemTrigger>
@@ -74,14 +74,22 @@ export default function UserSidebar() {
                   key={ch.id}
                   onClick={() => handleJoinRoom(ch, 'ch')}
                   bg={channel?.id === ch?.id ? 'bg.selectedItem' : undefined}
-                  rounded="full"
+                  rounded="lg"
                   cursor="pointer"
                   mx={3}
                   mb={1}
-                  _hover={{ bg: 'bg.itemHover', rounded: 'full' }}
+                  _hover={{ bg: 'bg.itemHover', rounded: 'lg' }}
                 >
                   <Flex ml={6} gap={2} align="center" h="1rem" mt={2}>
-                    <Text fontSize="md" color="text" lineHeight="1">
+                    <Text
+                      fontSize="md"
+                      color={
+                        channel?.id === ch?.id
+                          ? 'text.selectedItem'
+                          : 'text.sidebar'
+                      }
+                      lineHeight="1"
+                    >
                       # {ch.channelName}
                     </Text>
                     <AddToChannelButton channel={ch} />
@@ -97,23 +105,23 @@ export default function UserSidebar() {
         <Accordion.Item value="Direct Messages" border="none">
           <Accordion.ItemTrigger
             bg="none"
-            rounded="full"
+            rounded="lg"
             _hover={{ bg: 'bg.itemHover' }}
           >
             <Accordion.ItemIndicator />
-            <Span flex="1" color="text" textStyle="2xl">
+            <Span flex="1" color="text.sidebar" textStyle="2xl">
               Direct Messages
             </Span>
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
             <Accordion.ItemBody
               _hover={{ bg: 'bg.itemHover' }}
-              rounded="full"
+              rounded="lg"
               mx={3}
               mb={1}
             >
               <Flex ml={6} align="center" gap={2} mt={2} h="1rem">
-                <Text cursor="default" fontSize="md">
+                <Text cursor="default" fontSize="md" color="text.sidebar">
                   Start new conversation
                 </Text>
                 <StartPrivateChatButton cursor="pointer" />
@@ -130,7 +138,7 @@ export default function UserSidebar() {
                       : undefined
                   }
                   _hover={{ bg: 'bg.itemHover' }}
-                  rounded="full"
+                  rounded="lg"
                   cursor="pointer"
                   mx={3}
                 >
@@ -138,6 +146,7 @@ export default function UserSidebar() {
                     firstName={usr.firstName}
                     lastName={usr.lastName}
                     avatarUrl={usr.avatarUrl ?? undefined}
+                    isSelected={directMessage?.id === usr?.id}
                   />
                 </Accordion.ItemBody>
               ))}
