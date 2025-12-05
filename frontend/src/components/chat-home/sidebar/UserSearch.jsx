@@ -7,8 +7,9 @@ import { UserContext } from '@/contexts/UserContext';
 import UserCard from './UserCard';
 
 export default function UserSearch({ mode }) {
-  const [searchResults, setSearchResults] = useState();
-  const [organizationUsers, setOrganizationUsers] = useState();
+  const [inputValue, setInputValue] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [organizationUsers, setOrganizationUsers] = useState([]);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -36,7 +37,6 @@ export default function UserSearch({ mode }) {
 
   const debounceOnChange = debounce(async (e) => {
     const input = e.target.value.trim().toLowerCase();
-
     const filteredResults = organizationUsers.filter((usr) => {
       const firstName = usr.firstName?.toLowerCase() || '';
       const lastName = usr.lastName?.toLowerCase() || '';
@@ -51,7 +51,7 @@ export default function UserSearch({ mode }) {
       );
     });
     setSearchResults(filteredResults);
-    setMenuIsOpen(organizationUsers.length === 0 ? false : true);
+    setMenuIsOpen(filteredResults.length === 0 ? false : true);
   }, 500);
 
   const getAnchorRect = () => inputRef.current.getBoundingClientRect();
@@ -61,6 +61,7 @@ export default function UserSearch({ mode }) {
       <Input
         placeholder="Enter a name or email"
         ref={inputRef}
+        onBlur={(e) => e.target.focus()}
         onChange={debounceOnChange}
       />
 
