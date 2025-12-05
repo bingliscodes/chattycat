@@ -204,7 +204,12 @@ export default function ChatInterface({
             />
             <Field.ErrorText ml={3}>{errors.message?.message}</Field.ErrorText>
           </Field.Root>
-          <IconButton bg="bg.primaryBtn" type="submit" mr={2}>
+          <IconButton
+            color="text.primaryBtn"
+            bg="bg.primaryBtn"
+            type="submit"
+            mr={2}
+          >
             <AiOutlineSend />
           </IconButton>
         </HStack>

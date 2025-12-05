@@ -17,6 +17,7 @@ export default function ComponentSplitter({ children, ...props }) {
       display="flex"
       w="100%"
       h="100%"
+      gap={1}
       panels={panelIds.map((id) => ({ id }))}
     >
       {React.Children.map(children, (child, index) => (
@@ -40,15 +41,10 @@ export default function ComponentSplitter({ children, ...props }) {
               width="3px"
               minW="3px"
               padding="0"
-              border="none"
               borderRadius="0"
-              bg="#201024"
-              _hover={{ bg: 'gray.500' }}
+              bg="none"
+              _hover={{ bg: 'blue.500' }}
               cursor="col-resize"
-              sx={{
-                WebkitAppearance: 'none', // ensure minimal appearance
-                MozAppearance: 'none',
-              }}
             />
           )}
         </>
