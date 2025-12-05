@@ -41,7 +41,16 @@ export default function UserSettings({ userData }) {
           <Field.ErrorText></Field.ErrorText>
         </Field.Root>
 
-        <Button type="submit">Update Settings</Button>
+        <Button
+          type="submit"
+          bg="bg.primaryBtn"
+          color="text.primaryBtn"
+          _hover={{
+            bg: 'bg.navHover',
+          }}
+        >
+          Update Settings
+        </Button>
         <Stack pt={6}></Stack>
       </Flex>
     </form>

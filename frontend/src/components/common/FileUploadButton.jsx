@@ -15,7 +15,14 @@ export function FileUploadButton({ uploadFn }) {
       >
         <FileUpload.HiddenInput />
         <FileUpload.Trigger asChild>
-          <Button size="sm">
+          <Button
+            size="sm"
+            bg="bg.primaryBtn"
+            color="text.primaryBtn"
+            _hover={{
+              bg: 'bg.navHover',
+            }}
+          >
             <HiUpload /> Change Avatar
           </Button>
         </FileUpload.Trigger>
