@@ -14,6 +14,21 @@ export const system = createSystem(defaultConfig, {
           primaryBtn: {
             value: { base: '#59295A', _dark: '#201024' },
           },
+          secondaryBtn: {
+            value: {
+              base: 'colors.white',
+              _dark: 'colors.white',
+            },
+          },
+          secondaryBtnHover: {
+            value: {
+              base: 'colors.gray.400',
+              _dark: 'colors.gray.400',
+            },
+          },
+          form: {
+            value: { base: '{#80A1BA/90}', _dark: '{#3B1C32/90}' },
+          },
           navHover: {
             value: { base: '{#59295A/60}', _dark: '{#A64D79/40}' },
           },
@@ -32,9 +47,6 @@ export const system = createSystem(defaultConfig, {
           sidebar: {
             value: { base: '#d6b3b8', _dark: '{#670D2F/50}' },
           },
-          form: {
-            value: { base: '{#80A1BA/90}', _dark: '{#3B1C32/90}' },
-          },
           itemHover: {
             value: { base: '{colors.gray.500/60}', _dark: 'colors.gray.700' },
           },
@@ -52,11 +64,17 @@ export const system = createSystem(defaultConfig, {
           primaryBtn: {
             value: { base: '#FFFEFC', _dark: '#FFFEFC' },
           },
+          secondaryBtn: {
+            value: {
+              base: '#1A1A1D',
+              _dark: '#1A1A1D',
+            },
+          },
           logo: {
             value: { base: '#1A1A1D', _dark: 'colors.gray.200' },
           },
           formHeader: {
-            value: { base: '#FFF7DD', _dark: 'colors.gray.300' },
+            value: { base: '#DCC9E1', _dark: 'colors.gray.400' },
           },
           sidebar: {
             value: { base: '#DCC9E1', _dark: 'colors.gray.400' },

@@ -38,12 +38,12 @@ export default function ComponentSplitter({ children, ...props }) {
           {index < panelCount - 1 && (
             <Splitter.ResizeTrigger
               id={`${index}:${index + 1}`}
-              width="3px"
-              minW="3px"
-              padding="0"
+              width="4px"
+              minW="4px"
               borderRadius="0"
+              padding="3px"
               bg="none"
-              _hover={{ bg: 'blue.500' }}
+              _hover={{ bg: 'blue.300' }}
               cursor="col-resize"
             />
           )}

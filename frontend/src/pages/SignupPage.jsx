@@ -61,19 +61,22 @@ export default function SignupCard() {
           gap={4}
           py={6}
           w="50%"
-          bg="bg.form"
           p={6}
           borderRadius="1rem"
+          bgGradient="sidebar"
         >
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="xl" fontWeight="bold" color="text.sidebar">
             Create an account to get started!
           </Text>
           <Field.Root px={4}>
-            <Field.Label>First Name</Field.Label>
+            <Field.Label color="text.sidebar">First Name</Field.Label>
             <Input
               borderColor="borders"
               type="text"
               placeholder="first name"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="firstName"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
@@ -81,11 +84,14 @@ export default function SignupCard() {
           </Field.Root>
 
           <Field.Root px={4}>
-            <Field.Label>Last Name</Field.Label>
+            <Field.Label color="text.sidebar">Last Name</Field.Label>
             <Input
               borderColor="borders"
               type="text"
               placeholder="last name"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="lastName"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
@@ -93,11 +99,14 @@ export default function SignupCard() {
           </Field.Root>
 
           <Field.Root px={4}>
-            <Field.Label>Email Address</Field.Label>
+            <Field.Label color="text.sidebar">Email Address</Field.Label>
             <Input
               borderColor="borders"
               type="email"
               placeholder="email address"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="email"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
@@ -105,11 +114,14 @@ export default function SignupCard() {
           </Field.Root>
 
           <Field.Root px={4}>
-            <Field.Label>Password</Field.Label>
+            <Field.Label color="text.sidebar"> Password</Field.Label>
             <Input
               borderColor="borders"
               type="text"
               placeholder="password"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="password"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
@@ -117,11 +129,14 @@ export default function SignupCard() {
           </Field.Root>
 
           <Field.Root px={4}>
-            <Field.Label>Confirm Password</Field.Label>
+            <Field.Label color="text.sidebar">Confirm Password</Field.Label>
             <Input
               borderColor="borders"
               type="text"
               placeholder="confirm password"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="passwordConfirm"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
@@ -132,13 +147,14 @@ export default function SignupCard() {
             mx={4}
             mt={2}
             type="submit"
-            bg="bg.primaryBtn"
+            bg="bg.secondaryBtn"
+            color="text.secondaryBtn"
             textStyle="xl"
-            _hover={{ bg: 'bg.navHover' }}
+            _hover={{ bg: 'bg.secondaryBtnHover' }}
           >
             Sign Up
           </Button>
-          <Stack pt={3}>
+          <Stack pt={3} color="text.sidebar">
             Already a user? <NavLink to="/login">Login</NavLink>
           </Stack>
         </Flex>

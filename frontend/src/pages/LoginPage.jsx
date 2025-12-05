@@ -74,19 +74,22 @@ export default function LoginCard() {
           gap={4}
           py={6}
           w="50%"
-          bg="bg.form"
+          bgGradient="sidebar"
           p={6}
           borderRadius="1rem"
         >
-          <Text fontSize="3xl" fontWeight="bold" color="text.formHeader">
+          <Text fontSize="3xl" fontWeight="bold" color="text.sidebar">
             Login
           </Text>
           <Field.Root px={4}>
-            <Field.Label>Email Address</Field.Label>
+            <Field.Label color="text.sidebar">Email Address</Field.Label>
             <Input
               borderColor="borders"
               type="email"
               placeholder="email address"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="email"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
@@ -94,17 +97,21 @@ export default function LoginCard() {
           </Field.Root>
 
           <Field.Root px={4}>
-            <Field.Label>Password</Field.Label>
+            <Field.Label color="text.sidebar">Password</Field.Label>
             <Input
               borderColor="borders"
               type={checked ? 'text' : 'password'}
               placeholder="password"
+              _placeholder={{
+                color: 'text.sidebar/60',
+              }}
               name="password"
               _focus={{ borderColor: 'bg.primaryBtn' }}
             />
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
           <Checkbox.Root
+            color="text.sidebar"
             px={4}
             checked={checked}
             onCheckedChange={(e) => setChecked(!!e.checked)}
@@ -118,14 +125,15 @@ export default function LoginCard() {
             mx={4}
             mt={2}
             type="submit"
-            bg="bg.primaryBtn"
+            bg="bg.secondaryBtn"
+            color="text.secondaryBtn"
             textStyle="xl"
-            _hover={{ bg: 'bg.navHover' }}
+            _hover={{ bg: 'bg.secondaryBtnHover' }}
           >
             Log In
           </Button>
 
-          <Stack pt={3}>
+          <Stack pt={3} color="text.sidebar">
             Don't have an account yet? <NavLink to="/signup">Signup</NavLink>
           </Stack>
         </Flex>
