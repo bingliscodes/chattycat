@@ -1,13 +1,17 @@
 import { Op } from 'sequelize';
 
 import { createOne } from './handlerFactory.js';
-import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
+import {
+  ChannelMessage,
+  DirectMessage,
+  Message,
+} from '../models/messageModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import Channel from '../models/channelModel.js';
 import User from '../models/userModel.js';
 
 export const getAllMessages = catchAsync(async (req, res, next) => {
-  const messages = await ChannelMessage.findAll({
+  const messages = await Message.findAll({
     include: [
       { model: Channel, attributes: ['channelName', 'id'] },
       { model: User, attributes: ['firstName', 'lastName'] },
@@ -27,7 +31,7 @@ export const createDirectMessage = createOne(DirectMessage);
 export const getChannelMessages = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
 
-  const messages = await ChannelMessage.findAll({
+  const messages = await Message.findAll({
     where: { channelId },
     include: [
       { model: Channel, attributes: ['channelName', 'id'] },
@@ -67,7 +71,7 @@ export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
 
   const user = await User.findByPk(req.user.id);
 
-  const messages = await DirectMessage.findAll({
+  const messages = await Message.findAll({
     where: {
       [Op.or]: [
         { [Op.and]: [{ senderId }, { receiverId: req.user.id }] },

@@ -3,7 +3,11 @@ import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import Organization from '../models/organizationModel.js';
 import modelRelationships from './entityRelationships.js';
-import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
+import {
+  ChannelMessage,
+  DirectMessage,
+  Message,
+} from '../models/messageModel.js';
 import { findOrCreateDMRoom } from '../utils/createRoom.js';
 
 async function main() {
@@ -67,23 +71,26 @@ async function main() {
     organizationId: testOrg.id,
   });
 
-  const message1 = await ChannelMessage.create({
+  const message1 = await Message.create({
     messageContent: 'Testing!',
     userId: admin.id,
     channelId: testChannel.id,
+    type: 'channel',
   });
 
   const dmRoom = await findOrCreateDMRoom(cannoli.id, bookie.id);
 
-  const dm = await DirectMessage.create({
-    messageContent: 'Sup fucker',
+  const dm = await Message.create({
+    messageContent: 'Sup Bookie!',
+    type: 'direct',
     senderId: cannoli.id,
     receiverId: bookie.id,
     roomId: dmRoom.id,
   });
 
-  const dm2 = await DirectMessage.create({
+  const dm2 = await Message.create({
     messageContent: 'Meowdy pawtner',
+    type: 'direct',
     senderId: bookie.id,
     receiverId: cannoli.id,
     roomId: dmRoom.id,

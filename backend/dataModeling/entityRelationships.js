@@ -5,6 +5,7 @@ import {
   ChannelMessage,
   DirectMessage,
   DirectMessageRoom,
+  Message,
 } from '../models/messageModel.js';
 import UserChannel from '../models/userChannelModel.js';
 
@@ -18,47 +19,69 @@ const modelRelationships = async () => {
   User.belongsToMany(Channel, { through: UserChannel });
   Channel.belongsToMany(User, { through: UserChannel });
 
-  User.hasMany(ChannelMessage);
-  ChannelMessage.belongsTo(User);
+  User.hasMany(Message, { foreignKey: 'senderId', as: 'SentMessages' });
+  Message.belongsTo(User, { foreignKey: 'senderId', as: 'Sender' });
 
-  Channel.hasMany(ChannelMessage);
-  ChannelMessage.belongsTo(Channel);
+  User.hasMany(Message, { foreignKey: 'receiverId', as: 'ReceivedMessages' });
+  Message.belongsTo(User, { foreignKey: 'receiverId', as: 'Receiver' });
 
-  // User <--> DirectMessage
-  User.hasMany(DirectMessage, { foreignKey: 'senderId', as: 'SentMessages' });
-  DirectMessage.belongsTo(User, { foreignKey: 'senderId', as: 'Sender' });
+  Channel.hasMany(Message, { foreignKey: 'channelId', as: 'Messages' });
+  Message.belongsTo(Channel, { foreignKey: 'channelId', as: 'Channel' });
 
-  // One User can receive many messages (as receiver)
-  User.hasMany(DirectMessage, {
-    foreignKey: 'receiverId',
-    as: 'ReceivedMessages',
+  DirectMessageRoom.hasMany(Message, { foreignKey: 'roomId', as: 'Messages' });
+  Message.belongsTo(DirectMessageRoom, { foreignKey: 'roomId', as: 'Room' });
+
+  Message.hasMany(Message, {
+    foreignKey: 'parentMessageId',
+    as: 'ThreadReplies',
   });
-  DirectMessage.belongsTo(User, { foreignKey: 'receiverId', as: 'Receiver' });
+  Message.belongsTo(Message, {
+    foreignKey: 'parentMessageId',
+    as: 'ParentMessage',
+  });
 
-  // User <--> DirectMessageRoom
-  // A user can be user1 in many rooms
-  User.hasMany(DirectMessageRoom, {
-    foreignKey: 'user1Id',
-    as: 'DMRoomsAsUser1',
-  });
-  DirectMessageRoom.belongsTo(User, { foreignKey: 'user1Id', as: 'User1' });
+  ///////////////////// OLD RELATIONSHIPS WITH SEPARATE MESSAGE TYPES /////////////////////
+  // User.hasMany(ChannelMessage);
+  // ChannelMessage.belongsTo(User);
 
-  // A user can be user2 in many rooms
-  User.hasMany(DirectMessageRoom, {
-    foreignKey: 'user2Id',
-    as: 'DMRoomsAsUser2',
-  });
-  DirectMessageRoom.belongsTo(User, { foreignKey: 'user2Id', as: 'User2' });
+  // Channel.hasMany(ChannelMessage);
+  // ChannelMessage.belongsTo(Channel);
 
-  // DirectMessageRoom <--> DirectMessage
-  DirectMessageRoom.hasMany(DirectMessage, {
-    foreignKey: 'roomId',
-    as: 'Messages',
-  });
-  DirectMessage.belongsTo(DirectMessageRoom, {
-    foreignKey: 'roomId',
-    as: 'Room',
-  });
+  // // User <--> DirectMessage
+  // User.hasMany(DirectMessage, { foreignKey: 'senderId', as: 'SentMessages' });
+  // DirectMessage.belongsTo(User, { foreignKey: 'senderId', as: 'Sender' });
+
+  // // One User can receive many messages (as receiver)
+  // User.hasMany(DirectMessage, {
+  //   foreignKey: 'receiverId',
+  //   as: 'ReceivedMessages',
+  // });
+  // DirectMessage.belongsTo(User, { foreignKey: 'receiverId', as: 'Receiver' });
+
+  // // User <--> DirectMessageRoom
+  // // A user can be user1 in many rooms
+  // User.hasMany(DirectMessageRoom, {
+  //   foreignKey: 'user1Id',
+  //   as: 'DMRoomsAsUser1',
+  // });
+  // DirectMessageRoom.belongsTo(User, { foreignKey: 'user1Id', as: 'User1' });
+
+  // // A user can be user2 in many rooms
+  // User.hasMany(DirectMessageRoom, {
+  //   foreignKey: 'user2Id',
+  //   as: 'DMRoomsAsUser2',
+  // });
+  // DirectMessageRoom.belongsTo(User, { foreignKey: 'user2Id', as: 'User2' });
+
+  // // DirectMessageRoom <--> DirectMessage
+  // DirectMessageRoom.hasMany(DirectMessage, {
+  //   foreignKey: 'roomId',
+  //   as: 'Messages',
+  // });
+  // DirectMessage.belongsTo(DirectMessageRoom, {
+  //   foreignKey: 'roomId',
+  //   as: 'Room',
+  // });
 };
 
 modelRelationships();
