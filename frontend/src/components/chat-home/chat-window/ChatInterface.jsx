@@ -91,6 +91,7 @@ export default function ChatInterface({
         messageContent: message,
         userId: id,
         channelId: sendLocation,
+        type: 'channel',
       };
     }
     if (mode === 'dm') {
@@ -99,10 +100,11 @@ export default function ChatInterface({
         senderId: id,
         receiverId: directMessage?.id,
         roomId: sendLocation,
+        type: 'direct',
       };
     }
 
-    userSocket.emit('send-message', messageContent, messageData, mode);
+    userSocket.emit('send-message', messageContent, messageData);
 
     if (isNewDM)
       userSocket.emit('new-dm', {

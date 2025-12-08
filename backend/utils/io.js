@@ -1,5 +1,9 @@
 import User from '../models/userModel.js';
-import { ChannelMessage, DirectMessage } from '../models/messageModel.js';
+import {
+  ChannelMessage,
+  DirectMessage,
+  Message,
+} from '../models/messageModel.js';
 import Channel from '../models/channelModel.js';
 
 export const setupIO = (io) => {
@@ -42,11 +46,7 @@ export const setupIO = (io) => {
 
     socket.on(
       'send-message',
-      (
-        { messageBody, sender, channel, timestamp, datestamp },
-        messageData,
-        mode,
-      ) => {
+      ({ messageBody, sender, channel, timestamp, datestamp }, messageData) => {
         // Security: Ensure user has permission to send message to a channel
 
         if (
@@ -57,7 +57,7 @@ export const setupIO = (io) => {
         )
           return;
         // Send message to DB
-        createMessage(messageData, mode);
+        createMessage(messageData);
 
         console.log(`📨 [SERVER] Message from ${socket.id}: ${messageBody}`);
         if (channel) {
@@ -85,29 +85,11 @@ export const setupIO = (io) => {
 };
 
 const createMessage = async (messageData, mode) => {
-  if (mode === 'ch') {
-    const { messageContent, userId, channelId } = messageData;
-    try {
-      await ChannelMessage.create({ messageContent, userId, channelId });
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  }
-
-  if (mode === 'dm') {
-    const { messageContent, senderId, receiverId, roomId } = messageData;
-    try {
-      await DirectMessage.create({
-        messageContent,
-        senderId,
-        receiverId,
-        roomId,
-      });
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+  try {
+    await Message.create(messageData);
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 

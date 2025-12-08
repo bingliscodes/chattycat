@@ -27,6 +27,7 @@ export const getAllMessages = catchAsync(async (req, res, next) => {
 
 export const createChannelMessage = createOne(ChannelMessage);
 export const createDirectMessage = createOne(DirectMessage);
+export const createMessage = createOne(Message);
 
 export const getChannelMessages = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
