@@ -16,12 +16,12 @@ export default function ChannelChat() {
       try {
         setLoading(true);
         const res = await fetchChannelMessageHistory(channel.id);
-
+        console.log(res.data);
         const mappedMessages = res.data.map((msg) => ({
           messageBody: msg.messageContent,
           sender: {
-            firstName: msg.user.firstName,
-            lastName: msg.user.lastName,
+            firstName: msg.Sender.firstName,
+            lastName: msg.Sender.lastName,
           },
           channel: msg.channel,
           datestamp: new Date(msg.createdAt).toLocaleDateString('en-US', {

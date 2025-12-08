@@ -3,11 +3,7 @@ import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import Organization from '../models/organizationModel.js';
 import modelRelationships from './entityRelationships.js';
-import {
-  ChannelMessage,
-  DirectMessage,
-  Message,
-} from '../models/messageModel.js';
+import { Message } from '../models/messageModel.js';
 import { findOrCreateDMRoom } from '../utils/createRoom.js';
 
 async function main() {
@@ -73,7 +69,7 @@ async function main() {
 
   const message1 = await Message.create({
     messageContent: 'Testing!',
-    userId: admin.id,
+    senderId: admin.id,
     channelId: testChannel.id,
     type: 'channel',
   });
@@ -95,8 +91,6 @@ async function main() {
     receiverId: cannoli.id,
     roomId: dmRoom.id,
   });
-
-  const channels = await Channel.findAll(); // We will use this to get the channels, then we can filter by name or id
 
   await cannoli.addChannels([testChannel, testChannel2]);
   await bookie.addChannels([testChannel, testChannel2]);

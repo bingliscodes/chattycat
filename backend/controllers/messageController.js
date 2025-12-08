@@ -31,12 +31,17 @@ export const createMessage = createOne(Message);
 
 export const getChannelMessages = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
+  console.log(channelId);
 
   const messages = await Message.findAll({
     where: { channelId },
     include: [
-      { model: Channel, attributes: ['channelName', 'id'] },
-      { model: User, attributes: ['firstName', 'lastName'] },
+      {
+        model: Channel,
+        as: 'Channel',
+        attributes: ['channelName', 'id'],
+      },
+      { model: User, as: 'Sender', attributes: ['firstName', 'lastName'] },
     ],
   });
 

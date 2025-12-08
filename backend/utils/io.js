@@ -1,9 +1,5 @@
 import User from '../models/userModel.js';
-import {
-  ChannelMessage,
-  DirectMessage,
-  Message,
-} from '../models/messageModel.js';
+import { Message } from '../models/messageModel.js';
 import Channel from '../models/channelModel.js';
 
 export const setupIO = (io) => {
