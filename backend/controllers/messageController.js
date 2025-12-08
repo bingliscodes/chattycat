@@ -31,7 +31,6 @@ export const createMessage = createOne(Message);
 
 export const getChannelMessages = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
-  console.log(channelId);
 
   const messages = await Message.findAll({
     where: { channelId },
@@ -56,6 +55,27 @@ export const getAllReceivedMessages = catchAsync(async (req, res, next) => {
   const user = await User.findByPk(req.user.id);
 
   const messages = await user.getReceivedMessages({
+    include: [
+      {
+        model: User,
+        as: 'Sender',
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+    ],
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: messages.length,
+    data: messages,
+  });
+});
+
+export const getThreadMessages = catchAsync(async (req, res, next) => {
+  const parentMessageId = req.params.id;
+
+  const messages = await Message.findAll({
+    where: { parentMessageId },
     include: [
       {
         model: User,

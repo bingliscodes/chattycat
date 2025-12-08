@@ -5,8 +5,9 @@ import Sidebar from '../sidebar/Sidebar';
 import ChannelChat from './ChannelChat';
 import DirectMessages from './DirectMessages';
 import { ChatContext } from '@/contexts/ChatContext';
-
+import MessageThread from '../message-thread/MessageThread';
 import ComponentSplitter from '../../common/ComponentSplitter';
+
 export default function ChatLayout() {
   const { directMessage, channel } = useContext(ChatContext);
 
@@ -18,7 +19,7 @@ export default function ChatLayout() {
           {channel && <ChannelChat />}
           {directMessage && <DirectMessages />}
         </Flex>
-        {/* <Flex flex="1" h="100%"></Flex> */}
+        <MessageThread />
       </ComponentSplitter>
     </Flex>
   );
