@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
+import { AiOutlineWechatWork } from 'react-icons/ai';
 
 import { ChatContext } from '@/contexts/ChatContext';
 
@@ -28,6 +29,19 @@ export default function ChatMessage({ msg }) {
         </Text>
       </Flex>
       <Text>{msg.messageBody}</Text>
+
+      {/* Placeholder to indicate message has a thread */}
+      <Flex
+        cursor="pointer"
+        gap={2}
+        align="center"
+        onClick={() => {
+          console.log('TODO: show thread on click');
+        }}
+      >
+        <Text fontSize="xs">View thread</Text>
+        <AiOutlineWechatWork />
+      </Flex>
     </Box>
   );
 }

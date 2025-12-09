@@ -27,13 +27,30 @@ export const getAllMessages = catchAsync(async (req, res, next) => {
 
 export const createChannelMessage = createOne(ChannelMessage);
 export const createDirectMessage = createOne(DirectMessage);
-export const createMessage = createOne(Message);
+
+export const createMessage = catchAsync(async (req, res, next) => {
+  const newMsg = await Message.create(req.body);
+
+  if (req.body.parentMessageId) {
+    await Message.increment('replyCount', {
+      by: 1,
+      where: { id: req.body.parentMessageId },
+    });
+  }
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: newMsg,
+    },
+  });
+});
 
 export const getChannelMessages = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
 
   const messages = await Message.findAll({
-    where: { channelId },
+    where: { [Op.and]: [{ channelId }, { parentMessageId: null }] },
     include: [
       {
         model: Channel,
@@ -71,11 +88,22 @@ export const getAllReceivedMessages = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getThreadMessages = catchAsync(async (req, res, next) => {
-  const parentMessageId = req.params.id;
+export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
+  const senderId = req.params.userId;
 
   const messages = await Message.findAll({
-    where: { parentMessageId },
+    where: {
+      [Op.and]: [
+        {
+          [Op.or]: [
+            { [Op.and]: [{ senderId }, { receiverId: req.user.id }] },
+            { [Op.and]: [{ senderId: req.user.id }, { receiverId: senderId }] },
+          ],
+        },
+        { parentMessageId: null },
+      ],
+    },
+    order: [['createdAt', 'ASC']],
     include: [
       {
         model: User,
@@ -92,22 +120,11 @@ export const getThreadMessages = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
-  const senderId = req.params.userId;
+export const getThreadMessages = catchAsync(async (req, res, next) => {
+  const parentMessageId = req.params.id;
 
   const messages = await Message.findAll({
-    where: {
-      [Op.and]: [
-        {
-          [Op.or]: [
-            { [Op.and]: [{ senderId }, { receiverId: req.user.id }] },
-            { [Op.and]: [{ senderId: req.user.id }, { receiverId: senderId }] },
-          ],
-        },
-        { parentMessageId: { [Op.is]: null } },
-      ],
-    },
-    order: [['createdAt', 'ASC']],
+    where: { parentMessageId },
     include: [
       {
         model: User,

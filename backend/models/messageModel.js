@@ -85,6 +85,10 @@ export const Message = sequelize.define('message', {
     },
     onDelete: 'CASCADE',
   },
+  replyCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
   type: {
     type: DataTypes.ENUM('channel', 'direct'),
     allowNull: false,

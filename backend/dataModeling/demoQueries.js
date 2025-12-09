@@ -92,6 +92,15 @@ async function main() {
     roomId: dmRoom.id,
   });
 
+  const dmThread = await Message.create({
+    messageContent: 'This is a thread reply',
+    type: 'direct',
+    senderId: cannoli.id,
+    receiverId: bookie.id,
+    roomId: dmRoom.id,
+    parentMessageId: dm2.id,
+  });
+
   await cannoli.addChannels([testChannel, testChannel2]);
   await bookie.addChannels([testChannel, testChannel2]);
   await guy.addChannels(testChannel);
