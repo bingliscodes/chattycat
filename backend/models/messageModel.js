@@ -99,6 +99,7 @@ export const ChannelMessage = sequelize.define('channelMessage', {
   },
   messageContent: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   channelId: {
     type: DataTypes.UUID,

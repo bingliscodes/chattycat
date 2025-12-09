@@ -52,21 +52,6 @@ export const fetchChannelMessageHistory = async (channelId) => {
   }
 };
 
-export const fetchDirectMessageHistory = async () => {
-  try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/received`,
-      { withCredentials: true }
-    );
-
-    if (res.status !== 200)
-      throw new Error('Failed to fetch direct message history');
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};
-
 export const fetchUserMessageHistory = async (userId) => {
   try {
     const res = await axios.get(
@@ -75,6 +60,21 @@ export const fetchUserMessageHistory = async (userId) => {
     );
     if (res.status !== 200)
       throw new Error('Failed to fetch direct message history');
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const fetchThreadMessageHistory = async (messageId) => {
+  /* Returns an array of message objects containing all messages associated with the parent messageId*/
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}messages/${messageId}`,
+      { withCredentials: true }
+    );
 
     return res.data;
   } catch (err) {

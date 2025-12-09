@@ -42,7 +42,10 @@ export const setupIO = (io) => {
 
     socket.on(
       'send-message',
-      ({ messageBody, sender, channel, timestamp, datestamp }, messageData) => {
+      (
+        { messageBody, sender, channel, timestamp, datestamp, id },
+        messageData,
+      ) => {
         // Security: Ensure user has permission to send message to a channel
 
         if (
@@ -80,7 +83,7 @@ export const setupIO = (io) => {
   });
 };
 
-const createMessage = async (messageData, mode) => {
+const createMessage = async (messageData) => {
   try {
     await Message.create(messageData);
   } catch (err) {

@@ -3,7 +3,6 @@ import {
   Box,
   Textarea,
   Field,
-  Button,
   Text,
   HStack,
   Flex,
@@ -15,6 +14,7 @@ import { AiOutlineSend } from 'react-icons/ai';
 
 import { UserContext } from '@/contexts/UserContext';
 import { ChatContext } from '@/contexts/ChatContext';
+import ChatMessage from '../ChatMessage';
 
 export default function ChatInterface({
   messages,
@@ -147,24 +147,7 @@ export default function ChatInterface({
             </Flex>
 
             {msgs.map((msg, idx) => (
-              <Box
-                key={idx}
-                textAlign="left"
-                p={2}
-                borderRadius="md"
-                boxShadow="sm"
-                mb={1}
-              >
-                <Flex align="flex-end" gap={2}>
-                  <Text fontSize="sm" fontWeight="bold">
-                    {`${msg.sender.firstName} ${msg.sender.lastName}`}
-                  </Text>
-                  <Text fontSize="xs" fontWeight="light">
-                    {msg.timestamp}
-                  </Text>
-                </Flex>
-                <Text>{msg.messageBody}</Text>
-              </Box>
+              <ChatMessage key={idx} msg={msg} />
             ))}
           </Box>
         ))}

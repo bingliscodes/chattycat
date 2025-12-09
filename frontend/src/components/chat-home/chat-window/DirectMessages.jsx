@@ -47,6 +47,7 @@ export default function DirectMessageChat() {
             minute: '2-digit',
             hour12: true,
           }),
+          messageId: msg.id,
         }));
 
         setMessages(mappedMessages);

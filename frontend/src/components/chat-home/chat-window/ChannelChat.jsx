@@ -16,7 +16,6 @@ export default function ChannelChat() {
       try {
         setLoading(true);
         const res = await fetchChannelMessageHistory(channel.id);
-        console.log(res.data);
         const mappedMessages = res.data.map((msg) => ({
           messageBody: msg.messageContent,
           sender: {
@@ -35,6 +34,7 @@ export default function ChannelChat() {
             minute: '2-digit',
             hour12: true,
           }),
+          messageId: msg.id,
         }));
 
         setMessages(mappedMessages);

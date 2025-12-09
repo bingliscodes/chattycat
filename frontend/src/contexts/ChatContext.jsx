@@ -11,6 +11,7 @@ import {
   fetchChannelUsers,
   findOrCreateDMRoom,
   fetchDirectMessageList,
+  fetchThreadMessageHistory,
 } from '../utils/js/apiCalls';
 import { UserContext } from './UserContext';
 
@@ -22,6 +23,7 @@ export const ChatContextProvider = ({ children }) => {
   const [channelUsers, setChannelUsers] = useState(null);
   const [roomId, setRoomId] = useState(null);
   const [directMessageList, setDirectMessageList] = useState([]);
+  const [thread, setThread] = useState();
 
   const { userData, userSocket } = useContext(UserContext);
 
@@ -83,6 +85,22 @@ export const ChatContextProvider = ({ children }) => {
       console.error('Failed to set DM room', err);
     }
   };
+
+  const handleSetThread = async (msg) => {
+    try {
+      const res = await fetchThreadMessageHistory(msg.messageId);
+
+      if (res.results === 0) {
+        setThread(null);
+        return;
+      }
+
+      setThread({ parentMessage: msg, replies: res.data });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
   return (
     <ChatContext.Provider
       value={{
@@ -95,6 +113,8 @@ export const ChatContextProvider = ({ children }) => {
         handleSetDirectMessage,
         directMessageList,
         fetchDirectMessages,
+        thread,
+        handleSetThread,
       }}
     >
       {children}
