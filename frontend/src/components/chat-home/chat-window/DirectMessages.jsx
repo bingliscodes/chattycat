@@ -38,6 +38,7 @@ export default function DirectMessageChat() {
             hour12: true,
           }),
           messageId: msg.id,
+          isThread: msg.replyCount > 0,
         }));
 
         setMessages(mappedMessages);

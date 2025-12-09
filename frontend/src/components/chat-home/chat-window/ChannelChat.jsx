@@ -35,6 +35,7 @@ export default function ChannelChat() {
             hour12: true,
           }),
           messageId: msg.id,
+          isThread: msg.replyCount > 0,
         }));
 
         setMessages(mappedMessages);

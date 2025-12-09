@@ -16,5 +16,6 @@ export const cleanMessages = (msgs) => {
     messageBody: msg.messageContent,
     sender: { firstName: msg.Sender.firstName, lastName: msg.Sender.lastName },
     messageId: msg.id,
+    isThread: msg.replyCount > 0,
   }));
 };

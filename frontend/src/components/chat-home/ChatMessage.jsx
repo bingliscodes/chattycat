@@ -29,19 +29,19 @@ export default function ChatMessage({ msg }) {
         </Text>
       </Flex>
       <Text>{msg.messageBody}</Text>
-
-      {/* Placeholder to indicate message has a thread */}
-      <Flex
-        cursor="pointer"
-        gap={2}
-        align="center"
-        onClick={() => {
-          console.log('TODO: show thread on click');
-        }}
-      >
-        <Text fontSize="xs">View thread</Text>
-        <AiOutlineWechatWork />
-      </Flex>
+      {msg.isThread && (
+        <Flex
+          cursor="pointer"
+          gap={2}
+          align="center"
+          onClick={() => {
+            console.log('TODO: show thread on click');
+          }}
+        >
+          <Text fontSize="xs">View thread</Text>
+          <AiOutlineWechatWork />
+        </Flex>
+      )}
     </Box>
   );
 }
