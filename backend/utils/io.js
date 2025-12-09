@@ -42,10 +42,7 @@ export const setupIO = (io) => {
 
     socket.on(
       'send-message',
-      (
-        { messageBody, sender, channel, timestamp, datestamp, id },
-        messageData,
-      ) => {
+      ({ messageBody, sender, channel, timestamp, datestamp }, messageData) => {
         // Security: Ensure user has permission to send message to a channel
 
         if (

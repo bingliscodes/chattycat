@@ -13,6 +13,8 @@ import {
   fetchDirectMessageList,
   fetchThreadMessageHistory,
 } from '../utils/js/apiCalls';
+
+import { cleanMessages } from '../utils/js/helper';
 import { UserContext } from './UserContext';
 
 export const ChatContext = createContext({});
@@ -94,13 +96,18 @@ export const ChatContextProvider = ({ children }) => {
         setThread(null);
         return;
       }
+      const cleanedMessages = cleanMessages(res.data);
 
-      setThread({ parentMessage: msg, replies: res.data });
+      setThread({
+        parentMessage: msg,
+        replies: cleanedMessages || [],
+      });
     } catch (err) {
       console.error(err);
       throw err;
     }
   };
+
   return (
     <ChatContext.Provider
       value={{

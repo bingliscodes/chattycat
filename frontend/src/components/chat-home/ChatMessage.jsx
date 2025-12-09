@@ -9,6 +9,7 @@ export default function ChatMessage({ msg }) {
   const handleMessageClick = (msg) => {
     handleSetThread(msg);
   };
+
   return (
     <Box
       onClick={() => handleMessageClick(msg)}
