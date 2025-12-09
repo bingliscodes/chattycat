@@ -95,13 +95,16 @@ export const getThreadMessages = catchAsync(async (req, res, next) => {
 export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
   const senderId = req.params.userId;
 
-  const user = await User.findByPk(req.user.id);
-
   const messages = await Message.findAll({
     where: {
-      [Op.or]: [
-        { [Op.and]: [{ senderId }, { receiverId: req.user.id }] },
-        { [Op.and]: [{ senderId: req.user.id }, { receiverId: senderId }] },
+      [Op.and]: [
+        {
+          [Op.or]: [
+            { [Op.and]: [{ senderId }, { receiverId: req.user.id }] },
+            { [Op.and]: [{ senderId: req.user.id }, { receiverId: senderId }] },
+          ],
+        },
+        { parentMessageId: { [Op.is]: null } },
       ],
     },
     order: [['createdAt', 'ASC']],

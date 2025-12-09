@@ -7,8 +7,6 @@ import ChatMessage from '../ChatMessage';
 export default function MessageThread() {
   const { thread } = useContext(ChatContext);
 
-  console.log(thread);
-
   if (!thread) return;
   return (
     <Flex flex="1" h="100%" direction="column">
@@ -18,7 +16,7 @@ export default function MessageThread() {
 
       <Flex direction="column">
         <ChatMessage msg={thread?.parentMessage} />
-        {thread?.replies?.map((reply) => (
+        {thread.replies?.map((reply) => (
           <ChatMessage key={reply.messageId} msg={reply} />
         ))}
       </Flex>

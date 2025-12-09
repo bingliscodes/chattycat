@@ -1,15 +1,5 @@
 //DirectMessages.jsx
-
-import {
-  Input,
-  Box,
-  VStack,
-  Text,
-  Button,
-  Spinner,
-  Menu,
-  Flex,
-} from '@chakra-ui/react';
+import { Text, Spinner } from '@chakra-ui/react';
 import { useState, useContext, useEffect } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
