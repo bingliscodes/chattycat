@@ -124,6 +124,7 @@ export const ChatContextProvider = ({ children }) => {
         directMessageList,
         fetchDirectMessages,
         thread,
+        setThread,
         handleSetThread,
       }}
     >

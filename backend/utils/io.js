@@ -80,24 +80,17 @@ export const setupIO = (io) => {
       console.log(`[LEAVE] Socket ${socket.id} left thread ${parentMessageId}`);
     });
 
-    socket.on(
-      'send-thread-message',
-      ({ messageBody, sender, timestamp, datestamp }, messageData) => {
-        const { parentMessageId, senderId } = messageData;
+    socket.on('send-thread-message', (messageContent, messageData) => {
+      const { parentMessageId, senderId } = messageData;
 
-        createMessage(messageData);
+      createMessage(messageData);
 
-        socket.to(parentMessageId).emit('receive-thread-message', {
-          messageBody,
-          sender,
-          timestamp,
-          datestamp,
-          parentMessageId,
-        });
+      socket.to(parentMessageId).emit('receive-thread-message', messageContent);
 
-        console.log(`📨 Thread Reply from ${senderId}: ${messageBody}`);
-      },
-    );
+      console.log(
+        `📨 Thread Reply from ${senderId}: ${messageContent.messageBody}`,
+      );
+    });
   });
 };
 

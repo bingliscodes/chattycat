@@ -8,8 +8,14 @@ import { UserContext } from '@/contexts/UserContext';
 
 export default function ChatInput({ sendLocation, onMessageSent }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
-  const { channel, directMessage, directMessageList, chatMode, thread } =
-    useContext(ChatContext);
+  const {
+    channel,
+    directMessage,
+    directMessageList,
+    chatMode,
+    thread,
+    roomId,
+  } = useContext(ChatContext);
   const { firstName, lastName, id } = userData;
 
   const {
@@ -63,6 +69,7 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
 
     if (chatMode === 'thread') {
       messageData.parentMessageId = thread.parentMessage.messageId;
+      messageData.roomId = roomId;
       userSocket.emit('send-thread-message', messageContent, messageData);
     } else userSocket.emit('send-message', messageContent, messageData);
 
