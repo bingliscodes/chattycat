@@ -41,41 +41,61 @@ export const setupIO = (io) => {
       }
     });
 
-    socket.on(
-      'send-message',
-      ({ messageBody, sender, channel, timestamp, datestamp }, messageData) => {
-        // Security: Ensure user has permission to send message to a channel
-
-        if (
-          !validateUserPermissions(
-            messageData.senderId,
-            messageData.channelId ?? messageData.roomId,
-          )
+    socket.on('send-message', (messageContent, messageData) => {
+      // Security: Ensure user has permission to send message to a channel
+      if (
+        !validateUserPermissions(
+          messageData.senderId,
+          messageData.channelId ?? messageData.roomId,
         )
-          return;
-        // Send message to DB
+      )
+        return;
+
+      // Send message to DB
+      createMessage(messageData);
+
+      console.log(`📨 [SERVER] Message from ${socket.id}: ${messageBody}`);
+      if (channel) {
+        socket.broadcast
+          .to(messageContent.channel)
+          .emit('receive-message', messageContent);
+        console.log(
+          `📤 Broadcasted to room ${messageContent.channel}: ${messageBody}`,
+        );
+      } else {
+        socket.broadcast.emit('receive-message', messageContent);
+        console.log('📤 Broadcasted globally:', messageBody);
+      }
+    });
+
+    socket.on('join-thread', ({ parentMessageId }) => {
+      socket.join(parentMessageId);
+      console.log(
+        `[JOIN] Socket ${socket.id} joined thread ${parentMessageId}`,
+      );
+    });
+
+    socket.on('leave-thread', ({ parentMessageId }) => {
+      socket.leave(parentMessageId);
+      console.log(`[LEAVE] Socket ${socket.id} left thread ${parentMessageId}`);
+    });
+
+    socket.on(
+      'send-thread-message',
+      ({ messageBody, sender, timestamp, datestamp }, messageData) => {
+        const { parentMessageId, senderId } = messageData;
+
         createMessage(messageData);
 
-        console.log(`📨 [SERVER] Message from ${socket.id}: ${messageBody}`);
-        if (channel) {
-          socket.broadcast.to(channel).emit('receive-message', {
-            messageBody,
-            sender,
-            channel,
-            timestamp,
-            datestamp,
-          });
-          console.log(`📤 Broadcasted to room ${channel}: ${messageBody}`);
-        } else {
-          socket.broadcast.emit('receive-message', {
-            messageBody,
-            sender,
-            channel,
-            timestamp,
-            datestamp,
-          });
-          console.log('📤 Broadcasted globally:', messageBody);
-        }
+        socket.to(parentMessageId).emit('receive-thread-message', {
+          messageBody,
+          sender,
+          timestamp,
+          datestamp,
+          parentMessageId,
+        });
+
+        console.log(`📨 Thread Reply from ${senderId}: ${messageBody}`);
       },
     );
   });

@@ -48,39 +48,23 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
       datestamp,
     };
 
-    let messageData = {};
+    let messageData = {
+      messageContent: data.message,
+      senderId: id,
+      type: chatMode === 'ch' ? 'channel' : 'direct',
+    };
 
-    if (chatMode === 'ch') {
-      messageData = {
-        messageContent: data.message,
-        senderId: id,
-        channelId: sendLocation,
-        type: 'channel',
-      };
-    }
+    if (chatMode === 'ch') messageData.channelId = sendLocation;
 
     if (chatMode === 'dm') {
-      messageData = {
-        messageContent: data.message,
-        senderId: id,
-        receiverId: directMessage?.id,
-        roomId: sendLocation,
-        type: 'direct',
-      };
+      messageData.receiverId = directMessage?.id;
+      messageData.roomId = sendLocation;
     }
 
     if (chatMode === 'thread') {
-      messageData = {
-        messageContent: data.message,
-        senderId: id,
-        receiverId: directMessage?.id,
-        roomId: sendLocation,
-        type: 'direct',
-        parentMessageId: thread.parentMessage.messageId,
-      };
-    }
-
-    userSocket.emit('send-message', messageContent, messageData);
+      messageData.parentMessageId = thread.parentMessage.messageId;
+      userSocket.emit('send-thread-message', messageContent, messageData);
+    } else userSocket.emit('send-message', messageContent, messageData);
 
     if (isNewDM) {
       userSocket.emit('new-dm', {

@@ -4,9 +4,11 @@ import { useContext } from 'react';
 import { ChatContext } from '@/contexts/ChatContext';
 import ChatMessage from '../ChatMessage';
 import ChatInput from '../ChatInput';
+import { useThreadRoom } from '@/hooks/useThreadRoom';
 
 export default function MessageThread() {
   const { thread } = useContext(ChatContext);
+  useThreadRoom(thread?.parentMessage.messageId);
 
   if (!thread) return;
   return (
