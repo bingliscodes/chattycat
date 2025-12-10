@@ -5,10 +5,11 @@ import { AiOutlineWechatWork } from 'react-icons/ai';
 import { ChatContext } from '@/contexts/ChatContext';
 
 export default function ChatMessage({ msg }) {
-  const { handleSetThread } = useContext(ChatContext);
+  const { handleSetThread, setChatMode } = useContext(ChatContext);
 
   const handleMessageClick = (msg) => {
     handleSetThread(msg);
+    setChatMode('thread');
   };
 
   return (

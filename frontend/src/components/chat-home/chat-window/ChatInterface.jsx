@@ -12,7 +12,7 @@ export default function ChatInterface({
   chatName,
   sendLocation,
 }) {
-  const { userData, socketReady, userSocket } = useContext(UserContext);
+  const { socketReady, userSocket } = useContext(UserContext);
 
   useEffect(() => {
     if (!userSocket) return;

@@ -115,6 +115,7 @@ export const ChatContextProvider = ({ children }) => {
         channel,
         setChannel,
         directMessage,
+        chatMode,
         setChatMode,
         roomId,
         channelUsers,

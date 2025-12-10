@@ -31,6 +31,7 @@ export const setupIO = (io) => {
     });
 
     socket.on('new-dm', ({ senderId, receiverId }) => {
+      console.log('new dm emitted', senderId, receiverId);
       const senderSocketId = userSocketMap.get(senderId);
       if (senderSocketId) {
         console.log(
@@ -47,7 +48,7 @@ export const setupIO = (io) => {
 
         if (
           !validateUserPermissions(
-            messageData.senderId ?? messageData.userId,
+            messageData.senderId,
             messageData.channelId ?? messageData.roomId,
           )
         )

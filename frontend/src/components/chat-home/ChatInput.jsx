@@ -8,7 +8,7 @@ import { UserContext } from '@/contexts/UserContext';
 
 export default function ChatInput({ sendLocation, onMessageSent }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
-  const { channel, directMessage, directMessageList, chatMode } =
+  const { channel, directMessage, directMessageList, chatMode, thread } =
     useContext(ChatContext);
   const { firstName, lastName, id } = userData;
 
@@ -19,9 +19,9 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
     formState: { errors },
   } = useForm();
 
-  const isNewDM = !directMessageList.some(
-    (user) => user.id === directMessage?.id
-  );
+  const isNewDM =
+    chatMode === 'dm' &&
+    !directMessageList.some((user) => user.id === directMessage?.id);
 
   const onSubmit = handleSubmit((data) => {
     if (!userSocket?.connected) return;
@@ -53,7 +53,7 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
     if (chatMode === 'ch') {
       messageData = {
         messageContent: data.message,
-        userId: id,
+        senderId: id,
         channelId: sendLocation,
         type: 'channel',
       };
@@ -66,6 +66,17 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
         receiverId: directMessage?.id,
         roomId: sendLocation,
         type: 'direct',
+      };
+    }
+
+    if (chatMode === 'thread') {
+      messageData = {
+        messageContent: data.message,
+        senderId: id,
+        receiverId: directMessage?.id,
+        roomId: sendLocation,
+        type: 'direct',
+        parentMessageId: thread.parentMessage.messageId,
       };
     }
 
