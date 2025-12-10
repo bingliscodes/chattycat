@@ -3,6 +3,7 @@ import { useContext } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
 import ChatMessage from '../ChatMessage';
+import ChatInput from '../ChatInput';
 
 export default function MessageThread() {
   const { thread } = useContext(ChatContext);
@@ -19,6 +20,7 @@ export default function MessageThread() {
         {thread.replies?.map((reply) => (
           <ChatMessage key={reply.messageId} msg={reply} />
         ))}
+        {/* <ChatBox /> */}
       </Flex>
     </Flex>
   );
