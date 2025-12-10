@@ -5,9 +5,9 @@ import MainNavigation from '../components/NavBar/MainNavigation';
 
 export default function RootLayout() {
   return (
-    <Flex direction="column" h="100vh" w="full" overflow="hidden">
+    <Flex direction="column" h="100vh" w="full" overflowY="auto" minH="0">
       <MainNavigation />
-      <Flex flex="1" minH="0" overflow="hidden">
+      <Flex flex="1">
         <Outlet />
       </Flex>
       <Toaster />

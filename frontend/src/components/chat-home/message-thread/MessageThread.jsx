@@ -24,11 +24,8 @@ export default function MessageThread() {
       </Text>
 
       <Flex direction="column">
-        <ChatMessage
-          key={thread?.parentMessage.messageId}
-          msg={thread?.parentMessage}
-        />
-        {thread.replies?.map((reply) => (
+        <ChatMessage msg={thread?.parentMessage} />
+        {thread?.replies?.map((reply) => (
           <ChatMessage key={reply.messageId} msg={reply} />
         ))}
         <ChatInput onMessageSent={handleThreadReply} />
