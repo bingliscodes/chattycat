@@ -55,7 +55,6 @@ export default function ChannelChat() {
       setMessages={setMessages}
       chatName={channel?.channelName}
       sendLocation={channel?.id}
-      mode="ch"
     />
   );
 }

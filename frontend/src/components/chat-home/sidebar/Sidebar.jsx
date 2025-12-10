@@ -31,10 +31,13 @@ export default function UserSidebar() {
     if (mode === 'ch') {
       setChannel(data);
       handleSetDirectMessage(null);
+      setChatMode('ch');
     }
+
     if (mode === 'dm') {
       handleSetDirectMessage(data);
       setChannel(null);
+      setChatMode('dm');
     }
 
     userSocket.emit('join-room', data, mode, (ack) => {

@@ -62,7 +62,6 @@ export default function DirectMessageChat() {
         setMessages={setMessages}
         chatName={`${directMessage?.firstName} ${directMessage?.lastName}`}
         sendLocation={roomId}
-        mode="dm"
       />
     )
   );

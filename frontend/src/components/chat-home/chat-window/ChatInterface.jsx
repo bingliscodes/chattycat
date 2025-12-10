@@ -11,7 +11,6 @@ export default function ChatInterface({
   setMessages,
   chatName,
   sendLocation,
-  mode,
 }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
 
@@ -74,7 +73,6 @@ export default function ChatInterface({
 
       {/* Chat Input (fixed inside chat box) */}
       <ChatInput
-        mode={mode}
         sendLocation={sendLocation}
         onMessageSent={handleMessageSent}
       />

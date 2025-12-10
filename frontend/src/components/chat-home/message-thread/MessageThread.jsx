@@ -20,7 +20,7 @@ export default function MessageThread() {
         {thread.replies?.map((reply) => (
           <ChatMessage key={reply.messageId} msg={reply} />
         ))}
-        {/* <ChatBox /> */}
+        <ChatInput sendLocation="test" />
       </Flex>
     </Flex>
   );

@@ -26,6 +26,7 @@ export const ChatContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState(null);
   const [directMessageList, setDirectMessageList] = useState([]);
   const [thread, setThread] = useState();
+  const [chatMode, setChatMode] = useState();
 
   const { userData, userSocket } = useContext(UserContext);
 
@@ -114,6 +115,7 @@ export const ChatContextProvider = ({ children }) => {
         channel,
         setChannel,
         directMessage,
+        setChatMode,
         roomId,
         channelUsers,
         setChannelUsers,

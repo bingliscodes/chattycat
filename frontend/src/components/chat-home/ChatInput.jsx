@@ -6,9 +6,10 @@ import { useContext } from 'react';
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
 
-export default function ChatInput({ mode, sendLocation, onMessageSent }) {
+export default function ChatInput({ sendLocation, onMessageSent }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
-  const { channel, directMessage, directMessageList } = useContext(ChatContext);
+  const { channel, directMessage, directMessageList, chatMode } =
+    useContext(ChatContext);
   const { firstName, lastName, id } = userData;
 
   const {
@@ -49,7 +50,7 @@ export default function ChatInput({ mode, sendLocation, onMessageSent }) {
 
     let messageData = {};
 
-    if (mode === 'ch') {
+    if (chatMode === 'ch') {
       messageData = {
         messageContent: data.message,
         userId: id,
@@ -58,7 +59,7 @@ export default function ChatInput({ mode, sendLocation, onMessageSent }) {
       };
     }
 
-    if (mode === 'dm') {
+    if (chatMode === 'dm') {
       messageData = {
         messageContent: data.message,
         senderId: id,
