@@ -69,7 +69,6 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
 
     if (chatMode === 'thread') {
       messageData.parentMessageId = thread.parentMessage.messageId;
-      messageData.roomId = roomId;
       userSocket.emit('send-thread-message', messageContent, messageData);
     } else userSocket.emit('send-message', messageContent, messageData);
 
