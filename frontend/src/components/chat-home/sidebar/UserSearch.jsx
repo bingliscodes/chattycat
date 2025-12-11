@@ -1,4 +1,4 @@
-import { Input, Flex, Menu } from '@chakra-ui/react';
+import { Input, Flex, Menu, Box } from '@chakra-ui/react';
 import { useRef, useState, useContext, useEffect } from 'react';
 import { debounce } from 'lodash';
 
@@ -51,21 +51,64 @@ export default function UserSearch({ mode }) {
       );
     });
     setSearchResults(filteredResults);
-    setMenuIsOpen(filteredResults.length === 0 ? false : true);
+    setMenuIsOpen(filteredResults.length > 0);
   }, 500);
 
   const getAnchorRect = () => inputRef.current.getBoundingClientRect();
 
+  useEffect(() => {
+    if (
+      menuIsOpen &&
+      inputRef.current &&
+      document.activeElement !== inputRef.current
+    ) {
+      inputRef.current.focus();
+    }
+  }, [menuIsOpen]);
   return (
     <Flex direction="column">
       <Input
         placeholder="Enter a name or email"
         ref={inputRef}
-        onBlur={(e) => e.target.focus()}
-        onChange={debounceOnChange}
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          debounceOnChange(e);
+        }}
+        onFocus={() => {
+          if (searchResults.length > 0) setMenuIsOpen(true);
+        }}
       />
-
-      <Menu.Root
+      {menuIsOpen && searchResults.length > 0 && (
+        <Flex
+          positioning={{ getAnchorRect }}
+          direction="column"
+          border="1px solid"
+          borderColor="bg.sidebar"
+          rounded="md"
+          mt={1}
+          w="full"
+          boxShadow="sm"
+          maxH="240px"
+          overflowY="auto"
+          zIndex={999}
+        >
+          {searchResults.map((usr) => (
+            <Box
+              key={usr.id}
+              cursor="default"
+              px={3}
+              py={2}
+              _hover={{
+                bg: 'bg.secondaryBtnHover',
+              }}
+            >
+              <UserCard user={usr} mode={mode} />
+            </Box>
+          ))}
+        </Flex>
+      )}
+      {/* <Menu.Root
         open={menuIsOpen}
         positioning={{ getAnchorRect }}
         onOpenChange={(change) => setMenuIsOpen(change.open)}
@@ -76,13 +119,17 @@ export default function UserSearch({ mode }) {
           <Menu.Content>
             {searchResults &&
               searchResults.map((usr) => (
-                <Menu.Item key={usr.id} value={usr.id}>
+                <Menu.Item
+                  key={usr.id}
+                  value={usr.id}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
                   <UserCard user={usr} mode={mode} />
                 </Menu.Item>
               ))}
           </Menu.Content>
         </Menu.Positioner>
-      </Menu.Root>
+      </Menu.Root> */}
     </Flex>
   );
 }
