@@ -1,4 +1,4 @@
-import { Flex, Text, Box } from '@chakra-ui/react';
+import { Flex, Text, Box, CloseButton } from '@chakra-ui/react';
 import { useContext } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
@@ -9,7 +9,7 @@ import MessageLayout from '../MessageLayout';
 import DividerText from '../../common/DividerText';
 
 export default function MessageThread() {
-  const { thread, setThread } = useContext(ChatContext);
+  const { thread, setThread, setChatMode } = useContext(ChatContext);
   useThreadRoom(thread?.parentMessage.messageId);
 
   const handleThreadReply = (message) => {
@@ -18,12 +18,24 @@ export default function MessageThread() {
       replies: [...prevThread.replies, message],
     }));
   };
+
+  const handleCloseThread = () => {
+    setChatMode('thread');
+  };
+
   if (!thread) return;
   return (
     <Flex flex="1" h="100%" direction="column">
-      <Text p={2} color="text" fontWeight="bold" fontSize="xl">
-        Thread
-      </Text>
+      <Flex align="center" justify="space-between" px={2}>
+        <Text p={2} color="text" fontWeight="bold" fontSize="xl">
+          Thread
+        </Text>
+        <CloseButton
+          size="2xs"
+          bg="bg.primaryBtn"
+          onClick={handleCloseThread}
+        />
+      </Flex>
 
       <Flex direction="column">
         <Box p={4}>

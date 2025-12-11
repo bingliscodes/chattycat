@@ -5,11 +5,10 @@ import { AiOutlineWechatWork } from 'react-icons/ai';
 import { ChatContext } from '@/contexts/ChatContext';
 
 export default function ChatMessage({ msg, ...props }) {
-  const { handleSetThread, setChatMode } = useContext(ChatContext);
+  const { handleSetThread } = useContext(ChatContext);
 
   const handleMessageClick = (msg) => {
     handleSetThread(msg);
-    setChatMode('thread');
   };
 
   return (
@@ -32,14 +31,7 @@ export default function ChatMessage({ msg, ...props }) {
       </Flex>
       <Text>{msg.messageBody}</Text>
       {msg.isThread && (
-        <Flex
-          cursor="pointer"
-          gap={2}
-          align="center"
-          onClick={() => {
-            console.log('TODO: show thread on click');
-          }}
-        >
+        <Flex cursor="pointer" gap={2} align="center">
           <Text fontSize="xs">View thread</Text>
           <AiOutlineWechatWork />
         </Flex>

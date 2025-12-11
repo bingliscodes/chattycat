@@ -1,4 +1,4 @@
-//DirectMessages.jsx
+// DirectMessages.jsx
 import { Text, Spinner } from '@chakra-ui/react';
 import { useState, useContext, useEffect } from 'react';
 
@@ -7,11 +7,10 @@ import ChatInterface from './ChatInterface';
 import { fetchUserMessageHistory } from '../../../utils/js/apiCalls';
 
 export default function DirectMessageChat() {
-  const { directMessage, roomId } = useContext(ChatContext);
+  const { directMessage, roomId, setChatMode } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
   useEffect(() => {
     if (!directMessage) return;
     async function fetchUserMessageHistoryAsync() {
@@ -52,6 +51,10 @@ export default function DirectMessageChat() {
     fetchUserMessageHistoryAsync();
   }, [directMessage]);
 
+  const handleClickMainArea = () => {
+    setChatMode('dm');
+  };
+
   if (loading) return <Spinner />;
   if (error) return <Text color="red.500">Error loading messages</Text>;
 
@@ -62,6 +65,7 @@ export default function DirectMessageChat() {
         setMessages={setMessages}
         chatName={`${directMessage?.firstName} ${directMessage?.lastName}`}
         sendLocation={roomId}
+        onClickMainArea={handleClickMainArea}
       />
     )
   );

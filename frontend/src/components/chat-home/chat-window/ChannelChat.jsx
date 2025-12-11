@@ -5,11 +5,10 @@ import ChatInterface from './ChatInterface';
 import { fetchChannelMessageHistory } from '../../../utils/js/apiCalls';
 
 export default function ChannelChat() {
-  const { channel } = useContext(ChatContext);
+  const { channel, setChatMode } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
   useEffect(() => {
     if (!channel) return;
     async function fetchMessageHistoryAsync() {
@@ -48,13 +47,16 @@ export default function ChannelChat() {
     }
     fetchMessageHistoryAsync();
   }, [channel]);
-
+  const handleClickMainArea = () => {
+    setChatMode('ch');
+  };
   return (
     <ChatInterface
       messages={messages}
       setMessages={setMessages}
       chatName={channel?.channelName}
       sendLocation={channel?.id}
+      onClickMainArea={handleClickMainArea}
     />
   );
 }

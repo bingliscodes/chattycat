@@ -11,6 +11,7 @@ export default function ChatInterface({
   setMessages,
   chatName,
   sendLocation,
+  onClickMainArea,
 }) {
   const { socketReady, userSocket } = useContext(UserContext);
 
@@ -31,9 +32,8 @@ export default function ChatInterface({
   const handleMessageSent = (message) => {
     setMessages((prev) => [...prev, message]);
   };
-
   return (
-    <Flex direction="column" flex="1" minH="0">
+    <Flex direction="column" flex="1" minH="0" onClick={onClickMainArea}>
       {/* Chat Header */}
       <Box p={3} borderBottom="1px solid" borderColor="borders">
         <Text fontWeight="bold" fontSize="xl">

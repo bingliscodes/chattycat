@@ -54,17 +54,19 @@ export const setupIO = (io) => {
       // Send message to DB
       createMessage(messageData);
 
-      console.log(`📨 [SERVER] Message from ${socket.id}: ${messageBody}`);
+      console.log(
+        `📨 [SERVER] Message from ${socket.id}: ${messageContent.messageBody}`,
+      );
       if (messageContent.channel) {
         socket.broadcast
           .to(messageContent.channel)
           .emit('receive-message', messageContent);
         console.log(
-          `📤 Broadcasted to room ${messageContent.channel}: ${messageBody}`,
+          `📤 Broadcasted to room ${messageContent.channel}: ${messageContent.messageBody}`,
         );
       } else {
         socket.broadcast.emit('receive-message', messageContent);
-        console.log('📤 Broadcasted globally:', messageBody);
+        console.log('📤 Broadcasted globally:', messageContent.messageBody);
       }
     });
 
