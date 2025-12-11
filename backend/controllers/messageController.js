@@ -125,6 +125,7 @@ export const getThreadMessages = catchAsync(async (req, res, next) => {
 
   const messages = await Message.findAll({
     where: { parentMessageId },
+    order: [['createdAt', 'ASC']],
     include: [
       {
         model: User,
