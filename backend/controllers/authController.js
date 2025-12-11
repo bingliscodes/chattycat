@@ -123,3 +123,36 @@ export const sendUser = catchAsync(async (req, res, next) => {
 
   next();
 });
+
+export const forgotPassword = catchAsync(async (req, res, next) => {
+  // 1) Find user by POSTed email
+  const user = await User.findOne({ where: { email: req.body.email } });
+
+  if (!user)
+    return next(new AppError('There is no user with that email address.', 404));
+
+  // 2) Generate Reset Token
+  const resetToken = user.createPasswordResetToken();
+  await user.save();
+
+  // 3) Send to user's email
+  try {
+    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email!',
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    return next(
+      new AppError('There was an error sending the email. Try again later!'),
+      500,
+    );
+  }
+
+  // 3) Send to user's email
+});

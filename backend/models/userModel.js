@@ -1,8 +1,8 @@
+import crypto from 'crypto';
 import { DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 
 import sequelize from '../utils/database.js';
-import Organization from './organizationModel.js';
 
 const User = sequelize.define(
   'user',
@@ -85,3 +85,16 @@ User.prototype.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 export default User;
+
+User.prototype.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};

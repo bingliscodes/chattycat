@@ -5,6 +5,7 @@ import {
   login,
   logout,
   restrictTo,
+  forgotPassword,
 } from '../controllers/authController.js';
 import {
   getAllUsers,
@@ -28,6 +29,8 @@ const router = express.Router();
 router.post('/login', login);
 router.post('/signup', signup);
 router.get('/logout', logout);
+
+router.post('/forgotPassword', forgotPassword);
 
 router.get('/', getAllUsers);
 
