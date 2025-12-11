@@ -1,6 +1,5 @@
-import User from '../models/userModel.js';
 import { Message } from '../models/messageModel.js';
-import Channel from '../models/channelModel.js';
+import userChannelMap from '../utils/userChannelMap.js';
 
 export const setupIO = (io) => {
   const userSocketMap = new Map(); // socketId -> userId
@@ -105,16 +104,5 @@ const createMessage = async (messageData) => {
   }
 };
 
-const validateUserPermissions = async (userId, channelId) => {
-  /* Will check if the user has permission to send messages to the channel */
-  try {
-    const user = await User.findByPk(userId, { include: Channel });
-
-    const channelIds = user.channels.map((ch) => ch.id);
-
-    return channelIds.includes(channelId);
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};
+const validateUserPermissions = (userId, channelId) =>
+  userChannelMap.data.get(userId).includes(channelId);

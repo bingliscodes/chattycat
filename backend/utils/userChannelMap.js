@@ -1,6 +1,20 @@
+import User from '../models/userModel.js';
+import Channel from '../models/channelModel.js';
+
 class UserChannelMap {
   constructor() {
     this.data = new Map();
+
+    this.init();
+  }
+
+  async init() {
+    const users = await User.findAll({ include: Channel });
+
+    users.forEach((usr) => {
+      const channels = usr.channels.map((ch) => ch.id);
+      this.data.set(usr.id, channels);
+    });
   }
 
   addUser(userId) {

@@ -1,4 +1,4 @@
-import { Input, Flex, Menu, Box } from '@chakra-ui/react';
+import { Input, Flex, Box } from '@chakra-ui/react';
 import { useRef, useState, useContext, useEffect } from 'react';
 import { debounce } from 'lodash';
 
@@ -108,28 +108,6 @@ export default function UserSearch({ mode }) {
           ))}
         </Flex>
       )}
-      {/* <Menu.Root
-        open={menuIsOpen}
-        positioning={{ getAnchorRect }}
-        onOpenChange={(change) => setMenuIsOpen(change.open)}
-        onInteractOutside={() => setMenuIsOpen(false)}
-        onEscapeKeyDown={() => setMenuIsOpen(false)}
-      >
-        <Menu.Positioner>
-          <Menu.Content>
-            {searchResults &&
-              searchResults.map((usr) => (
-                <Menu.Item
-                  key={usr.id}
-                  value={usr.id}
-                  onMouseDown={(e) => e.preventDefault()}
-                >
-                  <UserCard user={usr} mode={mode} />
-                </Menu.Item>
-              ))}
-          </Menu.Content>
-        </Menu.Positioner>
-      </Menu.Root> */}
     </Flex>
   );
 }
