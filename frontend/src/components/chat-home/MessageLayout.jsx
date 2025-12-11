@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 import ChatMessage from './ChatMessage';
+import DividerText from '../common/DividerText';
 
 export default function MessageLayout({ messages }) {
   const messageMap = new Map();
@@ -16,13 +17,7 @@ export default function MessageLayout({ messages }) {
     <Box flex="1" overflowY="auto" minH="0" p={4}>
       {[...messageMap.entries()].map(([date, msgs]) => (
         <Box key={date} mb={6}>
-          <Flex align="center" my={4}>
-            <Box flex="1" h="1px" bg="gray.300" />
-            <Text mx={3} fontSize="xs" color="gray.600">
-              {date}
-            </Text>
-            <Box flex="1" h="1px" bg="gray.300" />
-          </Flex>
+          <DividerText>{date}</DividerText>
 
           {msgs.map((msg, idx) => (
             <ChatMessage key={idx} msg={msg} />

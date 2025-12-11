@@ -4,7 +4,7 @@ import { AiOutlineWechatWork } from 'react-icons/ai';
 
 import { ChatContext } from '@/contexts/ChatContext';
 
-export default function ChatMessage({ msg }) {
+export default function ChatMessage({ msg, ...props }) {
   const { handleSetThread, setChatMode } = useContext(ChatContext);
 
   const handleMessageClick = (msg) => {
@@ -20,6 +20,7 @@ export default function ChatMessage({ msg }) {
       borderRadius="md"
       boxShadow="sm"
       mb={1}
+      {...props}
     >
       <Flex align="flex-end" gap={2}>
         <Text fontSize="sm" fontWeight="bold">

@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Box } from '@chakra-ui/react';
 import { useContext } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
@@ -6,6 +6,7 @@ import ChatMessage from '../ChatMessage';
 import ChatInput from '../ChatInput';
 import { useThreadRoom } from '@/hooks/useThreadRoom';
 import MessageLayout from '../MessageLayout';
+import DividerText from '../../common/DividerText';
 
 export default function MessageThread() {
   const { thread, setThread } = useContext(ChatContext);
@@ -25,10 +26,13 @@ export default function MessageThread() {
       </Text>
 
       <Flex direction="column">
-        <Flex direction="column" mb={2}>
+        <Box p={4}>
+          <DividerText>{thread?.parentMessage.datestamp}</DividerText>
           <ChatMessage msg={thread?.parentMessage} />
-          <MessageLayout messages={thread?.replies} />
-        </Flex>
+          <DividerText style="left">Replies </DividerText>
+        </Box>
+        <MessageLayout messages={thread?.replies} />
+
         <ChatInput onMessageSent={handleThreadReply} />
       </Flex>
     </Flex>
