@@ -5,6 +5,7 @@ import { ChatContext } from '@/contexts/ChatContext';
 import ChatMessage from '../ChatMessage';
 import ChatInput from '../ChatInput';
 import { useThreadRoom } from '@/hooks/useThreadRoom';
+import MessageLayout from '../MessageLayout';
 
 export default function MessageThread() {
   const { thread, setThread } = useContext(ChatContext);
@@ -24,10 +25,10 @@ export default function MessageThread() {
       </Text>
 
       <Flex direction="column">
-        <ChatMessage msg={thread?.parentMessage} />
-        {thread?.replies?.map((reply) => (
-          <ChatMessage key={reply.messageId} msg={reply} />
-        ))}
+        <Flex direction="column" mb={2}>
+          <ChatMessage msg={thread?.parentMessage} />
+          <MessageLayout messages={thread?.replies} />
+        </Flex>
         <ChatInput onMessageSent={handleThreadReply} />
       </Flex>
     </Flex>

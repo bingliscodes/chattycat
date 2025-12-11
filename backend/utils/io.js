@@ -55,7 +55,7 @@ export const setupIO = (io) => {
       createMessage(messageData);
 
       console.log(`📨 [SERVER] Message from ${socket.id}: ${messageBody}`);
-      if (channel) {
+      if (messageContent.channel) {
         socket.broadcast
           .to(messageContent.channel)
           .emit('receive-message', messageContent);

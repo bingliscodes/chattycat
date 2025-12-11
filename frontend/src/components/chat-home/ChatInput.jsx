@@ -8,14 +8,8 @@ import { UserContext } from '@/contexts/UserContext';
 
 export default function ChatInput({ sendLocation, onMessageSent }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
-  const {
-    channel,
-    directMessage,
-    directMessageList,
-    chatMode,
-    thread,
-    roomId,
-  } = useContext(ChatContext);
+  const { channel, directMessage, directMessageList, chatMode, thread } =
+    useContext(ChatContext);
   const { firstName, lastName, id } = userData;
 
   const {
