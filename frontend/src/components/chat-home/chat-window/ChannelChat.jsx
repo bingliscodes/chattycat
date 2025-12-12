@@ -2,7 +2,8 @@ import { useState, useContext, useEffect } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
 import ChatInterface from './ChatInterface';
-import { fetchChannelMessageHistory } from '../../../utils/js/apiCalls';
+import { fetchChannelMessageHistory } from '@/utils/js/apiCalls';
+import { cleanMessages } from '@/utils/js/helper';
 
 export default function ChannelChat() {
   const { channel, setChatMode } = useContext(ChatContext);
@@ -15,29 +16,9 @@ export default function ChannelChat() {
       try {
         setLoading(true);
         const res = await fetchChannelMessageHistory(channel.id);
-        const mappedMessages = res.data.map((msg) => ({
-          messageBody: msg.messageContent,
-          sender: {
-            firstName: msg.Sender.firstName,
-            lastName: msg.Sender.lastName,
-          },
-          channel: msg.channel,
-          datestamp: new Date(msg.createdAt).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }),
-          timestamp: new Date(msg.createdAt).toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-          }),
-          messageId: msg.id,
-          isThread: msg.replyCount > 0,
-        }));
+        const cleanedMessages = cleanMessages(res.data, 'ch');
 
-        setMessages(mappedMessages);
+        setMessages(cleanedMessages);
       } catch (err) {
         console.error(err);
         setError(err);

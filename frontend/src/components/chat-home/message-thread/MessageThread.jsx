@@ -9,7 +9,8 @@ import MessageLayout from '../MessageLayout';
 import DividerText from '../../common/DividerText';
 
 export default function MessageThread() {
-  const { thread, setThread, setChatMode } = useContext(ChatContext);
+  const { thread, setThread, setChatMode, directMessage, channel } =
+    useContext(ChatContext);
   useThreadRoom(thread?.parentMessage.messageId);
 
   const handleThreadReply = (message) => {
@@ -20,7 +21,9 @@ export default function MessageThread() {
   };
 
   const handleCloseThread = () => {
-    setChatMode('thread');
+    setThread(null);
+    if (directMessage) setChatMode('dm');
+    if (channel) setChatMode('ch');
   };
 
   if (!thread) return;

@@ -9,7 +9,7 @@ import MessageThread from '../message-thread/MessageThread';
 import ComponentSplitter from '../../common/ComponentSplitter';
 
 export default function ChatLayout() {
-  const { directMessage, channel } = useContext(ChatContext);
+  const { directMessage, channel, thread } = useContext(ChatContext);
 
   return (
     <Flex flex="1" minH="0" w="100%">
@@ -19,7 +19,7 @@ export default function ChatLayout() {
           {channel && <ChannelChat />}
           {directMessage && <DirectMessages />}
         </Flex>
-        <MessageThread />
+        {thread && <MessageThread />}
       </ComponentSplitter>
     </Flex>
   );

@@ -92,7 +92,6 @@ export const ChatContextProvider = ({ children }) => {
   const handleSetThread = async (msg) => {
     try {
       const res = await fetchThreadMessageHistory(msg.messageId);
-
       if (res.results === 0) {
         setThread(null);
         return;

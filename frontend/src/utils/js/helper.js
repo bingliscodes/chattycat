@@ -1,4 +1,4 @@
-export const cleanMessages = (msgs) => {
+export const cleanMessages = (msgs, mode) => {
   /* Takes in an array of message objects and converts them to the format required for a chat message */
 
   return msgs.map((msg) => ({
@@ -13,9 +13,11 @@ export const cleanMessages = (msgs) => {
       minute: '2-digit',
       hour12: true,
     }),
+    channel: mode === 'dm' ? msg.roomId : msg.channel,
     messageBody: msg.messageContent,
     sender: { firstName: msg.Sender.firstName, lastName: msg.Sender.lastName },
     messageId: msg.id,
     isThread: msg.replyCount > 0,
+    parentMessageId: msg.parentMessageId,
   }));
 };

@@ -4,7 +4,8 @@ import { useState, useContext, useEffect } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
 import ChatInterface from './ChatInterface';
-import { fetchUserMessageHistory } from '../../../utils/js/apiCalls';
+import { fetchUserMessageHistory } from '@/utils/js/apiCalls';
+import { cleanMessages } from '@/utils/js/helper';
 
 export default function DirectMessageChat() {
   const { directMessage, roomId, setChatMode } = useContext(ChatContext);
@@ -17,30 +18,9 @@ export default function DirectMessageChat() {
       try {
         setLoading(true);
         const res = await fetchUserMessageHistory(directMessage.id);
+        const cleanedMessages = cleanMessages(res.data, 'dm');
 
-        const mappedMessages = res.data.map((msg) => ({
-          messageBody: msg.messageContent,
-          sender: {
-            firstName: msg.Sender.firstName,
-            lastName: msg.Sender.lastName,
-          },
-          channel: msg.roomId,
-          datestamp: new Date(msg.createdAt).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }),
-          timestamp: new Date(msg.createdAt).toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-          }),
-          messageId: msg.id,
-          isThread: msg.replyCount > 0,
-        }));
-
-        setMessages(mappedMessages);
+        setMessages(cleanedMessages);
       } catch (err) {
         console.error(err);
         setError(err);
