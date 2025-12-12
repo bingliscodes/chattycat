@@ -4,6 +4,7 @@ import AppError from '../utils/appError.js';
 
 import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
+import { validate } from 'uuid';
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -133,11 +134,12 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 
   // 2) Generate Reset Token
   const resetToken = user.createPasswordResetToken();
-  await user.save();
+  await user.save({ validate: false });
 
   // 3) Send to user's email
   try {
     const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',
@@ -146,13 +148,11 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save();
+    await user.save({ validate: false });
 
     return next(
       new AppError('There was an error sending the email. Try again later!'),
       500,
     );
   }
-
-  // 3) Send to user's email
 });
