@@ -4,6 +4,7 @@ import AppError from '../utils/appError.js';
 
 import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
+import Email from '../utils/email.js';
 import { validate } from 'uuid';
 
 const signToken = (id) =>
@@ -146,6 +147,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
       message: 'Token sent to email!',
     });
   } catch (err) {
+    console.error(err);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validate: false });

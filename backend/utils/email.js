@@ -1,4 +1,8 @@
+import sgMail from '@sendgrid/mail';
 import nodemailer from 'nodemailer';
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const testAccount = await nodemailer.createTestAccount();
 
 class Email {
   constructor(user, url) {
@@ -9,7 +13,7 @@ class Email {
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'production') {
       // Sendgrid
       return nodemailer.createTransport({
         service: 'SendGrid',
@@ -20,11 +24,11 @@ class Email {
       });
     }
     return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      host: 'smtp.ethereal.email',
+      port: 587,
       auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
+        user: testAccount.user,
+        pass: testAccount.pass,
       },
     });
   }
