@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import AppError from '../utils/appError.js';
 
+import { Op } from 'sequelize';
+import crypto from 'crypto';
 import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
 import Email from '../utils/email.js';
@@ -141,7 +143,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send to user's email
   try {
-    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+    const resetURL = `${req.protocol}://${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
@@ -159,4 +161,43 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
       500,
     );
   }
+});
+
+export const resetPassword = catchAsync(async (req, res, next) => {
+  const now = Date.now();
+  // 1) Get user based on reset token
+
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    where: {
+      [Op.and]: [
+        { passwordResetToken: hashedToken },
+        { passwordResetExpires: { [Op.gt]: now } },
+      ],
+    },
+  });
+
+  // 2) If token has not expired and there is a user, set new password
+  if (!user) {
+    return next(new AppError('Token is invalid or has expired', 400));
+  }
+
+  if (req.body.password !== req.body.passwordConfirm)
+    return next(new AppError('Passwords must match!', 400));
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  // 3) Update changedPasswordAt property
+  user.passwordChangedAt = now;
+  await user.save({ validate: false });
+
+  // 4) Log user in and send JWT
+  createSendToken(user, 200, req, res);
 });

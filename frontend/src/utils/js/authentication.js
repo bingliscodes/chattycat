@@ -88,6 +88,27 @@ export const sendResetEmail = async (formData) => {
   }
 };
 
+export const resetPassword = async (formData, resetToken) => {
+  const { password, passwordConfirm } = formData;
+  try {
+    const res = await axios.patch(
+      `${
+        import.meta.env.VITE_DEV_API_BASE_URL
+      }users/resetPassword/${resetToken}`,
+      { password, passwordConfirm },
+      { withCredentials: true }
+    );
+
+    return res.data;
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to reset password: ' + err.message);
+    }
+  }
+};
+
 export const verifyJWT = async () => {
   try {
     const res = await axios.get(

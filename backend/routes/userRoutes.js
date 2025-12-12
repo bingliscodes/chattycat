@@ -6,6 +6,7 @@ import {
   logout,
   restrictTo,
   forgotPassword,
+  resetPassword,
 } from '../controllers/authController.js';
 import {
   getAllUsers,
@@ -31,6 +32,7 @@ router.post('/signup', signup);
 router.get('/logout', logout);
 
 router.post('/forgotPassword', forgotPassword);
+router.patch('/resetPassword/:token', resetPassword);
 
 router.get('/', getAllUsers);
 

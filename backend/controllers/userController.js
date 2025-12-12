@@ -3,7 +3,6 @@ import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import Organization from '../models/organizationModel.js';
-import { DirectMessage } from '../models/messageModel.js';
 
 export const getMe = catchAsync(async (req, res, next) => {
   req.params.id = req.user.id;

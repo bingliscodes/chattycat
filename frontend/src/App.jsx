@@ -7,6 +7,7 @@ import Signup from './pages/SignupPage';
 import HomePage from './pages/HomePage';
 import UserProfile from './pages/UserProfile';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/me" element={<UserProfile />} />
+        <Route path="/resetPassword/:token" element={<ResetPassword />} />
       </Route>
     </Routes>
   );
