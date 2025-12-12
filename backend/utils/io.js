@@ -90,8 +90,16 @@ export const setupIO = (io) => {
 };
 
 const createMessage = async (messageData) => {
+  console.log(messageData);
   try {
     await Message.create(messageData);
+
+    if (messageData.parentMessageId) {
+      await Message.increment('replyCount', {
+        by: 1,
+        where: { id: messageData.parentMessageId },
+      });
+    }
   } catch (err) {
     console.error(err);
     throw err;

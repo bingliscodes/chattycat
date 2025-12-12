@@ -13,6 +13,7 @@ export default function MessageActions({
   const getAnchorRect = () => anchorRef.current?.getBoundingClientRect();
   return (
     <Menu.Root
+      size="md"
       open={menuIsOpen}
       onOpenChange={(change) => setMenuIsOpen(change.open)}
       positioning={{
@@ -30,13 +31,10 @@ export default function MessageActions({
                 <Menu.Item
                   key={item.value}
                   value={item.value}
-                  width="14"
-                  gap="1"
                   flexDirection="column"
                   justifyContent="center"
                 >
                   {item.icon}
-                  {item.label}
                 </Menu.Item>
               ))}
             </Group>

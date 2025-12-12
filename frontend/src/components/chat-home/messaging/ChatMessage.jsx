@@ -1,7 +1,6 @@
 import { Box, Flex, Text, IconButton } from '@chakra-ui/react';
 import { useContext, useState, useRef } from 'react';
 import { AiOutlineWechatWork } from 'react-icons/ai';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 
 import { ChatContext } from '@/contexts/ChatContext';
 import MessageActions from './MessageActions';

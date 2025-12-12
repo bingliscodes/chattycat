@@ -29,6 +29,7 @@ export const createChannelMessage = createOne(ChannelMessage);
 export const createDirectMessage = createOne(DirectMessage);
 
 export const createMessage = catchAsync(async (req, res, next) => {
+  console.log('creating message:', req.body);
   const newMsg = await Message.create(req.body);
 
   if (req.body.parentMessageId) {
