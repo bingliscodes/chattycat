@@ -41,15 +41,9 @@ export const setupIO = (io) => {
     });
 
     socket.on('send-message', (messageContent, messageData) => {
-      // Security: Ensure user has permission to send message to a channel
-      if (
-        !validateUserPermissions(
-          messageData.senderId,
-          messageData.channelId ?? messageData.roomId,
-        )
-      )
+      // Security: Ensure user has permission to send message to the channel
+      if (!validateUserPermissions(messageData.senderId, messageData.channelId))
         return;
-
       // Send message to DB
       createMessage(messageData);
 
@@ -104,5 +98,8 @@ const createMessage = async (messageData) => {
   }
 };
 
-const validateUserPermissions = (userId, channelId) =>
-  userChannelMap.data.get(userId).includes(channelId);
+const validateUserPermissions = (userId, channelId) => {
+  if (!channelId) return true;
+  const channels = userChannelMap.data.get(userId);
+  return channels.includes(channelId);
+};
