@@ -20,6 +20,10 @@ export default function MessageThread() {
     }));
   };
 
+  const handleClickThreadChat = () => {
+    console.log('clicked');
+    setChatMode('thread');
+  };
   const handleCloseThread = () => {
     setThread(null);
     if (directMessage) setChatMode('dm');
@@ -48,7 +52,10 @@ export default function MessageThread() {
         </Box>
         <MessageLayout messages={thread?.replies} />
 
-        <ChatInput onMessageSent={handleThreadReply} />
+        <ChatInput
+          onClick={handleClickThreadChat}
+          onMessageSent={handleThreadReply}
+        />
       </Flex>
     </Flex>
   );

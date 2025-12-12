@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
 
-export default function ChatInput({ sendLocation, onMessageSent }) {
+export default function ChatInput({ sendLocation, onMessageSent, ...props }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
   const { channel, directMessage, directMessageList, chatMode, thread } =
     useContext(ChatContext);
@@ -80,6 +80,7 @@ export default function ChatInput({ sendLocation, onMessageSent }) {
     <>
       {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
       <Box
+        {...props}
         as="form"
         onSubmit={onSubmit}
         py={2}
