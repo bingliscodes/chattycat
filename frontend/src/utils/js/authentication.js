@@ -61,13 +61,30 @@ export const logout = async () => {
         withCredentials: true,
       }
     );
-    if (!res.status == 200)
+    if (!res.status === 200)
       throw new Error(
         'Failed to login user. Make sure email and password are correct.'
       );
   } catch (err) {
     console.error(err);
     throw err;
+  }
+};
+
+export const sendResetEmail = async (formData) => {
+  const { email } = formData;
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/forgotPassword`,
+      { email },
+      { withCredentials: true }
+    );
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to send reset email: ' + err.message);
+    }
   }
 };
 

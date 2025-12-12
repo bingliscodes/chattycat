@@ -131,7 +131,9 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ where: { email: req.body.email } });
 
   if (!user)
-    return next(new AppError('There is no user with that email address.', 404));
+    return next(
+      new AppError('There is no user associated with that email address.', 404),
+    );
 
   // 2) Generate Reset Token
   const resetToken = user.createPasswordResetToken();

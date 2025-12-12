@@ -139,6 +139,7 @@ export default function LoginCard() {
 
           <Stack pt={3} color="text.sidebar">
             Don't have an account yet? <NavLink to="/signup">Signup</NavLink>
+            <NavLink to="/forgotPassword">Forgot password?</NavLink>
           </Stack>
         </Flex>
       </Flex>
