@@ -14,7 +14,7 @@ export default function MessageLayout({ messages }) {
   });
 
   return (
-    <Box flex="1" overflowY="auto" minH="0" p={4}>
+    <Box flex="1" h="100vh" p={4}>
       {[...messageMap.entries()].map(([date, msgs]) => (
         <Box key={date} mb={6}>
           <DividerText>{date}</DividerText>

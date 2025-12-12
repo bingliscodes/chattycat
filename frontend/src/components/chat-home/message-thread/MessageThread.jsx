@@ -32,7 +32,8 @@ export default function MessageThread() {
 
   if (!thread) return;
   return (
-    <Flex flex="1" h="100%" direction="column">
+    <Flex h="95vh" direction="column">
+      {/* Chat Header*/}
       <Flex align="center" justify="space-between" px={2}>
         <Text p={2} color="text" fontWeight="bold" fontSize="xl">
           Thread
@@ -44,18 +45,22 @@ export default function MessageThread() {
         />
       </Flex>
 
-      <Flex direction="column">
-        <Box p={4}>
-          <DividerText>{thread?.parentMessage.datestamp}</DividerText>
-          <ChatMessage msg={thread?.parentMessage} />
-          <DividerText style="left">Replies </DividerText>
-        </Box>
-        <MessageLayout messages={thread?.replies} />
+      <Flex direction="column" flex="1" overflow="hidden">
+        <Flex direction="column" flex="1" overflowY="auto" py={2} gap={2}>
+          <Box p={4}>
+            <DividerText>{thread?.parentMessage.datestamp}</DividerText>
+            <ChatMessage msg={thread?.parentMessage} />
+            <DividerText style="left">Replies </DividerText>
+          </Box>
 
-        <ChatInput
-          onClick={handleClickThreadChat}
-          onMessageSent={handleThreadReply}
-        />
+          <MessageLayout messages={thread?.replies} />
+        </Flex>
+        <Box my={2}>
+          <ChatInput
+            onClick={handleClickThreadChat}
+            onMessageSent={handleThreadReply}
+          />
+        </Box>
       </Flex>
     </Flex>
   );

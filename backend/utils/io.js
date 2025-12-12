@@ -90,7 +90,6 @@ export const setupIO = (io) => {
 };
 
 const createMessage = async (messageData) => {
-  console.log(messageData);
   try {
     await Message.create(messageData);
 

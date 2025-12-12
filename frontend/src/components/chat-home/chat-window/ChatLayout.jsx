@@ -12,10 +12,10 @@ export default function ChatLayout() {
   const { directMessage, channel, thread } = useContext(ChatContext);
 
   return (
-    <Flex flex="1" minH="0" w="100%">
+    <Flex flex="1" w="100%">
       <ComponentSplitter>
         <Sidebar />
-        <Flex flex="1" minH="0" h="100%">
+        <Flex flex="1" h="100%">
           {channel && <ChannelChat />}
           {directMessage && <DirectMessages />}
         </Flex>

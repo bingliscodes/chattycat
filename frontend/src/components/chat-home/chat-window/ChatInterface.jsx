@@ -33,7 +33,7 @@ export default function ChatInterface({
     setMessages((prev) => [...prev, message]);
   };
   return (
-    <Flex direction="column" flex="1" minH="0" onClick={onClickMainArea}>
+    <Flex direction="column" flex="1" h="95vh" onClick={onClickMainArea}>
       {/* Chat Header */}
       <Box p={3} borderBottom="1px solid" borderColor="borders">
         <Text fontWeight="bold" fontSize="xl">
@@ -41,15 +41,21 @@ export default function ChatInterface({
         </Text>
       </Box>
 
-      {/* Messages (scrollable) */}
-      <MessageLayout messages={messages} />
-      {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
+      <Flex direction="column" flex="1" overflow="hidden">
+        <Flex direction="column" flex="1" overflowY="auto" py={2} gap={2}>
+          {/* Messages (scrollable) */}
+          <MessageLayout messages={messages} />
+          {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
+        </Flex>
 
-      {/* Chat Input (fixed inside chat box) */}
-      <ChatInput
-        sendLocation={sendLocation}
-        onMessageSent={handleMessageSent}
-      />
+        {/* Chat Input (fixed inside chat box) */}
+        <Box my={2}>
+          <ChatInput
+            sendLocation={sendLocation}
+            onMessageSent={handleMessageSent}
+          />
+        </Box>
+      </Flex>
     </Flex>
   );
 }
