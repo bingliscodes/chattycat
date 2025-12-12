@@ -2,10 +2,10 @@ import { Flex, Text, Box, CloseButton } from '@chakra-ui/react';
 import { useContext } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
-import ChatMessage from '../ChatMessage';
-import ChatInput from '../ChatInput';
+import ChatMessage from '../messaging/ChatMessage';
+import ChatInput from '../messaging/ChatInput';
 import { useThreadRoom } from '@/hooks/useThreadRoom';
-import MessageLayout from '../MessageLayout';
+import MessageLayout from '../messaging/MessageLayout';
 import DividerText from '../../common/DividerText';
 
 export default function MessageThread() {

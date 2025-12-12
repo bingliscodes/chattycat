@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 
 import ChatMessage from './ChatMessage';
-import DividerText from '../common/DividerText';
+import DividerText from '../../common/DividerText';
 
 export default function MessageLayout({ messages }) {
   const messageMap = new Map();

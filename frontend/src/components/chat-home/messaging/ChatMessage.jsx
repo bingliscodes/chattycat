@@ -1,26 +1,39 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { Box, Flex, Text, IconButton } from '@chakra-ui/react';
+import { useContext, useState, useRef } from 'react';
 import { AiOutlineWechatWork } from 'react-icons/ai';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 import { ChatContext } from '@/contexts/ChatContext';
+import MessageActions from './MessageActions';
 
 export default function ChatMessage({ msg, ...props }) {
   const { handleSetThread } = useContext(ChatContext);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const iconRef = useRef(null);
 
-  const handleMessageClick = (msg) => {
+  const handleMessageClick = () => {
     handleSetThread(msg);
   };
 
   return (
     <Box
-      onClick={() => handleMessageClick(msg)}
+      position="relative"
+      onClick={handleMessageClick}
       textAlign="left"
       p={2}
       borderRadius="md"
       boxShadow="sm"
       mb={1}
+      onMouseEnter={() => setMenuIsOpen(true)}
+      onMouseLeave={() => setMenuIsOpen(false)}
       {...props}
     >
+      <Box position="absolute" top={1} right={1} ref={iconRef}></Box>
+      <MessageActions
+        anchorRef={iconRef}
+        menuIsOpen={menuIsOpen}
+        setMenuIsOpen={setMenuIsOpen}
+      />
       <Flex align="flex-end" gap={2}>
         <Text fontSize="sm" fontWeight="bold">
           {`${msg.sender.firstName} ${msg.sender.lastName}`}

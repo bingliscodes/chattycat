@@ -3,8 +3,8 @@ import { Box, Text, Flex } from '@chakra-ui/react';
 import { useContext, useEffect } from 'react';
 
 import { UserContext } from '@/contexts/UserContext';
-import ChatInput from '../ChatInput';
-import MessageLayout from '../MessageLayout';
+import ChatInput from '../messaging/ChatInput';
+import MessageLayout from '../messaging/MessageLayout';
 
 export default function ChatInterface({
   messages,
