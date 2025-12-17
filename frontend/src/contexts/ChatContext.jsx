@@ -27,7 +27,6 @@ export const ChatContextProvider = ({ children }) => {
   const [directMessageList, setDirectMessageList] = useState([]);
   const [thread, setThread] = useState();
   const [chatMode, setChatMode] = useState();
-  const [organization, setOrganization] = useState();
 
   const { userData, userSocket } = useContext(UserContext);
 
@@ -123,7 +122,6 @@ export const ChatContextProvider = ({ children }) => {
         thread,
         setThread,
         handleSetThread,
-        setOrganization,
       }}
     >
       {children}

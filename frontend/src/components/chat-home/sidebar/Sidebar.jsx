@@ -18,8 +18,9 @@ export default function UserSidebar() {
     directMessageList,
     directMessage,
     setChatMode,
+    organization,
   } = useContext(ChatContext);
-  const { channels, organization } = userData;
+  const { channels } = userData;
 
   if (!userData) return <h1>Loading...</h1>;
 

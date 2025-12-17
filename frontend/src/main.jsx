@@ -6,16 +6,19 @@ import './index.css';
 import App from './App.jsx';
 
 import { UserContextProvider } from '@/contexts/UserContext';
+import { OrganizationContextProvider } from '@/contexts/OrganizationContext';
 import { ChatContextProvider } from '@/contexts/ChatContext';
 
 createRoot(document.getElementById('root')).render(
   <UserContextProvider>
-    <ChatContextProvider>
-      <BrowserRouter>
-        <Provider>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    </ChatContextProvider>
+    <OrganizationContextProvider>
+      <ChatContextProvider>
+        <BrowserRouter>
+          <Provider>
+            <App />
+          </Provider>
+        </BrowserRouter>
+      </ChatContextProvider>
+    </OrganizationContextProvider>
   </UserContextProvider>
 );

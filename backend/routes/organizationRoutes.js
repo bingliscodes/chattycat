@@ -3,6 +3,8 @@ import {
   createOrganization,
   deleteOrganization,
   getAllOrganizations,
+  getAllOrganizationChannels,
+  getAllOrganizationUsers,
 } from '../controllers/organizationController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
 
@@ -15,5 +17,6 @@ router.use(restrictTo('superuser'));
 router.post('/', createOrganization);
 
 router.route('/:id').delete(deleteOrganization);
-
+router.get('/:id/channels', getAllOrganizationChannels);
+router.get('/:id/users', getAllOrganizationUsers);
 export default router;

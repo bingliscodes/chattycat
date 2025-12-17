@@ -11,29 +11,30 @@ import { useContext, useState } from 'react';
 
 import { UserContext } from '@/contexts/UserContext';
 import { ChatContext } from '@/contexts/ChatContext';
+import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function OrganizationBrowser() {
-  const { userData } = useContext(UserContext);
-  const { setOrganization } = useContext(ChatContext);
-  const [selectedOrg, setSelectedOrg] = useState([]);
+  const { organizationData } = useContext(UserContext);
+  const { handleSetOrganization } = useContext(OrganizationContext);
+  const [selectedOrg, setSelectedOrg] = useState();
 
   const organizations = createListCollection({
-    items: userData.organizations.map((org) => ({
+    items: organizationData.map((org) => ({
       label: org.organizationName,
-      value: org.UserOrganization.organizationId,
+      value: org.id,
+      org,
     })),
   });
-
-  const handleSetOrganization = () => {
-    setOrganization(selectedOrg);
-  };
 
   return (
     <Flex direction="column" flex="1" align="center">
       <Listbox.Root
         collection={organizations}
         value={selectedOrg}
-        onValueChange={(details) => setSelectedOrg(details.value)}
+        onValueChange={(details) => {
+          setSelectedOrg(details.value);
+          handleSetOrganization(details.items[0].org);
+        }}
         width="320px"
       >
         <Listbox.Label>Select Organization</Listbox.Label>
@@ -46,16 +47,14 @@ export default function OrganizationBrowser() {
           ))}
         </Listbox.Content>
       </Listbox.Root>
-      <Text>Selected Value: {selectedOrg}</Text>
 
       <Button
         to="/client"
         as={NavLink}
         bg="bg.primaryBtn"
-        onClick={handleSetOrganization}
         _hover={{ bg: 'bg.navHover' }}
       >
-        Go to organization
+        {selectedOrg ? 'Go to organization' : 'Select an organization'}
       </Button>
     </Flex>
   );

@@ -18,6 +18,25 @@ export const fetchUserData = async () => {
   }
 };
 
+export const fetchOrganizationData = async () => {
+  try {
+    const organizationData = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users/myOrganizations`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (organizationData.status !== 200)
+      throw new Error('Failed to fetch organization data.');
+
+    return organizationData.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 export const sendMessage = async (messageData) => {
   try {
     const res = await axios.post(

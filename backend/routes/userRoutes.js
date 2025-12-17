@@ -14,6 +14,7 @@ import {
   getUser,
   getDirectMessageList,
   updateMe,
+  getMyOrganizations,
 } from '../controllers/userController.js';
 import {
   addToChannel,
@@ -40,6 +41,7 @@ router.get('/:userId/directMessageList', getDirectMessageList);
 
 router.use(protect);
 router.get('/me', getMe, getUser);
+router.get('/myOrganizations', getMyOrganizations);
 router.patch('/updateMe', updateMe);
 router.post('/avatar', uploadAvatar, uploadUserAvatar);
 router.get('/received', getAllReceivedMessages);

@@ -1,12 +1,13 @@
 import { createContext, useState, useEffect, useCallback, useRef } from 'react';
 import { createConnection } from '../utils/js/socket';
-import { fetchUserData } from '../utils/js/apiCalls';
+import { fetchUserData, fetchOrganizationData } from '../utils/js/apiCalls';
 import { verifyJWT } from '../utils/js/authentication';
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [userData, setUserData] = useState({});
+  const [organizationData, setOrganizationData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [socketReady, setSocketReady] = useState(false);
   const socketRef = useRef(null);
@@ -50,6 +51,20 @@ export const UserContextProvider = ({ children }) => {
     loadUserData();
   }, [loadUserData]);
 
+  const loadOrganizationData = useCallback(async () => {
+    try {
+      const organizationsRes = await fetchOrganizationData();
+      setOrganizationData(organizationsRes.data);
+    } catch (err) {
+      console.error(err);
+      setOrganizationData([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadOrganizationData();
+  }, [loadOrganizationData]);
+
   return (
     <UserContext.Provider
       value={{
@@ -60,6 +75,7 @@ export const UserContextProvider = ({ children }) => {
         setUserData,
         isLoggedIn,
         refreshUserData: loadUserData,
+        organizationData,
       }}
     >
       {children}
