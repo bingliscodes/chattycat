@@ -49,8 +49,7 @@ export const fetchOrganizationData = async (orgId) => {
       { withCredentials: true }
     );
 
-    console.log(channelRes.data);
-    return { channels: channelRes.data, users: userRes.data };
+    return { channels: channelRes.data.data, users: userRes.data.data };
   } catch (err) {
     console.error(err);
     throw err;

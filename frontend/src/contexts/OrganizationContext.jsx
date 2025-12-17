@@ -9,7 +9,7 @@ export const OrganizationContext = createContext({});
 
 export const OrganizationContextProvider = ({ children }) => {
   const [userOrganizations, setUserOrganizations] = useState([]);
-  const [organizationData, setOrganizationData] = useState([]);
+  const [organizationData, setOrganizationData] = useState();
 
   const loadUserOrganizations = useCallback(async () => {
     try {
@@ -26,13 +26,11 @@ export const OrganizationContextProvider = ({ children }) => {
   }, [loadUserOrganizations]);
 
   const handleLoadOrganizationData = async (org) => {
-    console.log('loading org data for:', org);
     try {
       const orgDataRes = await fetchOrganizationData(org);
-      console.log(orgDataRes);
-      // setOrganizationUserData(orgUserIds);
-      // console.log('Loaded org user data:', orgUserIds);
+      setOrganizationData(orgDataRes);
     } catch (err) {
+      setOrganizationData(null);
       console.error('Failed to load org data:', err);
     }
   };

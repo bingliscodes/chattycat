@@ -5,6 +5,7 @@ import { Flex, Text, Accordion, Span } from '@chakra-ui/react';
 
 import { UserContext } from '@/contexts/UserContext';
 import { ChatContext } from '@/contexts/ChatContext';
+import { OrganizationContext } from '@/contexts/OrganizationContext';
 import DirectMessageRecipient from './direct-messages/DirectMessageRecipient';
 import AddToChannelButton from './channels/AddToChannelButton';
 import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
@@ -20,8 +21,12 @@ export default function UserSidebar() {
     setChatMode,
     organization,
   } = useContext(ChatContext);
-  const { channels } = userData;
 
+  const { organizationData } = useContext(OrganizationContext);
+  // console.log(organizationData?.channels);
+  const { channels } = organizationData || [];
+
+  if (!organizationData) return <h1>Loading Organization Data...</h1>;
   if (!userData) return <h1>Loading...</h1>;
 
   const handleJoinRoom = (data, mode) => {
