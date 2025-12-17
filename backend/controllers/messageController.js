@@ -14,7 +14,7 @@ export const getAllMessages = catchAsync(async (req, res, next) => {
   const messages = await Message.findAll({
     include: [
       { model: Channel, attributes: ['channelName', 'id'] },
-      { model: User, attributes: ['firstName', 'lastName'] },
+      { model: User, attributes: ['firstName', 'lastName', 'avatarUrl'] },
     ],
   });
 
@@ -57,7 +57,11 @@ export const getChannelMessages = catchAsync(async (req, res, next) => {
         as: 'Channel',
         attributes: ['channelName', 'id'],
       },
-      { model: User, as: 'Sender', attributes: ['firstName', 'lastName'] },
+      {
+        model: User,
+        as: 'Sender',
+        attributes: ['firstName', 'lastName', 'avatarUrl'],
+      },
     ],
   });
 
@@ -76,7 +80,7 @@ export const getAllReceivedMessages = catchAsync(async (req, res, next) => {
       {
         model: User,
         as: 'Sender',
-        attributes: ['id', 'firstName', 'lastName'],
+        attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
       },
     ],
   });
@@ -130,7 +134,7 @@ export const getThreadMessages = catchAsync(async (req, res, next) => {
       {
         model: User,
         as: 'Sender',
-        attributes: ['id', 'firstName', 'lastName'],
+        attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
       },
     ],
   });
