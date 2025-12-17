@@ -1,3 +1,4 @@
+// OrganizationBrowser.jsx
 'use client';
 import {
   Flex,
@@ -7,15 +8,19 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function OrganizationBrowser() {
-  const { userOrganizations, handleLoadOrganizationData } =
-    useContext(OrganizationContext);
+  const {
+    userOrganizations,
+    selectedOrganization,
+    handleSetOrganization,
+    handleLoadOrganizationData,
+  } = useContext(OrganizationContext);
 
-  const [selectedOrg, setSelectedOrg] = useState();
+  //   const [selectedOrg, setSelectedOrg] = useState();
   const organizations = createListCollection({
     items: userOrganizations.map((org) => ({
       label: org.organizationName,
@@ -28,9 +33,10 @@ export default function OrganizationBrowser() {
     <Flex direction="column" flex="1" align="center">
       <Listbox.Root
         collection={organizations}
-        value={selectedOrg}
+        value={selectedOrganization?.id ? [selectedOrganization.id] : []}
         onValueChange={(details) => {
-          setSelectedOrg(details.value);
+          const org = details.items[0].org;
+          handleSetOrganization(org);
         }}
         width="320px"
       >
@@ -49,10 +55,10 @@ export default function OrganizationBrowser() {
         to="/client"
         as={NavLink}
         bg="bg.primaryBtn"
-        onClick={() => handleLoadOrganizationData(selectedOrg[0])}
+        onClick={handleLoadOrganizationData}
         _hover={{ bg: 'bg.navHover' }}
       >
-        {selectedOrg ? 'Go to organization' : 'Select an organization'}
+        {selectedOrganization ? 'Go to organization' : 'Select an organization'}
       </Button>
     </Flex>
   );

@@ -9,7 +9,10 @@ export const OrganizationContext = createContext({});
 
 export const OrganizationContextProvider = ({ children }) => {
   const [userOrganizations, setUserOrganizations] = useState([]);
-  const [organizationData, setOrganizationData] = useState();
+  const [organizationData, setOrganizationData] = useState(null);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
+
+  // TODO: Figure out why organizationData is nulling when refreshing page despite the selectedOragnizationId persisting in localstorage
 
   const loadUserOrganizations = useCallback(async () => {
     try {
@@ -25,9 +28,30 @@ export const OrganizationContextProvider = ({ children }) => {
     loadUserOrganizations();
   }, [loadUserOrganizations]);
 
-  const handleLoadOrganizationData = async (org) => {
+  useEffect(() => {
+    if (!userOrganizations.length) return;
+
+    const savedOrgId = localStorage.getItem('selectedOrganizationId');
+    if (!savedOrgId) return;
+
+    const foundOrg = userOrganizations.find((org) => org.id === savedOrgId);
+
+    if (foundOrg) {
+      setSelectedOrganization(foundOrg);
+    }
+  }, [userOrganizations]);
+
+  // 3: Persist selection ONLY when user changes it
+  const handleSetOrganization = (org) => {
+    setSelectedOrganization(org);
+    localStorage.setItem('selectedOrganizationId', org.id);
+  };
+
+  const handleLoadOrganizationData = async () => {
+    if (!selectedOrganization) return;
+    const { id } = selectedOrganization;
     try {
-      const orgDataRes = await fetchOrganizationData(org);
+      const orgDataRes = await fetchOrganizationData(id);
       setOrganizationData(orgDataRes);
     } catch (err) {
       setOrganizationData(null);
@@ -39,6 +63,8 @@ export const OrganizationContextProvider = ({ children }) => {
     <OrganizationContext.Provider
       value={{
         userOrganizations,
+        selectedOrganization,
+        handleSetOrganization,
         handleLoadOrganizationData,
         organizationData,
       }}

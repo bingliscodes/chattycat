@@ -19,16 +19,17 @@ export default function UserSidebar() {
     directMessageList,
     directMessage,
     setChatMode,
-    organization,
   } = useContext(ChatContext);
 
-  const { organizationData } = useContext(OrganizationContext);
-  // console.log(organizationData?.channels);
+  const { organizationData, selectedOrganization } =
+    useContext(OrganizationContext);
+
+  console.log('organizationData', organizationData, selectedOrganization);
   const { channels } = organizationData || [];
 
-  if (!organizationData) return <h1>Loading Organization Data...</h1>;
-  if (!userData) return <h1>Loading...</h1>;
-
+  if (!organizationData) return <p>Loading Organization Data...</p>;
+  if (!userData) return <p>Loading...</p>;
+  console.log(organizationData);
   const handleJoinRoom = (data, mode) => {
     if (!userSocket?.connected) {
       console.warn('Socket not connected yet.');
@@ -61,7 +62,7 @@ export default function UserSidebar() {
       h="100%"
     >
       <Text ml={4} fontWeight="bold" fontSize="4xl" mb={4} color="text.sidebar">
-        {organization?.organizationName}
+        {selectedOrganization?.organizationName}
       </Text>
 
       {/* Channels */}
