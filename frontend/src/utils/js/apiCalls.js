@@ -48,6 +48,8 @@ export const fetchOrganizationData = async (orgId) => {
       `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/${orgId}/users`,
       { withCredentials: true }
     );
+
+    console.log(channelRes.data);
     return { channels: channelRes.data, users: userRes.data };
   } catch (err) {
     console.error(err);

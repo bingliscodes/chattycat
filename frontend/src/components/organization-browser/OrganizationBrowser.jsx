@@ -49,7 +49,7 @@ export default function OrganizationBrowser() {
         to="/client"
         as={NavLink}
         bg="bg.primaryBtn"
-        onClick={() => handleLoadOrganizationData(selectedOrg)}
+        onClick={() => handleLoadOrganizationData(selectedOrg[0])}
         _hover={{ bg: 'bg.navHover' }}
       >
         {selectedOrg ? 'Go to organization' : 'Select an organization'}
