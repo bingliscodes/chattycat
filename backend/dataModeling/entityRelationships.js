@@ -3,10 +3,11 @@ import Organization from '../models/organizationModel.js';
 import Channel from '../models/channelModel.js';
 import { DirectMessageRoom, Message } from '../models/messageModel.js';
 import UserChannel from '../models/userChannelModel.js';
+import UserOrganization from '../models/userOrganizationModel.js';
 
 const modelRelationships = async () => {
-  Organization.hasMany(User);
-  User.belongsTo(Organization);
+  Organization.belongsToMany(User, { through: UserOrganization });
+  User.belongsToMany(Organization, { through: UserOrganization });
 
   Organization.hasMany(Channel);
   Channel.belongsTo(Organization);

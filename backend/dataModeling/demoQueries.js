@@ -24,8 +24,8 @@ async function main() {
     password: 'password',
     passwordConfirm: 'password',
     role: 'superuser',
-    organizationId: testOrg.id,
   });
+  admin.addOrganizations([testOrg, testOrg2]);
 
   const cannoli = await User.create({
     firstName: 'Cannoli',
@@ -34,8 +34,8 @@ async function main() {
     password: 'password',
     passwordConfirm: 'password',
     role: 'user',
-    organizationId: testOrg.id,
   });
+  cannoli.addOrganizations([testOrg, testOrg2]);
 
   const bookie = await User.create({
     firstName: 'Bookie',
@@ -44,8 +44,8 @@ async function main() {
     password: 'password',
     passwordConfirm: 'password',
     role: 'user',
-    organizationId: testOrg.id,
   });
+  bookie.addOrganizations([testOrg, testOrg2]);
 
   const guy = await User.create({
     firstName: 'Lame',
@@ -54,7 +54,6 @@ async function main() {
     password: 'password',
     passwordConfirm: 'password',
     role: 'user',
-    organizationId: testOrg.id,
   });
 
   const testChannel = await Channel.create({
