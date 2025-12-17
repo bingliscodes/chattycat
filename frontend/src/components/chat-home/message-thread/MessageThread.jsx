@@ -55,6 +55,8 @@ export default function MessageThread() {
 
           <MessageLayout messages={thread?.replies} />
         </Flex>
+
+        {/* Chat Input */}
         <Box my={2}>
           <ChatInput
             onClick={handleClickThreadChat}

@@ -18,6 +18,7 @@ export default function DirectMessageChat() {
       try {
         setLoading(true);
         const res = await fetchUserMessageHistory(directMessage.id);
+        console.log('res.data:', res.data);
         const cleanedMessages = cleanMessages(res.data, 'dm');
 
         setMessages(cleanedMessages);
@@ -34,10 +35,9 @@ export default function DirectMessageChat() {
   const handleClickMainArea = () => {
     setChatMode('dm');
   };
-
+  console.log(messages);
   if (loading) return <Spinner />;
   if (error) return <Text color="red.500">Error loading messages</Text>;
-
   return (
     messages && (
       <ChatInterface

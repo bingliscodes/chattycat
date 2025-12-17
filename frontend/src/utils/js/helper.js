@@ -15,7 +15,11 @@ export const cleanMessages = (msgs, mode) => {
     }),
     channel: mode === 'dm' ? msg.roomId : msg.channel,
     messageBody: msg.messageContent,
-    sender: { firstName: msg.Sender.firstName, lastName: msg.Sender.lastName },
+    sender: {
+      firstName: msg.Sender.firstName,
+      lastName: msg.Sender.lastName,
+      avatarUrl: msg.Sender.avatarUrl,
+    },
     messageId: msg.id,
     isThread: msg.replyCount > 0,
     parentMessageId: msg.parentMessageId,

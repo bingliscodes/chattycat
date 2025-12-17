@@ -108,7 +108,7 @@ export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
       {
         model: User,
         as: 'Sender',
-        attributes: ['id', 'firstName', 'lastName'],
+        attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
       },
     ],
   });
