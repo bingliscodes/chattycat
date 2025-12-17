@@ -15,8 +15,6 @@ export const getAllOrganizationChannels = catchAsync(async (req, res, next) => {
   const orgRes = await Organization.findByPk(orgId, {
     include: { model: Channel },
   });
-
-  console.log(orgRes);
   res.status(200).json({
     status: 'success',
     results: orgRes.channels.length,
@@ -34,7 +32,6 @@ export const getAllOrganizationUsers = catchAsync(async (req, res, next) => {
     },
   });
 
-  console.log(orgRes);
   res.status(200).json({
     status: 'success',
     results: orgRes.users.length,

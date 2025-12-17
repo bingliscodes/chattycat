@@ -9,17 +9,15 @@ import {
 import { NavLink } from 'react-router';
 import { useContext, useState } from 'react';
 
-import { UserContext } from '@/contexts/UserContext';
-import { ChatContext } from '@/contexts/ChatContext';
 import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function OrganizationBrowser() {
-  const { organizationData } = useContext(UserContext);
-  const { handleSetOrganization } = useContext(OrganizationContext);
-  const [selectedOrg, setSelectedOrg] = useState();
+  const { userOrganizations, handleLoadOrganizationData } =
+    useContext(OrganizationContext);
 
+  const [selectedOrg, setSelectedOrg] = useState();
   const organizations = createListCollection({
-    items: organizationData.map((org) => ({
+    items: userOrganizations.map((org) => ({
       label: org.organizationName,
       value: org.id,
       org,
@@ -33,13 +31,12 @@ export default function OrganizationBrowser() {
         value={selectedOrg}
         onValueChange={(details) => {
           setSelectedOrg(details.value);
-          handleSetOrganization(details.items[0].org);
         }}
         width="320px"
       >
         <Listbox.Label>Select Organization</Listbox.Label>
         <Listbox.Content>
-          {organizations.items.map((org) => (
+          {organizations?.items.map((org) => (
             <Listbox.Item item={org} key={org.value}>
               <Listbox.ItemText>{org.label}</Listbox.ItemText>
               <Listbox.ItemIndicator />
@@ -52,6 +49,7 @@ export default function OrganizationBrowser() {
         to="/client"
         as={NavLink}
         bg="bg.primaryBtn"
+        onClick={() => handleLoadOrganizationData(selectedOrg)}
         _hover={{ bg: 'bg.navHover' }}
       >
         {selectedOrg ? 'Go to organization' : 'Select an organization'}

@@ -18,7 +18,7 @@ export const fetchUserData = async () => {
   }
 };
 
-export const fetchOrganizationData = async () => {
+export const fetchUserOrganizations = async () => {
   try {
     const organizationData = await axios.get(
       `${import.meta.env.VITE_DEV_API_BASE_URL}users/myOrganizations`,
@@ -37,6 +37,23 @@ export const fetchOrganizationData = async () => {
   }
 };
 
+export const fetchOrganizationData = async (orgId) => {
+  try {
+    const channelRes = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/${orgId}/channels`,
+      { withCredentials: true }
+    );
+
+    const userRes = await axios.get(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/${orgId}/users`,
+      { withCredentials: true }
+    );
+    return { channels: channelRes.data, users: userRes.data };
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
 export const sendMessage = async (messageData) => {
   try {
     const res = await axios.post(

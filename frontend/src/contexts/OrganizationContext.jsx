@@ -1,38 +1,48 @@
 // OrganizationContext.jsx
+import { createContext, useState, useEffect, useCallback } from 'react';
 import {
-  useContext,
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
-
-import { UserContext } from './UserContext';
+  fetchUserOrganizations,
+  fetchOrganizationData,
+} from '../utils/js/apiCalls';
 
 export const OrganizationContext = createContext({});
 
 export const OrganizationContextProvider = ({ children }) => {
-  const [organization, setOrganization] = useState();
+  const [userOrganizations, setUserOrganizations] = useState([]);
+  const [organizationData, setOrganizationData] = useState([]);
 
-  const { userData, userSocket } = useContext(UserContext);
+  const loadUserOrganizations = useCallback(async () => {
+    try {
+      const response = await fetchUserOrganizations();
+      setUserOrganizations(response.data);
+    } catch (err) {
+      console.error('Failed to fetch organizations:', err);
+      setUserOrganizations([]);
+    }
+  }, []);
 
-  const handleSetOrganization = (org) => {
-    console.log(
-      'setting organization to:',
-      org.organizationName,
-      'org ID:',
-      org.id
-    );
-    setOrganization(org);
-    // TODO: get relavent user data such as channels and dms and load the app
-    // We need to replace all the isntances where channels and other data comes from the userData obj
+  useEffect(() => {
+    loadUserOrganizations();
+  }, [loadUserOrganizations]);
+
+  const handleLoadOrganizationData = async (org) => {
+    console.log('loading org data for:', org);
+    try {
+      const orgDataRes = await fetchOrganizationData(org);
+      console.log(orgDataRes);
+      // setOrganizationUserData(orgUserIds);
+      // console.log('Loaded org user data:', orgUserIds);
+    } catch (err) {
+      console.error('Failed to load org data:', err);
+    }
   };
 
   return (
     <OrganizationContext.Provider
       value={{
-        organization,
-        handleSetOrganization,
+        userOrganizations,
+        handleLoadOrganizationData,
+        organizationData,
       }}
     >
       {children}
