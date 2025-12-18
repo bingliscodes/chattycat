@@ -21,16 +21,13 @@ export default function UserSidebar() {
     setChatMode,
   } = useContext(ChatContext);
 
-  console.log('directMessageList: ', directMessageList);
   const { organizationData, selectedOrganization } =
     useContext(OrganizationContext);
 
-  console.log('organizationData', organizationData, selectedOrganization);
   const { channels } = organizationData || [];
 
   if (!organizationData) return <p>Loading Organization Data...</p>;
   if (!userData) return <p>Loading...</p>;
-  console.log(organizationData);
   const handleJoinRoom = (data, mode) => {
     if (!userSocket?.connected) {
       console.warn('Socket not connected yet.');

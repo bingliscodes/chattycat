@@ -18,12 +18,14 @@ export default function MessageThread() {
       ...prevThread,
       replies: [...prevThread.replies, message],
     }));
+
+    thread.parentMessage.isThread = true;
   };
 
   const handleClickThreadChat = () => {
-    console.log('clicked');
     setChatMode('thread');
   };
+
   const handleCloseThread = () => {
     setThread(null);
     if (directMessage) setChatMode('dm');
