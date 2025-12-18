@@ -9,6 +9,7 @@ import { OrganizationContext } from '@/contexts/OrganizationContext';
 import DirectMessageRecipient from './direct-messages/DirectMessageRecipient';
 import AddToChannelButton from './channels/AddToChannelButton';
 import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
+import CreateChannelButton from './channels/CreateChannelButton';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
@@ -72,9 +73,12 @@ export default function UserSidebar() {
             _hover={{ bg: 'bg.itemHover' }}
           >
             <Accordion.ItemIndicator />
-            <Span flex="1" color="text.sidebar" textStyle="2xl">
-              Channels
-            </Span>
+            <Flex flex="1" justify="center">
+              <Span flex="1" color="text.sidebar" textStyle="2xl">
+                Channels
+              </Span>
+              <CreateChannelButton />
+            </Flex>
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
             {channels &&

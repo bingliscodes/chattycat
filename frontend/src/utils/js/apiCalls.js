@@ -287,3 +287,20 @@ export const createOrganization = async (formData) => {
     }
   }
 };
+
+export const createChannel = async (formData) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}channels`,
+      formData,
+      { withCredentials: true }
+    );
+    return res.data.data;
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to create new channel: ', err.message);
+    }
+  }
+};
