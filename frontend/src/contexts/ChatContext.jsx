@@ -33,10 +33,13 @@ export const ChatContextProvider = ({ children }) => {
   const { selectedOrganization } = useContext(OrganizationContext);
 
   useEffect(() => {
-    if (!channel) return;
+    if (!channel || !selectedOrganization) return;
     async function fetchChannelUsersAsync() {
       try {
-        const res = await fetchChannelUsers(channel.id);
+        const res = await fetchChannelUsers(
+          channel.id,
+          selectedOrganization.id
+        );
         const channelUserIds = res.data.map((usr) => usr.id);
         setChannelUsers(channelUserIds);
       } catch (err) {
@@ -44,10 +47,10 @@ export const ChatContextProvider = ({ children }) => {
       }
     }
     fetchChannelUsersAsync();
-  }, [channel]);
+  }, [channel, selectedOrganization]);
 
   const fetchDirectMessages = useCallback(async () => {
-    if (!userData?.id) return;
+    if (!userData?.id || !selectedOrganization?.id) return;
     try {
       const res = await fetchDirectMessageList(
         userData.id,

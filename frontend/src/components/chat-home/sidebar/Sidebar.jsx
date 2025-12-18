@@ -73,7 +73,7 @@ export default function UserSidebar() {
             _hover={{ bg: 'bg.itemHover' }}
           >
             <Accordion.ItemIndicator />
-            <Flex flex="1" justify="center">
+            <Flex flex="1" align="center">
               <Span flex="1" color="text.sidebar" textStyle="2xl">
                 Channels
               </Span>

@@ -14,7 +14,7 @@ export default function AddToChannelButton({ channel }) {
             content="add users to channel"
             positioning={{ placement: 'right-end' }}
           >
-            <AiFillPlusCircle size="1.5rem" cursor="pointer" />
+            <AiFillPlusCircle size="1.2rem" cursor="pointer" />
           </Tooltip>
         </Dialog.Trigger>
         <Portal>

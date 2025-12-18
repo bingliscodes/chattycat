@@ -81,7 +81,7 @@ export default function CreateChannelButton() {
             positioning={{ placement: 'right-end' }}
           >
             <AiFillPlusCircle
-              size="2rem"
+              size="1.6rem"
               cursor="pointer"
               onClick={() => setDialogIsOpen(true)}
             />

@@ -72,11 +72,16 @@ export const sendMessage = async (messageData) => {
   }
 };
 
-export const fetchChannelMessageHistory = async (channelId) => {
+export const fetchChannelMessageHistory = async (channelId, orgId) => {
   try {
     const res = await axios.get(
       `${import.meta.env.VITE_DEV_API_BASE_URL}channels/${channelId}/messages`,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: {
+          'x-organization-id': orgId,
+        },
+      }
     );
 
     if (res.status !== 200)
@@ -84,8 +89,11 @@ export const fetchChannelMessageHistory = async (channelId) => {
 
     return res.data;
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to create new organization: ' + err.message);
+    }
   }
 };
 
@@ -121,7 +129,6 @@ export const fetchThreadMessageHistory = async (messageId) => {
 };
 
 export const fetchDirectMessageList = async (userId, orgId) => {
-  console.log('orgId', orgId);
   try {
     const res = await axios.get(
       `${
@@ -235,11 +242,16 @@ export const addUserToChannel = async (userId, channelId, orgId) => {
   }
 };
 
-export const fetchChannelUsers = async (channelId) => {
+export const fetchChannelUsers = async (channelId, orgId) => {
   try {
     const res = await axios.get(
       `${import.meta.env.VITE_DEV_API_BASE_URL}channels/${channelId}/allUsers`,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: {
+          'x-organization-id': orgId,
+        },
+      }
     );
     if (!res.status === 200) {
       throw new Error('Failed to fetch users!');
@@ -289,7 +301,6 @@ export const createOrganization = async (formData) => {
 };
 
 export const createChannel = async (formData, orgId) => {
-  console.log(formData);
   try {
     const res = await axios.post(
       `${import.meta.env.VITE_DEV_API_BASE_URL}channels`,

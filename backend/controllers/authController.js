@@ -114,7 +114,7 @@ export const requireOrgRole = (allowedRoles = []) => {
     const orgId = req.headers['x-organization-id'];
 
     if (!orgId) {
-      return next(new AppError('Missing organization ID', 400));
+      return next(new AppError('requireOrgRole: Missing organization ID', 400));
     }
 
     // Lookup the user's role in the org
