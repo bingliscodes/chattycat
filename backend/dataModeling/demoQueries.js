@@ -23,9 +23,10 @@ async function main() {
     email: 'admin@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
-    role: 'superuser',
   });
-  admin.addOrganizations([testOrg, testOrg2]);
+  await testOrg.addUser(admin.id, {
+    through: { role: 'owner' },
+  });
 
   const cannoli = await User.create({
     firstName: 'Cannoli',
@@ -33,9 +34,10 @@ async function main() {
     email: 'cannoli@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
-    role: 'user',
   });
-  cannoli.addOrganizations([testOrg, testOrg2]);
+  await testOrg.addUser(cannoli.id, {
+    through: { role: 'owner' },
+  });
 
   const bookie = await User.create({
     firstName: 'Bookie',
@@ -43,9 +45,10 @@ async function main() {
     email: 'bookie@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
-    role: 'user',
   });
-  bookie.addOrganizations([testOrg, testOrg2]);
+  await testOrg.addUser(bookie.id, {
+    through: { role: 'admin' },
+  });
 
   const guy = await User.create({
     firstName: 'Lame',
@@ -53,7 +56,6 @@ async function main() {
     email: 'lameguy@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
-    role: 'user',
   });
 
   const testChannel = await Channel.create({

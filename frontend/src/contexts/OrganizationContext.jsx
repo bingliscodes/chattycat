@@ -1,19 +1,27 @@
 // OrganizationContext.jsx
-import { createContext, useState, useEffect, useCallback } from 'react';
+import {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from 'react';
 import {
   fetchUserOrganizations,
   fetchOrganizationData,
 } from '../utils/js/apiCalls';
+import { UserContext } from './UserContext';
 
 export const OrganizationContext = createContext({});
 
 export const OrganizationContextProvider = ({ children }) => {
+  const { isLoggedIn } = useContext(UserContext);
+
   const [userOrganizations, setUserOrganizations] = useState([]);
+  const [isLoadingUserOrganizations, setIsLoadingUserOrganizations] =
+    useState(true);
   const [organizationData, setOrganizationData] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
-
-  // TODO: Figure out why organizationData is nulling when refreshing page despite the selectedOragnizationId persisting in localstorage
-  // Should I be using the org ID in the url?
 
   // 1. Load user's organizations
   const loadUserOrganizations = useCallback(async () => {
@@ -23,12 +31,15 @@ export const OrganizationContextProvider = ({ children }) => {
     } catch (err) {
       console.error('Failed to fetch organizations:', err);
       setUserOrganizations([]);
+    } finally {
+      setIsLoadingUserOrganizations(false);
     }
   }, []);
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     loadUserOrganizations();
-  }, [loadUserOrganizations]);
+  }, [loadUserOrganizations, isLoggedIn]);
 
   // 2. Restore selected organization AFTER orgs are loaded
   useEffect(() => {
@@ -52,7 +63,6 @@ export const OrganizationContextProvider = ({ children }) => {
 
   // 4: Load org-specific data
   const handleLoadOrganizationData = async (orgId) => {
-    console.log('Manually loading organization data for', orgId);
     try {
       const res = await fetchOrganizationData(orgId);
       setOrganizationData(res);
@@ -74,6 +84,7 @@ export const OrganizationContextProvider = ({ children }) => {
         selectedOrganization,
         handleSetOrganization,
         organizationData,
+        isLoadingUserOrganizations,
       }}
     >
       {children}

@@ -5,10 +5,13 @@ import { useContext } from 'react';
 import { addUserToChannel } from '@/utils/js/apiCalls';
 import { ChatContext } from '@/contexts/ChatContext';
 import UserAvatar from '@/components/common/Avatar';
+import { OrganizationContext } from '../../../contexts/OrganizationContext';
 
 export default function UserCard({ user, mode }) {
   const { channel, channelUsers, handleSetDirectMessage } =
     useContext(ChatContext);
+
+  const { selectedOrganization } = useContext(OrganizationContext);
 
   const isInChannel = channelUsers?.includes(user.id);
 
@@ -33,7 +36,9 @@ export default function UserCard({ user, mode }) {
         <AiFillPlusCircle
           cursor="pointer"
           size="1.5rem"
-          onClick={() => addUserToChannel(user.id, channel.id)}
+          onClick={() =>
+            addUserToChannel(user.id, channel.id, selectedOrganization.id)
+          }
         />
       )}
     </Flex>

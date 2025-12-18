@@ -12,7 +12,6 @@ beforeAll(async () => {
     email: 'admin@gmail.com',
     password: 'password',
     passwordConfirm: 'password',
-    role: 'superuser',
   });
 });
 

@@ -1,6 +1,13 @@
 // OrganizationBrowser.jsx
 'use client';
-import { Flex, Listbox, createListCollection, Button } from '@chakra-ui/react';
+import {
+  Flex,
+  Listbox,
+  createListCollection,
+  Button,
+  Spinner,
+  Center,
+} from '@chakra-ui/react';
 import { NavLink } from 'react-router';
 import { useContext } from 'react';
 
@@ -9,9 +16,20 @@ import CreateOrganization from './CreateOrganization';
 
 // If a user is not part of an organization, display a separate visual
 export default function OrganizationBrowser() {
-  const { userOrganizations, selectedOrganization, handleSetOrganization } =
-    useContext(OrganizationContext);
+  const {
+    userOrganizations,
+    selectedOrganization,
+    handleSetOrganization,
+    isLoadingUserOrganizations,
+  } = useContext(OrganizationContext);
 
+  if (isLoadingUserOrganizations) {
+    return (
+      <Center flex="1">
+        <Spinner size="xl" color="primary.500" />
+      </Center>
+    );
+  }
   if (!userOrganizations.length) return <CreateOrganization />;
   const organizations = createListCollection({
     items: userOrganizations.map((org) => ({

@@ -3,6 +3,7 @@
 
 'use client';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Field, Input, Button, Flex, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
 
@@ -11,6 +12,7 @@ import { createOrganization } from '@/utils/js/apiCalls';
 import { OrganizationContext } from '../../contexts/OrganizationContext';
 
 export default function CreateOrganization() {
+  const nav = useNavigate();
   const [createOrgError, setCreateOrgError] = useState(false);
   const { handleSetOrganization } = useContext(OrganizationContext);
 
@@ -41,6 +43,7 @@ export default function CreateOrganization() {
       const newOrg = await createOrgPromise;
       setCreateOrgError(false);
       handleSetOrganization(newOrg.data);
+      nav('/client');
     } catch (err) {
       setCreateOrgError(err);
       console.error(err);

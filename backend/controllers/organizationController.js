@@ -3,14 +3,14 @@ import Channel from '../models/channelModel.js';
 import User from '../models/userModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
-import { createOne, deleteOne, getAll } from './handlerFactory.js';
+import { deleteOne, getAll } from './handlerFactory.js';
 
 export const createOrganization = catchAsync(async (req, res, next) => {
-  const { userId } = req.body;
-
   const newOrg = await Organization.create(req.body);
-  const user = await User.findByPk(userId);
-  user.addOrganization(newOrg);
+
+  await newOrg.addUser(req.user.id, {
+    through: { role: 'owner' },
+  });
 
   res.status(201).json({
     status: 'success',
@@ -41,7 +41,7 @@ export const getAllOrganizationUsers = catchAsync(async (req, res, next) => {
   const orgRes = await Organization.findByPk(orgId, {
     include: {
       model: User,
-      attributes: ['id', 'firstName', 'lastName', 'avatarUrl', 'role'],
+      attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
     },
   });
 
