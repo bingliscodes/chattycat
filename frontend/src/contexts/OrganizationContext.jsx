@@ -72,6 +72,19 @@ export const OrganizationContextProvider = ({ children }) => {
     }
   };
 
+  const refreshOrganizationData = async () => {
+    try {
+      const res = await fetchOrganizationData(selectedOrganization.id);
+      setOrganizationData(res);
+    } catch (err) {
+      console.error(
+        'An error occurred when refreshing organization data: ',
+        err
+      );
+      setOrganizationData(null);
+    }
+  };
+
   useEffect(() => {
     if (!selectedOrganization?.id) return;
     handleLoadOrganizationData(selectedOrganization.id);
@@ -85,6 +98,7 @@ export const OrganizationContextProvider = ({ children }) => {
         handleSetOrganization,
         organizationData,
         isLoadingUserOrganizations,
+        refreshOrganizationData,
       }}
     >
       {children}

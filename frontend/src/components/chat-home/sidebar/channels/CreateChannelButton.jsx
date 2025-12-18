@@ -18,12 +18,11 @@ import { toaster } from '@/components/ui/toaster';
 
 import { OrganizationContext } from '@/contexts/OrganizationContext';
 import { createChannel } from '@/utils/js/apiCalls';
-import { UserContext } from '@/contexts/UserContext';
 
 export default function CreateChannelButton() {
   const nav = useNavigate();
-  const { refreshUserData } = useContext(UserContext);
-  const { selectedOrganization } = useContext(OrganizationContext);
+  const { selectedOrganization, refreshOrganizationData } =
+    useContext(OrganizationContext);
   const [createChannelError, setCreateChannelError] = useState(false);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
@@ -57,6 +56,8 @@ export default function CreateChannelButton() {
     try {
       await createChannelPromise;
       setCreateChannelError(false);
+      setDialogIsOpen(false);
+      await refreshOrganizationData();
       nav('/client');
     } catch (err) {
       setCreateChannelError(err);
