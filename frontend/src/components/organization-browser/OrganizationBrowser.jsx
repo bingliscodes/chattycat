@@ -5,12 +5,14 @@ import { NavLink } from 'react-router';
 import { useContext } from 'react';
 
 import { OrganizationContext } from '@/contexts/OrganizationContext';
+import CreateOrganization from './CreateOrganization';
 
+// If a user is not part of an organization, display a separate visual
 export default function OrganizationBrowser() {
   const { userOrganizations, selectedOrganization, handleSetOrganization } =
     useContext(OrganizationContext);
 
-  //   const [selectedOrg, setSelectedOrg] = useState();
+  if (!userOrganizations.length) return <CreateOrganization />;
   const organizations = createListCollection({
     items: userOrganizations.map((org) => ({
       label: org.organizationName,

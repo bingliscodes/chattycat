@@ -5,13 +5,26 @@ import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import { createOne, deleteOne, getAll } from './handlerFactory.js';
 
-export const createOrganization = createOne(Organization);
+export const createOrganization = catchAsync(async (req, res, next) => {
+  const { userId } = req.body;
+
+  const newOrg = await Organization.create(req.body);
+  const user = await User.findByPk(userId);
+  user.addOrganization(newOrg);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: newOrg,
+    },
+  });
+});
+
 export const deleteOrganization = deleteOne(Organization);
 export const getAllOrganizations = getAll(Organization);
 
 export const getAllOrganizationChannels = catchAsync(async (req, res, next) => {
   const orgId = req.params.id;
-  console.log('orgId:', orgId);
   const orgRes = await Organization.findByPk(orgId, {
     include: { model: Channel },
   });

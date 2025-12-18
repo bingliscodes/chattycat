@@ -42,10 +42,6 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    role: {
-      type: DataTypes.STRING,
-      defaultValue: 'user',
-    },
     passwordChangedAt: DataTypes.DATE,
     passwordResetToken: DataTypes.STRING,
     passwordResetExpires: DataTypes.DATE,

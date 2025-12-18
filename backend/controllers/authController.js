@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
-import AppError from '../utils/appError.js';
-
 import { Op } from 'sequelize';
 import crypto from 'crypto';
+
+import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
+import UserOrganization from '../models/userOrganizationModel.js';
 import Email from '../utils/email.js';
-import { validate } from 'uuid';
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -108,6 +108,40 @@ export const protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+export const requireOrgRole = (allowedRoles = []) => {
+  return async (req, res, next) => {
+    const orgId = req.headers['x-organization-id'];
+
+    if (!orgId) {
+      return next(new AppError('Missing organization ID', 400));
+    }
+
+    // Lookup the user's role in the org
+    const membership = await UserOrganization.findOne({
+      where: {
+        userId: req.user.id,
+        organizationId: orgId,
+      },
+    });
+
+    if (!membership) {
+      return next(
+        new AppError('User is not a member of this organization', 403),
+      );
+    }
+
+    if (!allowedRoles.includes(membership.role)) {
+      return next(new AppError('Insufficient permissions', 403));
+    }
+
+    // Attach org info to request if needed later
+    req.organizationId = orgId;
+    req.orgRole = membership.role;
+
+    next();
+  };
+};
 
 export const restrictTo =
   (...roles) =>

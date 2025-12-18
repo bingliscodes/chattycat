@@ -21,6 +21,16 @@ const UserOrganization = sequelize.define(
         key: 'id',
       },
     },
+    role: {
+      type: DataTypes.ENUM('owner', 'admin', 'member', 'superuser'),
+      allowNull: false,
+      defaultValue: 'member',
+    },
+
+    joinedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     timestamps: false,

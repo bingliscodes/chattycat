@@ -4,9 +4,9 @@ import {
   protect,
   login,
   logout,
-  restrictTo,
   forgotPassword,
   resetPassword,
+  requireOrgRole,
 } from '../controllers/authController.js';
 import {
   getAllUsers,
@@ -47,7 +47,7 @@ router.post('/avatar', uploadAvatar, uploadUserAvatar);
 router.get('/received', getAllReceivedMessages);
 router.get('/received/:userId', getDirectMessagesWithUser);
 
-router.use(restrictTo('superuser'));
+router.use(requireOrgRole(['admin', 'owner', 'superuser']));
 router.post('/addToChannel', addToChannel);
 router.post('/removeFromChannel', removeFromChannel);
 

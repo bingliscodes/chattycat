@@ -6,7 +6,7 @@ import {
   getAllOrganizationChannels,
   getAllOrganizationUsers,
 } from '../controllers/organizationController.js';
-import { protect, restrictTo } from '../controllers/authController.js';
+import { protect, requireOrgRole } from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -15,8 +15,8 @@ router.get('/:id/channels', getAllOrganizationChannels);
 router.get('/:id/users', getAllOrganizationUsers);
 
 router.use(protect);
-router.use(restrictTo('superuser'));
 router.post('/', createOrganization);
+router.use(requireOrgRole(['admin', 'owner', 'superuser']));
 
 router.route('/:id').delete(deleteOrganization);
 

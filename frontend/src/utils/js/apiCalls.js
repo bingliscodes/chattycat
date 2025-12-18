@@ -213,12 +213,17 @@ export const fetchOrganizationUsers = async (orgId) => {
   }
 };
 
-export const addUserToChannel = async (userId, channelId) => {
+export const addUserToChannel = async (userId, channelId, orgId) => {
   try {
     const res = await axios.post(
       `${import.meta.env.VITE_DEV_API_BASE_URL}users/addToChannel`,
       { userId, channelId },
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: {
+          'x-organization-id': orgId,
+        },
+      }
     );
 
     if (res.status === 200) {
@@ -262,5 +267,23 @@ export const findOrCreateDMRoom = async (user1Id, user2Id, orgId) => {
   } catch (err) {
     console.error(err);
     throw err;
+  }
+};
+
+export const createOrganization = async (formData) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations`,
+      formData,
+      { withCredentials: true }
+    );
+
+    return res.data.data;
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to create new organization: ' + err.message);
+    }
   }
 };
