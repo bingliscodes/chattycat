@@ -74,9 +74,9 @@ export const getAllChannelUsers = catchAsync(async (req, res, next) => {
 });
 
 export const getPrivateMessageRoomId = catchAsync(async (req, res, next) => {
-  const { user1Id, user2Id } = req.body;
+  const { user1Id, user2Id, orgId } = req.body;
 
-  const roomId = await findOrCreateDMRoom(user1Id, user2Id);
+  const roomId = await findOrCreateDMRoom(user1Id, user2Id, orgId);
   if (!roomId)
     return next(
       new AppError(

@@ -87,7 +87,7 @@ export const ChatContextProvider = ({ children }) => {
       const res = await findOrCreateDMRoom(
         userData.id,
         user.id,
-        selectedOrganization
+        selectedOrganization.id
       );
       setDirectMessage(user);
       setRoomId(res.data.id);
