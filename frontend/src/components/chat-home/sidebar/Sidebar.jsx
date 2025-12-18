@@ -10,6 +10,7 @@ import DirectMessageRecipient from './direct-messages/DirectMessageRecipient';
 import AddToChannelButton from './channels/AddToChannelButton';
 import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
 import CreateChannelButton from './channels/CreateChannelButton';
+import AddPeople from './AddPeople';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
@@ -166,6 +167,7 @@ export default function UserSidebar() {
           </Accordion.ItemContent>
         </Accordion.Item>
       </Accordion.Root>
+      <AddPeople />
     </Flex>
   );
 }
