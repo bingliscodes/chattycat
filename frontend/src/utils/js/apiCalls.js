@@ -202,10 +202,9 @@ function removeBlankAttributes(obj) {
 
 export const fetchOrganizationUsers = async (orgId) => {
   // Retrieves a list of all users within an organization
-
   try {
     const users = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users?orgId=${orgId}`,
+      `${import.meta.env.VITE_DEV_API_BASE_URL}users`,
       {
         withCredentials: true,
         headers: {

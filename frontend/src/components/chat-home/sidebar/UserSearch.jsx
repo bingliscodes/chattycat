@@ -3,7 +3,6 @@ import { useRef, useState, useContext, useEffect } from 'react';
 import { debounce } from 'lodash';
 
 import { fetchOrganizationUsers } from '@/utils/js/apiCalls';
-import { UserContext } from '@/contexts/UserContext';
 import { OrganizationContext } from '@/contexts/OrganizationContext';
 import UserCard from './UserCard';
 
@@ -16,11 +15,10 @@ export default function UserSearch({ mode }) {
   const [error, setError] = useState(false);
   const inputRef = useRef();
 
-  const { userData } = useContext(UserContext);
   const { selectedOrganization } = useContext(OrganizationContext);
 
   useEffect(() => {
-    if (!userData || !selectedOrganization) return;
+    if (!selectedOrganization) return;
     async function fetchOrganizationUsersAsync() {
       try {
         setLoading(true);
@@ -34,7 +32,7 @@ export default function UserSearch({ mode }) {
       }
     }
     fetchOrganizationUsersAsync();
-  }, [userData, setOrganizationUsers, selectedOrganization]);
+  }, [setOrganizationUsers, selectedOrganization]);
 
   const debounceOnChange = debounce(async (e) => {
     const input = e.target.value.trim().toLowerCase();
