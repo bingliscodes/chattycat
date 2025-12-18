@@ -1,24 +1,14 @@
 // OrganizationBrowser.jsx
 'use client';
-import {
-  Flex,
-  Text,
-  Listbox,
-  createListCollection,
-  Button,
-} from '@chakra-ui/react';
+import { Flex, Listbox, createListCollection, Button } from '@chakra-ui/react';
 import { NavLink } from 'react-router';
 import { useContext } from 'react';
 
 import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function OrganizationBrowser() {
-  const {
-    userOrganizations,
-    selectedOrganization,
-    handleSetOrganization,
-    handleLoadOrganizationData,
-  } = useContext(OrganizationContext);
+  const { userOrganizations, selectedOrganization, handleSetOrganization } =
+    useContext(OrganizationContext);
 
   //   const [selectedOrg, setSelectedOrg] = useState();
   const organizations = createListCollection({
@@ -55,7 +45,6 @@ export default function OrganizationBrowser() {
         to="/client"
         as={NavLink}
         bg="bg.primaryBtn"
-        onClick={handleLoadOrganizationData}
         _hover={{ bg: 'bg.navHover' }}
       >
         {selectedOrganization ? 'Go to organization' : 'Select an organization'}

@@ -13,7 +13,9 @@ export const OrganizationContextProvider = ({ children }) => {
   const [selectedOrganization, setSelectedOrganization] = useState(null);
 
   // TODO: Figure out why organizationData is nulling when refreshing page despite the selectedOragnizationId persisting in localstorage
+  // Should I be using the org ID in the url?
 
+  // 1. Load user's organizations
   const loadUserOrganizations = useCallback(async () => {
     try {
       const response = await fetchUserOrganizations();
@@ -28,6 +30,7 @@ export const OrganizationContextProvider = ({ children }) => {
     loadUserOrganizations();
   }, [loadUserOrganizations]);
 
+  // 2. Restore selected organization AFTER orgs are loaded
   useEffect(() => {
     if (!userOrganizations.length) return;
 
@@ -47,17 +50,22 @@ export const OrganizationContextProvider = ({ children }) => {
     localStorage.setItem('selectedOrganizationId', org.id);
   };
 
-  const handleLoadOrganizationData = async () => {
-    if (!selectedOrganization) return;
-    const { id } = selectedOrganization;
+  // 4: Load org-specific data
+  const handleLoadOrganizationData = async (orgId) => {
+    console.log('Manually loading organization data for', orgId);
     try {
-      const orgDataRes = await fetchOrganizationData(id);
-      setOrganizationData(orgDataRes);
+      const res = await fetchOrganizationData(orgId);
+      setOrganizationData(res);
     } catch (err) {
+      console.error('Failed to load organization data:', err);
       setOrganizationData(null);
-      console.error('Failed to load org data:', err);
     }
   };
+
+  useEffect(() => {
+    if (!selectedOrganization?.id) return;
+    handleLoadOrganizationData(selectedOrganization.id);
+  }, [selectedOrganization]);
 
   return (
     <OrganizationContext.Provider
@@ -65,7 +73,6 @@ export const OrganizationContextProvider = ({ children }) => {
         userOrganizations,
         selectedOrganization,
         handleSetOrganization,
-        handleLoadOrganizationData,
         organizationData,
       }}
     >
