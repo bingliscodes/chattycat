@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import sequelize from '../utils/database.js';
+import Organization from './organizationModel.js';
 
 const Channel = sequelize.define(
   'channel',
@@ -18,6 +19,10 @@ const Channel = sequelize.define(
     organizationId: {
       type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: Organization,
+        key: 'id',
+      },
     },
   },
   {

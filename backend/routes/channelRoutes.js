@@ -6,11 +6,14 @@ import {
 } from '../controllers/channelController.js';
 import { getChannelMessages } from '../controllers/messageController.js';
 import { getAllChannelUsers } from '../controllers/userChannelController.js';
+import { protect, requireOrgRole } from '../controllers/authController.js';
 
 const router = express.Router();
 
-router.route('/').get(getAllChannels).post(createChannel);
+router.route('/').get(getAllChannels);
 
+router.use(protect, requireOrgRole(['admin', 'owner', 'superuser']));
+router.post('/', createChannel);
 router.route('/:id').delete(deleteChannel);
 router.get('/:id/allUsers', getAllChannelUsers);
 router.get('/:id/messages', getChannelMessages);

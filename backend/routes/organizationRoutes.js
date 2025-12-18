@@ -16,8 +16,8 @@ router.get('/:id/users', getAllOrganizationUsers);
 
 router.use(protect);
 router.post('/', createOrganization);
-router.use(requireOrgRole(['admin', 'owner', 'superuser']));
 
+router.use(requireOrgRole(['admin', 'owner', 'superuser']));
 router.route('/:id').delete(deleteOrganization);
 
 export default router;

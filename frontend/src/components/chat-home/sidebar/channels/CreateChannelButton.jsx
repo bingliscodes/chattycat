@@ -8,22 +8,36 @@ import {
   Input,
   Button,
   Flex,
+  Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useState, useContext } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { Tooltip } from '@/components/ui/tooltip';
 import { toaster } from '@/components/ui/toaster';
 
+import { OrganizationContext } from '@/contexts/OrganizationContext';
 import { createChannel } from '@/utils/js/apiCalls';
+import { UserContext } from '@/contexts/UserContext';
 
 export default function CreateChannelButton() {
+  const nav = useNavigate();
+  const { refreshUserData } = useContext(UserContext);
+  const { selectedOrganization } = useContext(OrganizationContext);
   const [createChannelError, setCreateChannelError] = useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
+  if (!selectedOrganization) return;
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const entries = Object.fromEntries(formData.entries());
+    entries.organizationId = selectedOrganization.id;
 
-    const createChannelPromise = createChannel(entries);
+    const createChannelPromise = createChannel(
+      entries,
+      selectedOrganization.id
+    );
 
     toaster.promise(createChannelPromise, {
       loading: {
@@ -43,21 +57,33 @@ export default function CreateChannelButton() {
     try {
       await createChannelPromise;
       setCreateChannelError(false);
+      nav('/client');
     } catch (err) {
       setCreateChannelError(err);
       console.error(err);
     }
   }
+  // We also want to immediately add the user to the channel
   return (
     <VStack align="start">
-      <Dialog.Root>
+      <Dialog.Root
+        open={dialogIsOpen}
+        onOpenChange={(details) => {
+          setDialogIsOpen(details.open);
+          if (!details.open) setCreateChannelError(false);
+        }}
+      >
         <Dialog.Trigger as={Box} color="text.sidebar">
           <Tooltip
             showArrow
-            content="add users to channel"
+            content="create a new channel"
             positioning={{ placement: 'right-end' }}
           >
-            <AiFillPlusCircle size="2rem" cursor="pointer" />
+            <AiFillPlusCircle
+              size="2rem"
+              cursor="pointer"
+              onClick={() => setDialogIsOpen(true)}
+            />
           </Tooltip>
         </Dialog.Trigger>
         <Portal>
@@ -80,6 +106,11 @@ export default function CreateChannelButton() {
                     />
                     <Field.ErrorText></Field.ErrorText>
                   </Field.Root>
+                  {createChannelError && (
+                    <Text fontSize="sm" color="red.400">
+                      {createChannelError.message}
+                    </Text>
+                  )}
                   <Button
                     mx={4}
                     mt={2}
@@ -93,7 +124,11 @@ export default function CreateChannelButton() {
                   </Button>
                 </Dialog.Body>
                 <Dialog.CloseTrigger asChild>
-                  <CloseButton size="2xs" color="black" />
+                  <CloseButton
+                    size="2xs"
+                    color="black"
+                    onClick={() => setDialogIsOpen(false)}
+                  />
                 </Dialog.CloseTrigger>
               </Dialog.Content>
             </Flex>

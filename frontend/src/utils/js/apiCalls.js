@@ -288,12 +288,18 @@ export const createOrganization = async (formData) => {
   }
 };
 
-export const createChannel = async (formData) => {
+export const createChannel = async (formData, orgId) => {
+  console.log(formData);
   try {
     const res = await axios.post(
       `${import.meta.env.VITE_DEV_API_BASE_URL}channels`,
       formData,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: {
+          'x-organization-id': orgId,
+        },
+      }
     );
     return res.data.data;
   } catch (err) {
