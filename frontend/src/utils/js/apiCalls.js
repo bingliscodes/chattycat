@@ -244,8 +244,11 @@ export const addUserToChannel = async (userId, channelId, orgId) => {
       throw new Error('Failed to add user to channel!');
     }
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to create new channel: ', err.message);
+    }
   }
 };
 
@@ -265,8 +268,11 @@ export const fetchChannelUsers = async (channelId, orgId) => {
     }
     return res.data;
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to fetch channel users: ', err.message);
+    }
   }
 };
 

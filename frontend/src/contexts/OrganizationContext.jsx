@@ -27,7 +27,6 @@ export const OrganizationContextProvider = ({ children }) => {
   const loadUserOrganizations = useCallback(async () => {
     try {
       const response = await fetchUserOrganizations();
-      console.log(response);
       setUserOrganizations(response.data);
     } catch (err) {
       console.error('Failed to fetch organizations:', err);

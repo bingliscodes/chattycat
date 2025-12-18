@@ -68,8 +68,8 @@ export const getAllChannelUsers = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    results: channel.users.length,
-    data: channel.users,
+    results: channel.Members.length,
+    data: channel.Members,
   });
 });
 
