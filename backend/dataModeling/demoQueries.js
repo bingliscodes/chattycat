@@ -73,7 +73,7 @@ async function main() {
     type: 'channel',
   });
 
-  const dmRoom = await findOrCreateDMRoom(cannoli.id, bookie.id);
+  const dmRoom = await findOrCreateDMRoom(cannoli.id, bookie.id, testOrg.id);
 
   const dm = await Message.create({
     messageContent: 'Sup Bookie!',

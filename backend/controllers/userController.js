@@ -3,6 +3,7 @@ import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import Organization from '../models/organizationModel.js';
+import { DirectMessageRoom } from '../models/messageModel.js';
 
 export const getMe = catchAsync(async (req, res, next) => {
   req.params.id = req.user.id;
@@ -80,8 +81,13 @@ export const updateMe = catchAsync(async (req, res, next) => {
 });
 
 export const getDirectMessageList = catchAsync(async (req, res, next) => {
-  // Retrieves a list of all users that the specified user has dm's with
+  // Retrieves a list of all users that the specified user has dm's with within the specified organization
+  const orgId = req.query.orgId;
   const user = await User.findByPk(req.params.userId);
+  console.log('getting messages for orgId', orgId);
+  if (!orgId) {
+    return next(new AppError('Missing organization ID in query.', 400));
+  }
 
   const [receivedMessages, sentMessages] = await Promise.all([
     user.getReceivedMessages({
@@ -91,6 +97,12 @@ export const getDirectMessageList = catchAsync(async (req, res, next) => {
           as: 'Sender',
           attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
         },
+        {
+          model: DirectMessageRoom,
+          as: 'Room',
+          where: { organizationId: orgId },
+          attributes: [],
+        },
       ],
     }),
     user.getSentMessages({
@@ -99,6 +111,12 @@ export const getDirectMessageList = catchAsync(async (req, res, next) => {
           model: User,
           as: 'Receiver',
           attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
+        },
+        {
+          model: DirectMessageRoom,
+          as: 'Room',
+          where: { organizationId: orgId },
+          attributes: [],
         },
       ],
     }),

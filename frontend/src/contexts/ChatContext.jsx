@@ -16,6 +16,7 @@ import {
 
 import { cleanMessages } from '../utils/js/helper';
 import { UserContext } from './UserContext';
+import { OrganizationContext } from './OrganizationContext';
 
 export const ChatContext = createContext({});
 
@@ -29,6 +30,7 @@ export const ChatContextProvider = ({ children }) => {
   const [chatMode, setChatMode] = useState();
 
   const { userData, userSocket } = useContext(UserContext);
+  const { selectedOrganization } = useContext(OrganizationContext);
 
   useEffect(() => {
     if (!channel) return;
@@ -47,12 +49,15 @@ export const ChatContextProvider = ({ children }) => {
   const fetchDirectMessages = useCallback(async () => {
     if (!userData?.id) return;
     try {
-      const res = await fetchDirectMessageList(userData.id);
+      const res = await fetchDirectMessageList(
+        userData.id,
+        selectedOrganization.id
+      );
       setDirectMessageList([...res.data]);
     } catch (err) {
       console.error('Failed to fetch DM list:', err);
     }
-  }, [userData?.id]);
+  }, [userData?.id, selectedOrganization?.id]);
 
   useEffect(() => {
     fetchDirectMessages();
@@ -79,7 +84,11 @@ export const ChatContextProvider = ({ children }) => {
       return;
     }
     try {
-      const res = await findOrCreateDMRoom(userData.id, user.id);
+      const res = await findOrCreateDMRoom(
+        userData.id,
+        user.id,
+        selectedOrganization
+      );
       setDirectMessage(user);
       setRoomId(res.data.id);
       setChannel(null);

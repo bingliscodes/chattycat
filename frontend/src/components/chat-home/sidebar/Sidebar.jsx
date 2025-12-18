@@ -21,6 +21,7 @@ export default function UserSidebar() {
     setChatMode,
   } = useContext(ChatContext);
 
+  console.log('directMessageList: ', directMessageList);
   const { organizationData, selectedOrganization } =
     useContext(OrganizationContext);
 

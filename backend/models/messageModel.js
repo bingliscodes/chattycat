@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import User from './userModel.js';
+import Organization from './organizationModel.js';
 
 import sequelize from '../utils/database.js';
 
@@ -24,6 +25,14 @@ export const DirectMessageRoom = sequelize.define(
       allowNull: false,
       references: {
         model: User,
+        key: 'id',
+      },
+    },
+    organizationId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: Organization,
         key: 'id',
       },
     },

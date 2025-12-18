@@ -120,12 +120,13 @@ export const fetchThreadMessageHistory = async (messageId) => {
   }
 };
 
-export const fetchDirectMessageList = async (userId) => {
+export const fetchDirectMessageList = async (userId, orgId) => {
+  console.log('orgId', orgId);
   try {
     const res = await axios.get(
       `${
         import.meta.env.VITE_DEV_API_BASE_URL
-      }users/${userId}/directMessageList`,
+      }users/${userId}/directMessageList?orgId=${orgId}`,
       { withCredentials: true }
     );
 
@@ -245,11 +246,11 @@ export const fetchChannelUsers = async (channelId) => {
   }
 };
 
-export const findOrCreateDMRoom = async (user1Id, user2Id) => {
+export const findOrCreateDMRoom = async (user1Id, user2Id, orgId) => {
   try {
     const res = await axios.post(
       `${import.meta.env.VITE_DEV_API_BASE_URL}messages/privateRoomId`,
-      { user1Id, user2Id },
+      { user1Id, user2Id, orgId },
       { withCredentials: true }
     );
 
