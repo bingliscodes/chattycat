@@ -13,13 +13,17 @@ export const getMe = catchAsync(async (req, res, next) => {
 export const getMyOrganizations = catchAsync(async (req, res, next) => {
   const user = await User.findByPk(req.user.id, {
     attributes: ['firstName', 'lastName', 'id'],
-    include: { model: Organization, attributes: ['organizationName', 'id'] },
+    include: {
+      model: Organization,
+      as: 'Organizations',
+      attributes: ['organizationName', 'id'],
+    },
   });
 
   res.status(200).json({
     status: 'success',
-    results: user.organizations.length,
-    data: user.organizations,
+    results: user.Organizations.length,
+    data: user.Organizations,
   });
 });
 
@@ -29,8 +33,12 @@ export const getUser = catchAsync(async (req, res, next) => {
       exclude: ['createdAt', 'updatedAt', 'passwordConfirm', 'password'],
     },
     include: [
-      { model: Channel, attributes: ['channelName', 'id'] },
-      { model: Organization, attributes: ['organizationName', 'id'] },
+      { model: Channel, as: 'Channels', attributes: ['channelName', 'id'] },
+      {
+        model: Organization,
+        as: 'Organizations',
+        attributes: ['organizationName', 'id'],
+      },
     ],
   });
 
@@ -50,8 +58,12 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
       exclude: ['createdAt', 'updatedAt', 'passwordConfirm', 'password'],
     },
     include: [
-      { model: Channel, attributes: ['channelName', 'id'] },
-      { model: Organization, attributes: ['organizationName'] },
+      { model: Channel, as: 'Channels', attributes: ['channelName', 'id'] },
+      {
+        model: Organization,
+        as: 'Organizations',
+        attributes: ['organizationName'],
+      },
     ],
   };
 

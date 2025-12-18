@@ -9,10 +9,17 @@ class UserChannelMap {
   }
 
   async init() {
-    const users = await User.findAll({ include: Channel });
+    const users = await User.findAll({
+      include: [
+        {
+          model: Channel,
+          as: 'Channels', // REQUIRED
+        },
+      ],
+    });
 
     users.forEach((usr) => {
-      const channels = usr.channels.map((ch) => ch.id);
+      const channels = usr.Channels.map((ch) => ch.id);
       this.data.set(usr.id, channels);
     });
   }

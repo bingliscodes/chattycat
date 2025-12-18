@@ -6,14 +6,24 @@ import UserChannel from '../models/userChannelModel.js';
 import UserOrganization from '../models/userOrganizationModel.js';
 
 const modelRelationships = async () => {
-  Organization.belongsToMany(User, { through: UserOrganization });
-  User.belongsToMany(Organization, { through: UserOrganization });
+  Organization.belongsToMany(User, { through: UserOrganization, as: 'Users' });
+  User.belongsToMany(Organization, {
+    through: UserOrganization,
+    as: 'Organizations',
+  });
 
-  Organization.hasMany(Channel);
-  Channel.belongsTo(Organization);
+  Organization.hasMany(Channel, { foreignKey: 'organizationId' });
+  Channel.belongsTo(Organization, { foreignKey: 'organizationId' });
 
-  User.belongsToMany(Channel, { through: UserChannel });
-  Channel.belongsToMany(User, { through: UserChannel });
+  // User ↔ Channel (M:N)
+  User.belongsToMany(Channel, {
+    through: UserChannel,
+    as: 'Channels',
+  });
+  Channel.belongsToMany(User, {
+    through: UserChannel,
+    as: 'Members',
+  });
 
   User.hasMany(Message, { foreignKey: 'senderId', as: 'SentMessages' });
   Message.belongsTo(User, { foreignKey: 'senderId', as: 'Sender' });

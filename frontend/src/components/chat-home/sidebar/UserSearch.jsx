@@ -20,12 +20,11 @@ export default function UserSearch({ mode }) {
   const { selectedOrganization } = useContext(OrganizationContext);
 
   useEffect(() => {
-    if (!userData) return;
+    if (!userData || !selectedOrganization) return;
     async function fetchOrganizationUsersAsync() {
       try {
         setLoading(true);
         const res = await fetchOrganizationUsers(selectedOrganization.id);
-
         setOrganizationUsers(res);
       } catch (err) {
         console.error(err);

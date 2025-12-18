@@ -60,7 +60,7 @@ export const getAllChannelUsers = catchAsync(async (req, res, next) => {
   const channelId = req.params.id;
 
   const channel = await Channel.findByPk(channelId, {
-    include: { model: User },
+    include: { model: User, as: 'Members' },
   });
 
   if (!channel)

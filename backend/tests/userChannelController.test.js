@@ -46,7 +46,9 @@ describe('UserChannel API', () => {
       .send({ userId: testUser.id, channelName: 'New Channel' });
 
     const updatedUser = await User.findByPk(testUser.id, {
-      include: [{ model: Channel, attributes: ['channelName', 'id'] }],
+      include: [
+        { model: Channel, as: 'Channels', attributes: ['channelName', 'id'] },
+      ],
     });
 
     const updatedChannels = updatedUser.channels;
@@ -77,7 +79,9 @@ describe('UserChannel API', () => {
       });
 
     const updatedUser = await User.findByPk(testUser.id, {
-      include: [{ model: Channel, attributes: ['channelName', 'id'] }],
+      include: [
+        { model: Channel, as: 'Channels', attributes: ['channelName', 'id'] },
+      ],
     });
 
     const updatedChannels = updatedUser.channels;

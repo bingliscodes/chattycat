@@ -206,7 +206,12 @@ export const fetchOrganizationUsers = async (orgId) => {
   try {
     const users = await axios.get(
       `${import.meta.env.VITE_DEV_API_BASE_URL}users?orgId=${orgId}`,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: {
+          'x-organization-id': orgId,
+        },
+      }
     );
 
     if (!users.status === 200) {
@@ -215,8 +220,11 @@ export const fetchOrganizationUsers = async (orgId) => {
 
     return users.data.data;
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to create new organization: ' + err.message);
+    }
   }
 };
 

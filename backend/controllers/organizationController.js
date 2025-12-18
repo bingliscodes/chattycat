@@ -39,15 +39,19 @@ export const getAllOrganizationUsers = catchAsync(async (req, res, next) => {
   const orgId = req.params.id;
 
   const orgRes = await Organization.findByPk(orgId, {
-    include: {
-      model: User,
-      attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
-    },
+    include: [
+      {
+        model: User,
+        as: 'Users',
+        attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
+        through: { attributes: [] }, // optional: hide join table fields
+      },
+    ],
   });
 
   res.status(200).json({
     status: 'success',
-    results: orgRes.users.length,
-    data: orgRes.users,
+    results: orgRes.Users.length,
+    data: orgRes.Users,
   });
 });
