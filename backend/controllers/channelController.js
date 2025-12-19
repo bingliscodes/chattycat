@@ -6,7 +6,7 @@ import { createOne, deleteOne, getAll } from './handlerFactory.js';
 export const createChannel = catchAsync(async (req, res, next) => {
   const newChannel = await Channel.create(req.body);
 
-  await newChannel.addUser(req.user.id);
+  await newChannel.addMember(req.user.id);
 
   res.status(201).json({
     status: 'success',
