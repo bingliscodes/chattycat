@@ -36,8 +36,8 @@ export default function RightNavContent() {
     try {
       await logoutPromise;
       setLogoutError(false);
-      await refreshUserData();
       localStorage.removeItem('selectedOrganizationId');
+      await refreshUserData();
       nav('/');
     } catch (err) {
       setLogoutError(true);

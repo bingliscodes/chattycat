@@ -5,6 +5,7 @@ import { useContext } from 'react';
 
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
+import ChatFileUploadButton from './chat-input-actions/ChatFileUploadButton';
 
 export default function ChatInput({ sendLocation, onMessageSent, ...props }) {
   const { userData, socketReady, userSocket } = useContext(UserContext);
@@ -122,6 +123,7 @@ export default function ChatInput({ sendLocation, onMessageSent, ...props }) {
             <AiOutlineSend />
           </IconButton>
         </HStack>
+        <ChatFileUploadButton />
       </Box>
     </>
   );
