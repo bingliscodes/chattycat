@@ -1,11 +1,7 @@
 import { Op } from 'sequelize';
 
 import { createOne } from './handlerFactory.js';
-import {
-  ChannelMessage,
-  DirectMessage,
-  Message,
-} from '../models/messageModel.js';
+import { Message } from '../models/messageModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import Channel from '../models/channelModel.js';
 import User from '../models/userModel.js';
@@ -24,9 +20,6 @@ export const getAllMessages = catchAsync(async (req, res, next) => {
     data: messages,
   });
 });
-
-export const createChannelMessage = createOne(ChannelMessage);
-export const createDirectMessage = createOne(DirectMessage);
 
 export const createMessage = catchAsync(async (req, res, next) => {
   const newMsg = await Message.create(req.body);

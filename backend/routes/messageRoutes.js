@@ -1,8 +1,6 @@
 import express from 'express';
 import {
   getAllMessages,
-  createChannelMessage,
-  createDirectMessage,
   createMessage,
   getThreadMessages,
 } from '../controllers/messageController.js';
@@ -17,7 +15,5 @@ router.route('/:id').get(getThreadMessages);
 router.post('/messageFiles', uploadFiles, uploadMessageFiles);
 
 router.post('/privateRoomId', getPrivateMessageRoomId);
-router.post('/channelMessage', createChannelMessage);
-router.post('/directMessage', createDirectMessage);
 
 export default router;

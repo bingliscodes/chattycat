@@ -14,12 +14,8 @@ export const useChatMessage = () => {
     if (attachments.length) {
       try {
         uploadedFilesRes = await uploadMessageFiles(attachments);
-        console.log('Uploaded file data:', uploadedFilesRes);
-
-        // Proceed with sendMessage using those file metadata
       } catch (err) {
         console.error('File upload failed:', err);
-        // Optionally show UI error
         return;
       }
     }
