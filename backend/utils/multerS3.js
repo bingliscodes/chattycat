@@ -1,8 +1,10 @@
 import multer from 'multer';
+import catchAsync from './catchAsync.js';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import User from '../models/userModel.js';
+import AppError from './appError.js';
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -52,3 +54,34 @@ export const uploadUserAvatar = async (req, res, next) => {
     next(err);
   }
 };
+
+export const uploadFiles = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024 },
+}).array('files', 3);
+
+export const uploadMessageFiles = catchAsync(async (req, res, next) => {
+  if (!req.files) return next(new AppError('No files found!', 404));
+  const fileUrls = [];
+  req.files.forEach(async (file) => {
+    const ext = path.extname(file.originalname);
+    const fileName = `messageFiles/${uuidv4()}${ext}`;
+
+    const uploadParams = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: fileName,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
+
+    const command = new PutObjectCommand(uploadParams);
+    await s3.send(command);
+
+    const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+    fileUrls.push(fileUrl);
+  });
+  res.status(200).json({
+    status: 'success',
+    data: fileUrls,
+  });
+});
