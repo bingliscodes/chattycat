@@ -8,7 +8,7 @@ import { useChatMessage } from '@/hooks/useChatMessage';
 import ChatFileUploadButton from './chat-input-actions/ChatFileUploadButton';
 
 export default function ChatInput({ onMessageSent, ...props }) {
-  const [attachments, setAttachments] = useState();
+  const [attachments, setAttachments] = useState([]);
   const {
     register,
     handleSubmit,

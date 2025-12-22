@@ -1,33 +1,54 @@
 import { AiOutlinePaperClip } from 'react-icons/ai';
-import { Button, FileUpload, Flex } from '@chakra-ui/react';
+import { Button, Flex, Text, Input, Box } from '@chakra-ui/react';
 
-export default function ChatFileUploadButton({ setAttachments }) {
+export default function ChatFileUploadButton({ attachments, setAttachments }) {
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setAttachments((prev) => [...prev, ...selectedFiles]);
+    e.target.value = null; // allow re‑uploading same file name
+  };
+
+  const handleRemoveFile = (index) => {
+    setAttachments((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
-    <Flex>
-      <FileUpload.Root
-        maxFiles={5}
-        accept={['*']}
-        onFileAccept={async ({ files }) => {
-          if (files.length > 0) {
-            setAttachments(files);
-          }
-        }}
-      >
-        <FileUpload.HiddenInput />
-        <FileUpload.Trigger asChild>
-          <Button
-            size="sm"
-            bg="bg.primaryBtn"
-            color="text.primaryBtn"
-            _hover={{
-              bg: 'bg.navHover',
-            }}
-          >
-            <AiOutlinePaperClip />
-          </Button>
-        </FileUpload.Trigger>
-        <FileUpload.List asChild bg="bg.primaryBtn" clearable />
-      </FileUpload.Root>
-    </Flex>
+    <Box w="100%">
+      <Flex align="center" gap={2}>
+        <Input
+          type="file"
+          multiple
+          display="none"
+          id="chat-file-input"
+          onChange={handleFileChange}
+        />
+
+        <Button
+          as="label"
+          htmlFor="chat-file-input"
+          size="sm"
+          bg="bg.primaryBtn"
+          color="text.primaryBtn"
+          _hover={{ bg: 'bg.navHover' }}
+        >
+          <AiOutlinePaperClip />
+        </Button>
+      </Flex>
+
+      {attachments.length > 0 && (
+        <Flex direction="column" gap={2} mt={2}>
+          {attachments.map((file, idx) => (
+            <Flex key={idx} align="center" gap={2}>
+              <Text fontSize="sm" flex="1">
+                {file.name}
+              </Text>
+              <Button size="xs" onClick={() => handleRemoveFile(idx)}>
+                Remove
+              </Button>
+            </Flex>
+          ))}
+        </Flex>
+      )}
+    </Box>
   );
 }
