@@ -1,85 +1,31 @@
+// ChatInput.jsx
 import { useForm } from 'react-hook-form';
 import { Field, HStack, IconButton, Textarea, Box } from '@chakra-ui/react';
 import { AiOutlineSend } from 'react-icons/ai';
-import { useContext } from 'react';
+import { useState } from 'react';
 
-import { ChatContext } from '@/contexts/ChatContext';
-import { UserContext } from '@/contexts/UserContext';
+import { useChatMessage } from '@/hooks/useChatMessage';
 import ChatFileUploadButton from './chat-input-actions/ChatFileUploadButton';
 
-export default function ChatInput({ sendLocation, onMessageSent, ...props }) {
-  const { userData, socketReady, userSocket } = useContext(UserContext);
-  const { channel, directMessage, directMessageList, chatMode, thread } =
-    useContext(ChatContext);
-  const { firstName, lastName, id } = userData;
-
+export default function ChatInput({ onMessageSent, ...props }) {
+  const [attachments, setAttachments] = useState();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+  const { sendMessage } = useChatMessage();
 
-  const isNewDM =
-    chatMode === 'dm' &&
-    !directMessageList.some((user) => user.id === directMessage?.id);
-
-  const onSubmit = handleSubmit((data) => {
-    if (!userSocket?.connected) return;
-
-    const now = new Date();
-
-    const datestamp = now.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
-    const timestamp = now.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-
-    const messageContent = {
-      messageBody: data.message,
-      sender: { firstName, lastName },
-      timestamp,
-      datestamp,
-    };
-
-    let messageData = {
-      messageContent: data.message,
-      senderId: id,
-      type: chatMode === 'ch' ? 'channel' : 'direct',
-    };
-
-    if (chatMode === 'ch') messageData.channelId = sendLocation;
-
-    if (chatMode === 'dm') {
-      messageData.receiverId = directMessage?.id;
-      messageData.roomId = sendLocation;
-    }
-
-    if (chatMode === 'thread') {
-      messageData.parentMessageId = thread.parentMessage.messageId;
-      userSocket.emit('send-thread-message', messageContent, messageData);
-    } else userSocket.emit('send-message', messageContent, messageData);
-
-    if (isNewDM) {
-      userSocket.emit('new-dm', {
-        senderId: id,
-        receiverId: directMessage?.id,
-      });
-    }
-
-    onMessageSent(messageContent); // Call back to parent
+  const onSubmit = handleSubmit(async (data) => {
+    const msg = await sendMessage({ messageBody: data.message, attachments });
+    if (onMessageSent) onMessageSent(msg);
+    setAttachments([]);
     reset();
   });
+
   return (
     <>
-      {!socketReady && <Text mt={4}>Connecting to chat...</Text>}
       <Box
         {...props}
         as="form"
@@ -106,10 +52,6 @@ export default function ChatInput({ sendLocation, onMessageSent, ...props }) {
               border={0}
               outline={0}
               resize="none"
-              placeholder={`Message ${
-                (directMessage && directMessage.firstName) ||
-                (channel && channel.channelName)
-              } `}
               {...register('message', { required: 'Message is required' })}
             />
             <Field.ErrorText ml={3}>{errors.message?.message}</Field.ErrorText>
@@ -123,7 +65,10 @@ export default function ChatInput({ sendLocation, onMessageSent, ...props }) {
             <AiOutlineSend />
           </IconButton>
         </HStack>
-        <ChatFileUploadButton />
+        <ChatFileUploadButton
+          attachments={attachments}
+          setAttachments={setAttachments}
+        />
       </Box>
     </>
   );

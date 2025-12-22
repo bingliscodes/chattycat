@@ -167,8 +167,34 @@ export const updateAvatar = async (file) => {
 
     return res.data;
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to fetch channel users: ', err.message);
+    }
+  }
+};
+
+export const uploadMessageFiles = async (files) => {
+  try {
+    const formData = new formData();
+    formData.append('files', files);
+
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}messages/messageFiles`,
+      formData,
+      {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to fetch channel users: ', err.message);
+    }
   }
 };
 

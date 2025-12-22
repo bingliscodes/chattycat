@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import { Button, FileUpload, Flex } from '@chakra-ui/react';
 
-export default function ChatFileUploadButton() {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  console.log(uploadedFiles);
+export default function ChatFileUploadButton({ setAttachments }) {
   return (
     <Flex>
       <FileUpload.Root
@@ -12,7 +9,7 @@ export default function ChatFileUploadButton() {
         accept={['*']}
         onFileAccept={async ({ files }) => {
           if (files.length > 0) {
-            setUploadedFiles(files);
+            setAttachments(files);
           }
         }}
       >
