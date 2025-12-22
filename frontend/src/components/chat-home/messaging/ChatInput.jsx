@@ -19,6 +19,7 @@ export default function ChatInput({ onMessageSent, ...props }) {
 
   const onSubmit = handleSubmit(async (data) => {
     const msg = await sendMessage({ messageBody: data.message, attachments });
+    console.log(msg);
     if (onMessageSent) onMessageSent(msg);
     setAttachments([]);
     reset();
@@ -30,8 +31,7 @@ export default function ChatInput({ onMessageSent, ...props }) {
         {...props}
         as="form"
         onSubmit={onSubmit}
-        py={2}
-        px={1}
+        paddingTop={2}
         border="1px solid"
         borderColor="borders"
         bg="bg.chatBox"

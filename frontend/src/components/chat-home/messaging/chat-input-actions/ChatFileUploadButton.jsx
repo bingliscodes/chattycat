@@ -26,6 +26,9 @@ export default function ChatFileUploadButton({ attachments, setAttachments }) {
         <Button
           as="label"
           htmlFor="chat-file-input"
+          rounded="full"
+          w="1rem"
+          marginLeft={2}
           size="sm"
           bg="bg.primaryBtn"
           color="text.primaryBtn"
@@ -42,8 +45,13 @@ export default function ChatFileUploadButton({ attachments, setAttachments }) {
               <Text fontSize="sm" flex="1">
                 {file.name}
               </Text>
-              <Button size="xs" onClick={() => handleRemoveFile(idx)}>
-                Remove
+              <Button
+                fontSize="sm"
+                p={0}
+                size="2xs"
+                onClick={() => handleRemoveFile(idx)}
+              >
+                x
               </Button>
             </Flex>
           ))}
