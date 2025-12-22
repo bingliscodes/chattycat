@@ -96,7 +96,6 @@ export const getDirectMessageList = catchAsync(async (req, res, next) => {
   // Retrieves a list of all users that the specified user has dm's with within the specified organization
   const orgId = req.query.orgId;
   const user = await User.findByPk(req.params.userId);
-  console.log('getting messages for orgId', orgId);
   if (!orgId) {
     return next(new AppError('Missing organization ID in query.', 400));
   }

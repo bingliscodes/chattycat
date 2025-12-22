@@ -61,9 +61,13 @@ export const uploadFiles = multer({
 }).array('files', 3);
 
 export const uploadMessageFiles = catchAsync(async (req, res, next) => {
-  if (!req.files) return next(new AppError('No files found!', 404));
+  if (!req.files || !req.files.length) {
+    return next(new AppError('No files found!', 400));
+  }
+
   const fileUrls = [];
-  req.files.forEach(async (file) => {
+
+  for (const file of req.files) {
     const ext = path.extname(file.originalname);
     const fileName = `messageFiles/${uuidv4()}${ext}`;
 
@@ -79,7 +83,8 @@ export const uploadMessageFiles = catchAsync(async (req, res, next) => {
 
     const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
     fileUrls.push(fileUrl);
-  });
+  }
+
   res.status(200).json({
     status: 'success',
     data: fileUrls,

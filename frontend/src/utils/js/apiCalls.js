@@ -170,15 +170,15 @@ export const updateAvatar = async (file) => {
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error('Failed to fetch channel users: ', err.message);
+      throw new Error('Failed to update user avatar: ', err.message);
     }
   }
 };
 
 export const uploadMessageFiles = async (files) => {
   try {
-    const formData = new formData();
-    formData.append('files', files);
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
 
     const res = await axios.post(
       `${import.meta.env.VITE_DEV_API_BASE_URL}messages/messageFiles`,
@@ -193,7 +193,7 @@ export const uploadMessageFiles = async (files) => {
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error('Failed to fetch channel users: ', err.message);
+      throw new Error(`Failed to upload message attachments: ${err.message}`);
     }
   }
 };

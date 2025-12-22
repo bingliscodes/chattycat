@@ -2,6 +2,7 @@
 import { useContext } from 'react';
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
+import { uploadMessageFiles } from '@/utils/js/apiCalls';
 
 export const useChatMessage = () => {
   const { userData, userSocket } = useContext(UserContext);
@@ -9,6 +10,19 @@ export const useChatMessage = () => {
 
   const sendMessage = async ({ messageBody, attachments = [] }) => {
     if (!userSocket?.connected) return;
+    let uploadedFilesRes;
+    if (attachments.length) {
+      try {
+        uploadedFilesRes = await uploadMessageFiles(attachments);
+        console.log('Uploaded file data:', uploadedFilesRes);
+
+        // Proceed with sendMessage using those file metadata
+      } catch (err) {
+        console.error('File upload failed:', err);
+        // Optionally show UI error
+        return;
+      }
+    }
 
     const now = new Date();
     const datestamp = now.toLocaleDateString('en-US', {
@@ -25,7 +39,7 @@ export const useChatMessage = () => {
 
     const messageContent = {
       messageBody,
-      attachments, // include uploaded file metadata here
+      attachments: uploadedFilesRes?.data || [], // include uploaded file metadata here
       sender: { firstName: userData.firstName, lastName: userData.lastName },
       timestamp,
       datestamp,
