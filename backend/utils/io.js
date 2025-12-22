@@ -1,5 +1,6 @@
 import { Message } from '../models/messageModel.js';
 import userChannelMap from '../utils/userChannelMap.js';
+import { uploadAndSaveAttachments } from './multerS3.js';
 
 export const setupIO = (io) => {
   const userSocketMap = new Map(); // socketId -> userId
@@ -30,7 +31,6 @@ export const setupIO = (io) => {
     });
 
     socket.on('new-dm', ({ senderId, receiverId }) => {
-      console.log('new dm emitted', senderId, receiverId);
       const senderSocketId = userSocketMap.get(senderId);
       if (senderSocketId) {
         console.log(
@@ -40,12 +40,21 @@ export const setupIO = (io) => {
       }
     });
 
-    socket.on('send-message', (messageContent, messageData) => {
+    socket.on('send-message', async (messageContent, messageData) => {
       // Security: Ensure user has permission to send message to the channel
       if (!validateUserPermissions(messageData.senderId, messageData.channelId))
         return;
       // Send message to DB
-      createMessage(messageData);
+      const createdMessage = await createMessage(messageData);
+      const messageId = createdMessage.id;
+
+      let attachments = [];
+      if (messageContent.attachments?.length) {
+        attachments = await uploadAndSaveAttachments(
+          messageContent.attachments,
+          messageId,
+        );
+      }
 
       console.log(
         `📨 [SERVER] Message from ${socket.id}: ${messageContent.messageBody}`,
@@ -91,7 +100,7 @@ export const setupIO = (io) => {
 
 const createMessage = async (messageData) => {
   try {
-    await Message.create(messageData);
+    const newMessage = await Message.create(messageData);
 
     if (messageData.parentMessageId) {
       await Message.increment('replyCount', {
@@ -99,6 +108,8 @@ const createMessage = async (messageData) => {
         where: { id: messageData.parentMessageId },
       });
     }
+
+    return newMessage;
   } catch (err) {
     console.error(err);
     throw err;

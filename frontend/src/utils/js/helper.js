@@ -25,3 +25,20 @@ export const cleanMessages = (msgs, mode) => {
     parentMessageId: msg.parentMessageId,
   }));
 };
+
+export const processAttachments = async (files) => {
+  const filePromises = Array.from(files).map((file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve({
+          name: file.name,
+          mimeType: file.type,
+          base64: reader.result.split(',')[1], // Strip off the data:*/*;base64, part
+        });
+      reader.readAsDataURL(file);
+    });
+  });
+
+  return await Promise.all(filePromises);
+};

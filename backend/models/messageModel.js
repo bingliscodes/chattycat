@@ -103,3 +103,27 @@ export const Message = sequelize.define('message', {
     allowNull: false,
   },
 });
+
+export const MessageAttachment = sequelize.define('messageAttachment', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
+  fileUrl: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  mimeType: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  messageId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'messages',
+      key: 'id',
+    },
+  },
+});

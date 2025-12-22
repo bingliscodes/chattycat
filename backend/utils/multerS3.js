@@ -3,6 +3,7 @@ import catchAsync from './catchAsync.js';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { MessageAttachment } from '../models/messageModel.js';
 import User from '../models/userModel.js';
 import AppError from './appError.js';
 
@@ -82,11 +83,46 @@ export const uploadMessageFiles = catchAsync(async (req, res, next) => {
     await s3.send(command);
 
     const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
-    fileUrls.push(fileUrl);
+    fileUrls.push({
+      messageId: req.messageId, // I DO NOT HAVE MESSAGE ID YET
+      mimeType: uploadParams.ContentType,
+      fileUrl,
+    });
   }
 
-  res.status(200).json({
-    status: 'success',
-    data: fileUrls,
-  });
+  req.fileUrls = fileUrls;
+  next();
 });
+
+export const uploadAndSaveAttachments = async (files, messageId) => {
+  const results = [];
+
+  for (const file of files) {
+    const ext = path.extname(file.name) || '';
+    const fileName = `messageFiles/${uuidv4()}${ext}`;
+
+    const buffer = Buffer.from(file.base64, 'base64'); // Assumes base64 input
+
+    const uploadParams = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: fileName,
+      Body: buffer,
+      ContentType: file.mimetype,
+    };
+
+    const command = new PutObjectCommand(uploadParams);
+    await s3.send(command);
+
+    const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+
+    const record = await MessageAttachment.create({
+      messageId,
+      fileUrl,
+      mimeType: file.mimeType,
+    });
+
+    results.push(record);
+  }
+
+  return results;
+};

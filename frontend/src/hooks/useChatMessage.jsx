@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
-import { uploadMessageFiles } from '@/utils/js/apiCalls';
+import { processAttachments } from '@/utils/js/helper';
 
 export const useChatMessage = () => {
   const { userData, userSocket } = useContext(UserContext);
@@ -10,14 +10,11 @@ export const useChatMessage = () => {
 
   const sendMessage = async ({ messageBody, attachments = [] }) => {
     if (!userSocket?.connected) return;
-    let uploadedFilesRes;
+
+    let processedAttachments;
     if (attachments.length) {
-      try {
-        uploadedFilesRes = await uploadMessageFiles(attachments);
-      } catch (err) {
-        console.error('File upload failed:', err);
-        return;
-      }
+      console.log('here');
+      processedAttachments = await processAttachments(attachments);
     }
 
     const now = new Date();
@@ -35,7 +32,7 @@ export const useChatMessage = () => {
 
     const messageContent = {
       messageBody,
-      attachments: uploadedFilesRes?.data || [], // include uploaded file metadata here
+      attachments: processedAttachments || [],
       sender: { firstName: userData.firstName, lastName: userData.lastName },
       timestamp,
       datestamp,

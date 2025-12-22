@@ -1,7 +1,11 @@
 import User from '../models/userModel.js';
 import Organization from '../models/organizationModel.js';
 import Channel from '../models/channelModel.js';
-import { DirectMessageRoom, Message } from '../models/messageModel.js';
+import {
+  DirectMessageRoom,
+  Message,
+  MessageAttachment,
+} from '../models/messageModel.js';
 import UserChannel from '../models/userChannelModel.js';
 import UserOrganization from '../models/userOrganizationModel.js';
 
@@ -44,6 +48,15 @@ const modelRelationships = async () => {
   Message.belongsTo(Message, {
     foreignKey: 'parentMessageId',
     as: 'ParentMessage',
+  });
+
+  MessageAttachment.belongsTo(Message, {
+    foreignKey: 'messageId',
+    as: 'MessageAttachmet',
+  });
+  Message.hasMany(MessageAttachment, {
+    foreignKey: 'messageId',
+    as: 'Message',
   });
 };
 
