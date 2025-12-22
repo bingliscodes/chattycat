@@ -5,6 +5,7 @@ import { AiOutlineWechatWork } from 'react-icons/ai';
 import UserAvatar from '../../common/Avatar';
 import { ChatContext } from '@/contexts/ChatContext';
 import MessageActions from './MessageActions';
+import MessageAttachments from './MessageAttachments';
 
 export default function ChatMessage({ msg, ...props }) {
   const { handleSetThread } = useContext(ChatContext);
@@ -14,7 +15,7 @@ export default function ChatMessage({ msg, ...props }) {
   const handleMessageClick = () => {
     handleSetThread(msg);
   };
-
+  console.log(msg);
   return (
     <Flex flex="1" align="flex-start" gap={1}>
       <UserAvatar
@@ -57,6 +58,7 @@ export default function ChatMessage({ msg, ...props }) {
             <AiOutlineWechatWork />
           </Flex>
         )}
+        <MessageAttachments attachments={msg.attachments} />
       </Box>
     </Flex>
   );

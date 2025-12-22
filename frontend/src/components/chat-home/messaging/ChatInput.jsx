@@ -15,12 +15,23 @@ export default function ChatInput({ onMessageSent, ...props }) {
     reset,
     formState: { errors },
   } = useForm();
-  const { sendMessage } = useChatMessage();
+
+  const { sendMessage, createOptimisticMessage } = useChatMessage();
 
   const onSubmit = handleSubmit(async (data) => {
-    const msg = await sendMessage({ messageBody: data.message, attachments });
-    console.log(msg);
-    if (onMessageSent) onMessageSent(msg);
+    const optimisticMsg = createOptimisticMessage({
+      messageBody: data.message,
+      attachments,
+    });
+
+    onMessageSent(optimisticMsg);
+
+    await sendMessage({
+      messageBody: data.message,
+      attachments,
+      tempId: optimisticMsg.tempId,
+    });
+
     setAttachments([]);
     reset();
   });

@@ -23,6 +23,7 @@ export const cleanMessages = (msgs, mode) => {
     messageId: msg.id,
     isThread: msg.replyCount > 0,
     parentMessageId: msg.parentMessageId,
+    attachments: msg.attachments,
   }));
 };
 

@@ -10,7 +10,6 @@ export default function ChatInterface({
   messages,
   setMessages,
   chatName,
-  sendLocation,
   onClickMainArea,
 }) {
   const { socketReady, userSocket } = useContext(UserContext);
@@ -50,10 +49,7 @@ export default function ChatInterface({
 
         {/* Chat Input (fixed inside chat box) */}
         <Box my={2}>
-          <ChatInput
-            sendLocation={sendLocation}
-            onMessageSent={handleMessageSent}
-          />
+          <ChatInput onMessageSent={handleMessageSent} />
         </Box>
       </Flex>
     </Flex>
