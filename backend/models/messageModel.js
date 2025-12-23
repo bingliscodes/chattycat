@@ -114,6 +114,10 @@ export const MessageAttachment = sequelize.define('messageAttachment', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  fileName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   mimeType: {
     type: DataTypes.STRING,
     allowNull: false,

@@ -105,6 +105,7 @@ export const uploadAndSaveAttachments = async (files, messageId) => {
 
     const uploadParams = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
+      name: file.name,
       Key: fileName,
       Body: buffer,
       ContentType: file.mimetype,
@@ -116,6 +117,7 @@ export const uploadAndSaveAttachments = async (files, messageId) => {
     const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
     const record = await MessageAttachment.create({
+      fileName: file.name,
       messageId,
       fileUrl,
       mimeType: file.mimeType,

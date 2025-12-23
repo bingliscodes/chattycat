@@ -21,6 +21,7 @@ export default function ChannelChat() {
           channel.id,
           selectedOrganization.id
         );
+        console.log(res.data);
         const cleanedMessages = cleanMessages(res.data, 'ch');
 
         setMessages(cleanedMessages);
