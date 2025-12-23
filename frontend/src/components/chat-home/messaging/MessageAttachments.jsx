@@ -1,5 +1,5 @@
 // MessageAttachments.jsx
-import { Box, Image, Link, Text } from '@chakra-ui/react';
+import { Box, Image, Link } from '@chakra-ui/react';
 
 export default function MessageAttachments({ attachments }) {
   if (!attachments || attachments.length === 0) return null;

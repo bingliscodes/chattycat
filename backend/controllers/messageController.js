@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 
 import { createOne } from './handlerFactory.js';
-import { Message } from '../models/messageModel.js';
+import { Message, MessageAttachment } from '../models/messageModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import Channel from '../models/channelModel.js';
 import User from '../models/userModel.js';
@@ -55,6 +55,7 @@ export const getChannelMessages = catchAsync(async (req, res, next) => {
         as: 'Sender',
         attributes: ['firstName', 'lastName', 'avatarUrl'],
       },
+      { model: MessageAttachment, as: 'attachments' },
     ],
   });
 
@@ -75,6 +76,7 @@ export const getAllReceivedMessages = catchAsync(async (req, res, next) => {
         as: 'Sender',
         attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
       },
+      { model: MessageAttachment, as: 'attachments' },
     ],
   });
 
@@ -107,6 +109,7 @@ export const getDirectMessagesWithUser = catchAsync(async (req, res, next) => {
         as: 'Sender',
         attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
       },
+      { model: MessageAttachment, as: 'attachments' },
     ],
   });
 
@@ -129,6 +132,7 @@ export const getThreadMessages = catchAsync(async (req, res, next) => {
         as: 'Sender',
         attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
       },
+      { model: MessageAttachment, as: 'attachments' },
     ],
   });
 

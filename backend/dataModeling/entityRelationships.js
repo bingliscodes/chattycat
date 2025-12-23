@@ -50,13 +50,14 @@ const modelRelationships = async () => {
     as: 'ParentMessage',
   });
 
-  MessageAttachment.belongsTo(Message, {
-    foreignKey: 'messageId',
-    as: 'MessageAttachmet',
-  });
   Message.hasMany(MessageAttachment, {
     foreignKey: 'messageId',
-    as: 'Message',
+    as: 'attachments',
+  });
+
+  MessageAttachment.belongsTo(Message, {
+    foreignKey: 'messageId',
+    as: 'message',
   });
 };
 

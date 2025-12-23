@@ -122,7 +122,7 @@ export const MessageAttachment = sequelize.define('messageAttachment', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'messages',
+      model: Message,
       key: 'id',
     },
   },

@@ -15,7 +15,6 @@ export default function ChatMessage({ msg, ...props }) {
   const handleMessageClick = () => {
     handleSetThread(msg);
   };
-  console.log(msg);
   return (
     <Flex flex="1" align="flex-start" gap={1}>
       <UserAvatar
