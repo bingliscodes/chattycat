@@ -12,6 +12,7 @@ export default function ChannelChat() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   useEffect(() => {
     if (!channel || !selectedOrganization.id) return;
     async function fetchMessageHistoryAsync() {

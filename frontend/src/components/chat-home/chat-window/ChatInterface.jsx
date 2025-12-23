@@ -42,6 +42,8 @@ export default function ChatInterface({
       ])
     );
   };
+
+  console.log(messages);
   return (
     <Flex direction="column" flex="1" h="95vh" onClick={onClickMainArea}>
       {/* Chat Header */}

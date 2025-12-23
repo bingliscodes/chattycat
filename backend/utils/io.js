@@ -56,6 +56,8 @@ export const setupIO = (io) => {
         );
       }
 
+      // TODO: Determine if we need to add tempId to messageContent, or if it's fine in messageData alone. Also make sure
+      // I understand what tempId is doing
       console.log(
         `📨 [SERVER] Message from ${socket.id}: ${messageContent.messageBody}`,
       );
