@@ -7,6 +7,7 @@ import ChatInput from '../messaging/ChatInput';
 import MessageLayout from '../messaging/MessageLayout';
 import { insertAndSortMessages } from '@/utils/js/helper';
 
+// TODO: Figure out why messages dissapear after sending
 export default function ChatInterface({
   messages,
   setMessages,
@@ -43,7 +44,6 @@ export default function ChatInterface({
     );
   };
 
-  console.log(messages);
   return (
     <Flex direction="column" flex="1" h="95vh" onClick={onClickMainArea}>
       {/* Chat Header */}

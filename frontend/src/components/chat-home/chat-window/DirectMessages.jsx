@@ -12,6 +12,7 @@ export default function DirectMessageChat() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   useEffect(() => {
     if (!directMessage) return;
     async function fetchUserMessageHistoryAsync() {
