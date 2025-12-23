@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react';
 import { ChatContext } from '@/contexts/ChatContext';
 import ChatInterface from './ChatInterface';
 import { fetchChannelMessageHistory } from '@/utils/js/apiCalls';
-import { cleanMessages } from '@/utils/js/helper';
+import { cleanMessages, insertAndSortMessages } from '@/utils/js/helper';
 import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function ChannelChat() {
@@ -21,10 +21,8 @@ export default function ChannelChat() {
           channel.id,
           selectedOrganization.id
         );
-        console.log(res.data);
         const cleanedMessages = cleanMessages(res.data, 'ch');
-
-        setMessages(cleanedMessages);
+        setMessages(insertAndSortMessages(cleanedMessages));
       } catch (err) {
         console.error(err);
         setError(err);

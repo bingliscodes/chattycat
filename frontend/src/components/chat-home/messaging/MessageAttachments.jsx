@@ -21,7 +21,7 @@ export default function MessageAttachments({ attachments }) {
               />
             ) : (
               <Link href={src} isExternal color="blue.400">
-                📎 {file.fileName || 'Download file'}
+                📎 {file.name || file.fileName || 'Download file'}
               </Link>
             )}
           </Box>

@@ -5,6 +5,7 @@ import { useContext, useEffect } from 'react';
 import { UserContext } from '@/contexts/UserContext';
 import ChatInput from '../messaging/ChatInput';
 import MessageLayout from '../messaging/MessageLayout';
+import { insertAndSortMessages } from '@/utils/js/helper';
 
 export default function ChatInterface({
   messages,
@@ -18,7 +19,12 @@ export default function ChatInterface({
     if (!userSocket) return;
 
     const handleReceiveMessage = (msg) => {
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prev) =>
+        insertAndSortMessages([
+          ...prev.filter((m) => m.tempId !== msg.tempId),
+          msg,
+        ])
+      );
     };
 
     userSocket.on('receive-message', handleReceiveMessage);
@@ -28,8 +34,13 @@ export default function ChatInterface({
     };
   }, [userSocket, setMessages]);
 
-  const handleMessageSent = (message) => {
-    setMessages((prev) => [...prev, message]);
+  const handleMessageSent = (msg) => {
+    setMessages((prev) =>
+      insertAndSortMessages([
+        ...prev.filter((m) => m.tempId !== msg.tempId),
+        msg,
+      ])
+    );
   };
   return (
     <Flex direction="column" flex="1" h="95vh" onClick={onClickMainArea}>

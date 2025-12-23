@@ -2,6 +2,7 @@ export const cleanMessages = (msgs, mode) => {
   /* Takes in an array of message objects and converts them to the format required for a chat message */
 
   return msgs.map((msg) => ({
+    createdAt: msg.createdAt,
     datestamp: new Date(msg.createdAt).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
@@ -42,4 +43,11 @@ export const processAttachments = async (files) => {
   });
 
   return await Promise.all(filePromises);
+};
+
+export const insertAndSortMessages = (messagesArray) => {
+  return [...messagesArray].sort(
+    (a, b) =>
+      new Date(a.createdAt || a.sentAt) - new Date(b.createdAt || b.sentAt)
+  );
 };
