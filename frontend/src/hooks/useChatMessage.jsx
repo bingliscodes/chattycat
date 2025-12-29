@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
 import { processAttachments } from '@/utils/js/helper';
+import { uploadAttachments } from '@/utils/js/fileUploads';
 
 export const useChatMessage = () => {
   const { userData, userSocket } = useContext(UserContext);
@@ -45,9 +46,15 @@ export const useChatMessage = () => {
   const sendMessage = async ({ messageBody, attachments = [], tempId }) => {
     if (!userSocket?.connected) return;
 
-    const processedAttachments = attachments.length
-      ? await processAttachments(attachments)
-      : [];
+    let uploadedAttachments = [];
+    if (attachments.length) {
+      try {
+        uploadedAttachments = await uploadAttachments(attachments, null);
+      } catch (err) {
+        console.error('Failed to upload attachments: ', err);
+        return;
+      }
+    }
 
     const now = new Date();
     const datestamp = now.toLocaleDateString('en-US', {
@@ -64,7 +71,7 @@ export const useChatMessage = () => {
 
     const messageContent = {
       messageBody,
-      attachments: processedAttachments || [],
+      attachments: uploadedAttachments,
       sender: { firstName: userData.firstName, lastName: userData.lastName },
       timestamp,
       datestamp,
@@ -77,13 +84,6 @@ export const useChatMessage = () => {
       type: chatMode === 'ch' ? 'channel' : 'direct',
     };
 
-    console.log(
-      'pre event emission...',
-      'chatMode is',
-      chatMode,
-      'channelId: ',
-      channel?.id
-    );
     if (chatMode === 'ch') messageData.channelId = channel?.id;
     if (chatMode === 'dm') {
       messageData.receiverId = directMessage?.id;
