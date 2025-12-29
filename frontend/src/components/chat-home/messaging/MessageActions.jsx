@@ -1,15 +1,43 @@
-import { Group, Menu, Portal } from '@chakra-ui/react';
+import { Group, Menu, Portal, IconButton, HStack } from '@chakra-ui/react';
 import { BsChat } from 'react-icons/bs';
+import { useContext } from 'react';
+import { ChatContext } from '@/contexts/ChatContext';
+
+export default function MessageActions() {
+  const { handleSetThread } = useContext(ChatContext);
+  return (
+    <HStack
+      bg="white"
+      border="1px solid"
+      borderColor="gray.200"
+      borderRadius="md"
+      shadow="sm"
+      p={1}
+      gap={1}
+    >
+      <IconButton
+        size="sm"
+        variant="ghost"
+        aria-label="Reply in thread"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent triggering handleMessageClick
+          // Your thread reply logic here
+          // If you need the message, you can pass it as a prop
+        }}
+      >
+        <BsChat />
+      </IconButton>
+
+      {/* Add more action buttons here as needed */}
+    </HStack>
+  );
+}
 
 const horizontalMenuItems = [
   { label: 'Reply in thread', value: 'reply', icon: <BsChat /> },
 ];
 
-export default function MessageActions({
-  anchorRef,
-  menuIsOpen,
-  setMenuIsOpen,
-}) {
+export const MessageActionsV1 = ({ anchorRef, menuIsOpen, setMenuIsOpen }) => {
   const getAnchorRect = () => anchorRef.current?.getBoundingClientRect();
   return (
     <Menu.Root
@@ -43,4 +71,4 @@ export default function MessageActions({
       </Portal>
     </Menu.Root>
   );
-}
+};

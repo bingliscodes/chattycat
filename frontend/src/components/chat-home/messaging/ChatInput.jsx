@@ -17,6 +17,7 @@ export default function ChatInput({ onMessageSent, ...props }) {
   } = useForm();
 
   const { sendMessage, createOptimisticMessage } = useChatMessage();
+  // Merge the ref from register with our own ref
 
   const onSubmit = handleSubmit(async (data) => {
     const optimisticMsg = createOptimisticMessage({
@@ -63,6 +64,13 @@ export default function ChatInput({ onMessageSent, ...props }) {
               border={0}
               outline={0}
               resize="none"
+              autoFocus
+              onFocus={(e) => {
+                e.currentTarget.style.pointerEvents = 'auto';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.pointerEvents = 'none';
+              }}
               {...register('message', { required: 'Message is required' })}
             />
             <Field.ErrorText ml={3}>{errors.message?.message}</Field.ErrorText>

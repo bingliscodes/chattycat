@@ -1,3 +1,4 @@
+// ChatMessage.jsx
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { useContext, useState, useRef } from 'react';
 import { AiOutlineWechatWork } from 'react-icons/ai';
@@ -9,12 +10,13 @@ import MessageAttachments from './MessageAttachments';
 
 export default function ChatMessage({ msg, ...props }) {
   const { handleSetThread } = useContext(ChatContext);
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  // const [menuIsOpen, setMenuIsOpen] = useState(false);
   const iconRef = useRef(null);
 
   const handleMessageClick = () => {
     handleSetThread(msg);
   };
+
   return (
     <Flex flex="1" align="flex-start" gap={1}>
       <UserAvatar
@@ -32,16 +34,34 @@ export default function ChatMessage({ msg, ...props }) {
         borderRadius="md"
         boxShadow="sm"
         mb={1}
-        onMouseEnter={() => setMenuIsOpen(true)}
-        onMouseLeave={() => setMenuIsOpen(false)}
+        role="group"
+        css={{
+          '&:hover .message-actions': {
+            opacity: 1,
+            pointerEvents: 'auto',
+          },
+        }}
+        // onMouseEnter={() => setMenuIsOpen(true)}
+        // onMouseLeave={() => setMenuIsOpen(false)}
         {...props}
       >
-        <Box position="absolute" top={1} right={1} ref={iconRef}></Box>
-        <MessageActions
-          anchorRef={iconRef}
-          menuIsOpen={menuIsOpen}
-          setMenuIsOpen={setMenuIsOpen}
-        />
+        <Box
+          className="message-actions"
+          position="absolute"
+          top={-2}
+          right={2}
+          // ref={iconRef}
+          opacity={0}
+          transition="opacity 0.2s ease"
+          pointerEvents="none"
+        >
+          <MessageActions
+          // anchorRef={iconRef}
+          // menuIsOpen={menuIsOpen}
+          // setMenuIsOpen={setMenuIsOpen}
+          />
+        </Box>
+
         <Flex align="flex-end" gap={2}>
           <Text fontSize="sm" fontWeight="bold">
             {`${msg.sender.firstName} ${msg.sender.lastName}`}
