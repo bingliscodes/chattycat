@@ -7,9 +7,9 @@ export default function MessageActions() {
   const { handleSetThread } = useContext(ChatContext);
   return (
     <HStack
-      bg="white"
-      border="1px solid"
-      borderColor="gray.200"
+      bg="bg.chatActionsMenu"
+      borderStyle="1px solid"
+      borderColor="borders.chatActionsMenu"
       borderRadius="md"
       shadow="sm"
       p={1}
@@ -17,7 +17,7 @@ export default function MessageActions() {
     >
       <IconButton
         size="sm"
-        variant="ghost"
+        bg="none"
         aria-label="Reply in thread"
         onClick={(e) => {
           e.stopPropagation(); // Prevent triggering handleMessageClick

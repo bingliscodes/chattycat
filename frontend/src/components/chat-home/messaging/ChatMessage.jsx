@@ -1,6 +1,6 @@
 // ChatMessage.jsx
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { useContext, useState, useRef } from 'react';
+import { useContext } from 'react';
 import { AiOutlineWechatWork } from 'react-icons/ai';
 
 import UserAvatar from '../../common/Avatar';
@@ -11,7 +11,6 @@ import MessageAttachments from './MessageAttachments';
 export default function ChatMessage({ msg, ...props }) {
   const { handleSetThread } = useContext(ChatContext);
   // const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const iconRef = useRef(null);
 
   const handleMessageClick = () => {
     handleSetThread(msg);
@@ -41,8 +40,6 @@ export default function ChatMessage({ msg, ...props }) {
             pointerEvents: 'auto',
           },
         }}
-        // onMouseEnter={() => setMenuIsOpen(true)}
-        // onMouseLeave={() => setMenuIsOpen(false)}
         {...props}
       >
         <Box
@@ -50,16 +47,11 @@ export default function ChatMessage({ msg, ...props }) {
           position="absolute"
           top={-2}
           right={2}
-          // ref={iconRef}
           opacity={0}
           transition="opacity 0.2s ease"
           pointerEvents="none"
         >
-          <MessageActions
-          // anchorRef={iconRef}
-          // menuIsOpen={menuIsOpen}
-          // setMenuIsOpen={setMenuIsOpen}
-          />
+          <MessageActions />
         </Box>
 
         <Flex align="flex-end" gap={2}>

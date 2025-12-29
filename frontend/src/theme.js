@@ -56,6 +56,9 @@ export const system = createSystem(defaultConfig, {
           chatBox: {
             value: { base: 'colors.gray.100', _dark: '{colors.gray.800/40}' },
           },
+          chatActionsMenu: {
+            value: { base: 'colors.gray.400', _dark: 'colors.gray.500' },
+          },
         },
         text: {
           DEFAULT: {
@@ -92,6 +95,9 @@ export const system = createSystem(defaultConfig, {
             value: { base: 'colors.black', _dark: 'colors.gray.400' },
           },
           signupInput: {
+            value: { base: 'colors.gray.900', _dark: 'colors.gray.200' },
+          },
+          chatActionsMenu: {
             value: { base: 'colors.gray.900', _dark: 'colors.gray.200' },
           },
         },
