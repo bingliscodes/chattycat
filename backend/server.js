@@ -18,7 +18,6 @@ const server = app.listen(PORT, () => {
 });
 
 const io = new Server(server, {
-  maxHttpBufferSize: 10 * 1024 * 1024,
   cors: {
     origin: [
       'http://localhost:5173',

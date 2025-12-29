@@ -72,7 +72,7 @@ export const uploadAndSaveAttachments = async (files, messageId) => {
       name: file.name,
       Key: fileName,
       Body: buffer,
-      ContentType: file.mimetype,
+      ContentType: file.mimeType,
     };
 
     const command = new PutObjectCommand(uploadParams);
