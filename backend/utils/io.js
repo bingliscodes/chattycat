@@ -49,8 +49,6 @@ export const setupIO = (io) => {
       const createdMessage = await createMessage(messageData);
       const messageId = createdMessage.id;
       if (messageContent.attachments?.length) {
-        console.log('saving attachments...');
-        console.log(messageContent.attachments);
         const attachments = await saveAttachmentRecords(
           messageContent.attachments,
           messageId,
