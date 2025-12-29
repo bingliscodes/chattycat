@@ -14,8 +14,7 @@ const getPresignedUrls = async (files) => {
     },
     { withCredentials: true }
   );
-
-  return res.data.presignedUrls;
+  return res.data.data;
 };
 
 // Step 2: Upload files directly to S3 using presigned URLs
@@ -36,9 +35,14 @@ export const uploadAttachments = async (files, messageId) => {
     // Get presigned URLs from backend
     const presignedData = await getPresignedUrls(files);
 
+    if (!presignedData || !Array.isArray(presignedData)) {
+      throw new Error('Invalid presigned URLs response');
+    }
     // Upload each file to S3 using presigned URLs
     await Promise.all(
-      files.map((file, idx) => uploadToS3(file, presignedData[idx].uploadUrl))
+      files.map((file, index) =>
+        uploadToS3(file, presignedData[index].uploadUrl)
+      )
     );
 
     // Return the file records to save in DB
@@ -48,8 +52,11 @@ export const uploadAttachments = async (files, messageId) => {
       fileUrl: data.fileUrl,
       mimeType: data.mimeType,
     }));
-  } catch (err) {
-    console.error('Error uploading attachments: ', err);
-    throw err;
+  } catch (error) {
+    console.error('Error uploading attachments:', error);
+    if (error.response) {
+      console.error('Server response:', error.response.data);
+    }
+    throw error;
   }
 };

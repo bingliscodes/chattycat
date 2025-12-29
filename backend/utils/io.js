@@ -42,16 +42,16 @@ export const setupIO = (io) => {
 
     socket.on('send-message', async (messageContent, messageData) => {
       // Security: Ensure user has permission to send message to the channel
-      console.log('send-message event received...');
       if (!validateUserPermissions(messageData.senderId, messageData.channelId))
         return;
-      // Send message to DB
 
+      // Send message to DB
       const createdMessage = await createMessage(messageData);
       const messageId = createdMessage.id;
-
       if (messageContent.attachments?.length) {
-        attachments = await saveAttachmentRecords(
+        console.log('saving attachments...');
+        console.log(messageContent.attachments);
+        const attachments = await saveAttachmentRecords(
           messageContent.attachments,
           messageId,
         );

@@ -95,12 +95,18 @@ export const uploadAndSaveAttachments = async (files, messageId) => {
 
 export const saveAttachmentRecords = async (attachments, messageId) => {
   // Save to your Attachment model
-  const records = attachments.map((att) => ({
-    fileName: att.fileName,
-    fileUrl: att.fileUrl,
-    mimeType: att.mimeType,
-    messageId,
-  }));
+  const results = [];
 
-  await MessageAttachment.bulkCreate(records);
+  for (const att of attachments) {
+    const record = await MessageAttachment.create({
+      fileName: att.fileName,
+      fileUrl: att.fileUrl,
+      mimeType: att.mimeType,
+      messageId,
+    });
+
+    results.push(record);
+  }
+
+  return results;
 };
