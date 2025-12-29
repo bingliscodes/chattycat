@@ -42,9 +42,17 @@ export const setupIO = (io) => {
 
     socket.on('send-message', async (messageContent, messageData) => {
       // Security: Ensure user has permission to send message to the channel
+      console.log('send-message event received...');
+      console.log(
+        'messageContent:',
+        messageContent,
+        'messageData:',
+        messageData,
+      );
       if (!validateUserPermissions(messageData.senderId, messageData.channelId))
         return;
       // Send message to DB
+
       const createdMessage = await createMessage(messageData);
       const messageId = createdMessage.id;
 

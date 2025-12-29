@@ -77,11 +77,19 @@ export const useChatMessage = () => {
       type: chatMode === 'ch' ? 'channel' : 'direct',
     };
 
+    console.log(
+      'pre event emission...',
+      'chatMode is',
+      chatMode,
+      'channelId: ',
+      channel?.id
+    );
     if (chatMode === 'ch') messageData.channelId = channel?.id;
     if (chatMode === 'dm') {
       messageData.receiverId = directMessage?.id;
       messageData.roomId = channel?.id;
     }
+
     if (chatMode === 'thread') {
       messageData.parentMessageId = thread?.parentMessage?.messageId;
       userSocket.emit('send-thread-message', messageContent, messageData);
