@@ -1,6 +1,6 @@
 import { Message } from '../models/messageModel.js';
 import userChannelMap from '../utils/userChannelMap.js';
-import { uploadAndSaveAttachments } from './multerS3.js';
+import { saveAttachmentRecords } from './multerS3.js';
 
 export const setupIO = (io) => {
   const userSocketMap = new Map(); // socketId -> userId
@@ -43,12 +43,6 @@ export const setupIO = (io) => {
     socket.on('send-message', async (messageContent, messageData) => {
       // Security: Ensure user has permission to send message to the channel
       console.log('send-message event received...');
-      console.log(
-        'messageContent:',
-        messageContent,
-        'messageData:',
-        messageData,
-      );
       if (!validateUserPermissions(messageData.senderId, messageData.channelId))
         return;
       // Send message to DB
@@ -56,9 +50,8 @@ export const setupIO = (io) => {
       const createdMessage = await createMessage(messageData);
       const messageId = createdMessage.id;
 
-      let attachments = [];
       if (messageContent.attachments?.length) {
-        attachments = await uploadAndSaveAttachments(
+        attachments = await saveAttachmentRecords(
           messageContent.attachments,
           messageId,
         );
