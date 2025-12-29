@@ -1,60 +1,55 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
-const s3 = new S3Client({
-  region: import.meta.env.VITE_AWS_REGION,
-  credentials: {
-    accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-    secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-  },
-});
+// Step 1: Get presigned URLs from backend
+const getPresignedUrls = async (files) => {
+  const fileMetadata = files.map((file) => ({
+    name: file.name,
+    mimeType: file.type,
+  }));
 
-// Helper function to convert base64 to ArrayBuffer (browser-compatible)
-const base64ToArrayBuffer = (base64) => {
-  const binaryString = atob(base64);
-  const bytes = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  return bytes.buffer;
+  const res = await axios.post(
+    `${import.meta.env.VITE_DEV_API_BASE_URL}uploads/generateUploadUrls`,
+    {
+      files: fileMetadata,
+    },
+    { withCredentials: true }
+  );
+
+  return res.data.presignedUrls;
 };
 
-// Helper function to get file extension (browser-compatible)
-const getFileExtension = (filename) => {
-  const lastDot = filename.lastIndexOf('.');
-  return lastDot === -1 ? '' : filename.substring(lastDot);
+// Step 2: Upload files directly to S3 using presigned URLs
+const uploadToS3 = async (file, uploadUrl) => {
+  const blob =
+    file instanceof File ? file : await fetch(file).then((r) => r.blob());
+
+  await axios.put(uploadUrl, blob, {
+    headers: {
+      'Content-Type': file.type,
+    },
+  });
 };
 
+// Main function to handle the entire upload process
 export const uploadAttachments = async (files, messageId) => {
-  const results = [];
+  try {
+    // Get presigned URLs from backend
+    const presignedData = await getPresignedUrls(files);
 
-  for (const file of files) {
-    const ext = getFileExtension(file.name);
-    const fileName = `messageFiles/${uuidv4()}${ext}}`;
+    // Upload each file to S3 using presigned URLs
+    await Promise.all(
+      files.map((file, idx) => uploadToS3(file, presignedData[idx].uploadUrl))
+    );
 
-    const arrayBuffer = base64ToArrayBuffer(file.base64);
-
-    const uploadParams = {
-      Bucket: import.meta.env.VITE_AWS_S3_BUCKET_NAME,
-      Key: fileName,
-      Body: arrayBuffer,
-      ContentType: file.mimeType,
-    };
-    const command = new PutObjectCommand(uploadParams);
-    await s3.send(command);
-
-    const fileUrl = `https://${import.meta.env.VITE_AWS_S3_BUCKET_NAME}.s3.${
-      import.meta.env.VITE_AWS_REGION
-    }.amazonaws.com/${fileName}`;
-
-    const record = {
-      fileName: file.name,
+    // Return the file records to save in DB
+    return presignedData.map((data) => ({
+      fileName: data.fileName,
       messageId,
-      fileUrl,
-      mimeType: file.mimeType,
-    };
-
-    results.push(record);
+      fileUrl: data.fileUrl,
+      mimeType: data.mimeType,
+    }));
+  } catch (err) {
+    console.error('Error uploading attachments: ', err);
+    throw err;
   }
-  return results;
 };
