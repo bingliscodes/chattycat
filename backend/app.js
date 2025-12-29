@@ -20,6 +20,7 @@ import userRouter from './routes/userRoutes.js';
 import organizationRouter from './routes/organizationRoutes.js';
 import messageRouter from './routes/messageRoutes.js';
 import authRouter from './routes/authRoutes.js';
+import uploadRouter from './routes/uploadRoutes.js';
 
 const app = express();
 const corsOptions = {
@@ -51,6 +52,7 @@ app.use('/api/v1/channels', channelRouter);
 app.use('/api/v1/organizations', organizationRouter);
 app.use('/api/v1/messages', messageRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/uploads', uploadRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {

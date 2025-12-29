@@ -32,13 +32,13 @@ export const uploadAttachments = async (files, messageId) => {
     const ext = getFileExtension(file.name);
     const fileName = `messageFiles/${uuidv4()}${ext}}`;
 
-    const buffer = base64ToArrayBuffer(file.base64);
+    const arrayBuffer = base64ToArrayBuffer(file.base64);
+
     const uploadParams = {
       Bucket: import.meta.env.VITE_AWS_S3_BUCKET_NAME,
-      name: file.name,
       Key: fileName,
-      Body: buffer,
-      ContentType: file.mimetype,
+      Body: arrayBuffer,
+      ContentType: file.mimeType,
     };
     const command = new PutObjectCommand(uploadParams);
     await s3.send(command);
