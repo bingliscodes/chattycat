@@ -25,7 +25,7 @@ export default function AddPeople() {
       align="flex-end"
       justify="space-between"
     >
-      <Dialog.Root>
+      <Dialog.Root size={{ mdDown: 'full', md: 'lg' }}>
         <Tooltip
           showArrow
           content="Invite members to the organization"
@@ -43,13 +43,16 @@ export default function AddPeople() {
           <Dialog.Positioner>
             <Dialog.Content>
               <Dialog.Header>
-                <Dialog.Title>Add Users to your Organization </Dialog.Title>
+                <Flex flex="1" justify="center">
+                  <Dialog.Title>Add Users to your Organization </Dialog.Title>
+                </Flex>
               </Dialog.Header>
+
               <Dialog.Body>
                 <AddMemberForm />
               </Dialog.Body>
               <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" />
+                <CloseButton size="sm" color="black" />
               </Dialog.CloseTrigger>
             </Dialog.Content>
           </Dialog.Positioner>
