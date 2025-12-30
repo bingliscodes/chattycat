@@ -1,0 +1,60 @@
+import {
+  Flex,
+  IconButton,
+  Dialog,
+  Portal,
+  CloseButton,
+  Button,
+} from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
+import { BsFillPersonPlusFill } from 'react-icons/bs';
+
+import AddMemberForm from './AddMemberForm';
+
+export default function AddPeople() {
+  const handleAddMembers = () => {
+    // Step 1: Open form to input email address to send invitation
+    // Step 2: Add member to organization (if they have an account)
+  };
+  return (
+    <Flex
+      flex="1"
+      w="full"
+      px={2}
+      py={1}
+      align="flex-end"
+      justify="space-between"
+    >
+      <Dialog.Root>
+        <Tooltip
+          showArrow
+          content="Invite members to the organization"
+          positioning={{ placement: 'right-end' }}
+        >
+          <Dialog.Trigger asChild>
+            <IconButton>
+              <BsFillPersonPlusFill />
+            </IconButton>
+          </Dialog.Trigger>
+        </Tooltip>
+
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Add Users to your Organization </Dialog.Title>
+              </Dialog.Header>
+              <Dialog.Body>
+                <AddMemberForm />
+              </Dialog.Body>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton size="sm" />
+              </Dialog.CloseTrigger>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
+    </Flex>
+  );
+}

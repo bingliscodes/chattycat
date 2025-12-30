@@ -10,7 +10,7 @@ import DirectMessageRecipient from './direct-messages/DirectMessageRecipient';
 import AddToChannelButton from './channels/AddToChannelButton';
 import StartPrivateChatButton from './direct-messages/StartPrivateChatButton';
 import CreateChannelButton from './channels/CreateChannelButton';
-import AddPeople from './AddPeople';
+import AddPeople from './organization-management/AddPeople';
 
 export default function UserSidebar() {
   const { userData, userSocket } = useContext(UserContext);
