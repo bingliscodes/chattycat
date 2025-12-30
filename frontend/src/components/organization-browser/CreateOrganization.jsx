@@ -1,5 +1,4 @@
 // CreateOrganization.jsx
-// Flow to create a new organization
 
 'use client';
 import { useState } from 'react';

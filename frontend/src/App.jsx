@@ -9,6 +9,7 @@ import UserProfile from './pages/UserProfile';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ChatHome from './pages/ChatHomePage';
+import CreateOrganization from './pages/CreateOrganizationPage';
 import './App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     <Routes>
       <Route path="/" element={<RootLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="createOrganization" element={<CreateOrganization />} />
         <Route path="/client" element={<ChatHome />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

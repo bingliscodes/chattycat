@@ -1,4 +1,5 @@
 // OrganizationBrowser.jsx
+
 'use client';
 import {
   Flex,
@@ -8,14 +9,14 @@ import {
   Spinner,
   Center,
 } from '@chakra-ui/react';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { useContext } from 'react';
 
 import { OrganizationContext } from '@/contexts/OrganizationContext';
-import CreateOrganization from './CreateOrganization';
 
 // If a user is not part of an organization, display a separate visual
 export default function OrganizationBrowser() {
+  const nav = useNavigate();
   const {
     userOrganizations,
     selectedOrganization,
@@ -30,7 +31,8 @@ export default function OrganizationBrowser() {
       </Center>
     );
   }
-  if (!userOrganizations.length) return <CreateOrganization />;
+  if (!userOrganizations.length) nav('/createOrganization');
+
   const organizations = createListCollection({
     items: userOrganizations.map((org) => ({
       label: org.organizationName,
@@ -40,7 +42,7 @@ export default function OrganizationBrowser() {
   });
 
   return (
-    <Flex direction="column" flex="1" align="center">
+    <Flex direction="column" flex="1" align="center" mt={4} gap={2}>
       <Listbox.Root
         collection={organizations}
         value={selectedOrganization?.id ? [selectedOrganization.id] : []}
@@ -50,8 +52,11 @@ export default function OrganizationBrowser() {
         }}
         width="320px"
       >
-        <Listbox.Label>Select Organization</Listbox.Label>
-        <Listbox.Content>
+        <Listbox.Label fontSize="lg" fontWeight="bold">
+          Select Organization
+        </Listbox.Label>
+
+        <Listbox.Content mt={2}>
           {organizations?.items.map((org) => (
             <Listbox.Item item={org} key={org.value}>
               <Listbox.ItemText>{org.label}</Listbox.ItemText>
@@ -60,15 +65,26 @@ export default function OrganizationBrowser() {
           ))}
         </Listbox.Content>
       </Listbox.Root>
-
-      <Button
-        to="/client"
-        as={NavLink}
-        bg="bg.primaryBtn"
-        _hover={{ bg: 'bg.navHover' }}
-      >
-        {selectedOrganization ? 'Go to organization' : 'Select an organization'}
-      </Button>
+      <Flex direction="column" gap={2}>
+        <Button
+          to="createOrganization"
+          as={NavLink}
+          bg="bg.primaryBtn"
+          _hover={{ bg: 'bg.navHover' }}
+        >
+          Create a new organization
+        </Button>
+        <Button
+          to="/client"
+          as={NavLink}
+          bg="bg.primaryBtn"
+          _hover={{ bg: 'bg.navHover' }}
+        >
+          {selectedOrganization
+            ? 'Go to organization'
+            : 'Select an organization'}
+        </Button>
+      </Flex>
     </Flex>
   );
 }
