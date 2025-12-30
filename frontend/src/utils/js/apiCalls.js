@@ -253,6 +253,28 @@ export const fetchOrganizationUsers = async (orgId) => {
   }
 };
 
+export const addUserToOrganization = async (formData, orgId) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/addUser`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          'x-organization-id': orgId,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error('Failed to add user to organization: ', err.message);
+    }
+  }
+};
+
 export const addUserToChannel = async (userId, channelId, orgId) => {
   try {
     const res = await axios.post(
@@ -266,14 +288,12 @@ export const addUserToChannel = async (userId, channelId, orgId) => {
       }
     );
 
-    if (res.status === 200) {
-      throw new Error('Failed to add user to channel!');
-    }
+    return res.data;
   } catch (err) {
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error('Failed to create new channel: ', err.message);
+      throw new Error('Failed to add user to channel: ', err.message);
     }
   }
 };

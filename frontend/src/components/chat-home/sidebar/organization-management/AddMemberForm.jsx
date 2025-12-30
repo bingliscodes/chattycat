@@ -3,13 +3,15 @@ import { useState, useContext } from 'react';
 import { Text, Flex, Field, Input, Button } from '@chakra-ui/react';
 import { NavLink, useNavigate } from 'react-router';
 
+import { addUserToOrganization } from '@/utils/js/apiCalls';
 import { toaster } from '@/components/ui/toaster';
 import { UserContext } from '@/contexts/UserContext';
+import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function AddMemberForm() {
-  const login = () => {};
-  const [loginError, setLoginError] = useState(false);
+  const [error, setError] = useState(false);
   const { refreshUserData } = useContext(UserContext);
+  const { selectedOrganization } = useContext(OrganizationContext);
   const nav = useNavigate();
 
   async function handleSubmit(e) {
@@ -18,30 +20,34 @@ export default function AddMemberForm() {
     const formData = new FormData(e.target);
     const entries = Object.fromEntries(formData.entries());
 
-    const loginPromise = login(entries);
+    const addUserPromise = addUserToOrganization(
+      entries,
+      selectedOrganization.id
+    );
 
-    toaster.promise(loginPromise, {
+    toaster.promise(addUserPromise, {
       loading: {
-        title: 'Logging In...',
-        description: 'Checking your credentials.',
+        title: 'Adding user to organization...',
+        description: 'Checking that a user with entered email exists...',
       },
       success: {
-        title: 'Login Successful!',
-        description: 'Redirecting to homepage.',
+        title: 'Successfully added user to your organization!',
+        description:
+          'Have them login to their ChattyCat account to access their new organization.',
       },
       error: (err) => ({
-        title: 'Login Failed',
+        title: 'Failed to add user to organization',
         description: err.message || 'An unexpected error occured!',
       }),
     });
 
     try {
-      await loginPromise;
-      setLoginError(false);
+      await addUserPromise;
+      setError(false);
       await refreshUserData();
       nav('/');
     } catch (err) {
-      setLoginError(err);
+      setError(err);
       console.error(err);
     }
   }
@@ -73,9 +79,9 @@ export default function AddMemberForm() {
             <Field.ErrorText></Field.ErrorText>
           </Field.Root>
 
-          {loginError && (
+          {error && (
             <Text fontSize="sm" color="red.400">
-              {loginError.message}
+              {error.message}
             </Text>
           )}
           <Button

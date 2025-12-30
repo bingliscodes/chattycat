@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { addUserToChannel } from '@/utils/js/apiCalls';
 import { ChatContext } from '@/contexts/ChatContext';
 import UserAvatar from '@/components/common/Avatar';
-import { OrganizationContext } from '../../../contexts/OrganizationContext';
+import { OrganizationContext } from '@/contexts/OrganizationContext';
 
 export default function UserCard({ user, mode }) {
   const { channel, channelUsers, handleSetDirectMessage } =

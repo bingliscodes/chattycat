@@ -21,7 +21,7 @@ export const createOrganization = catchAsync(async (req, res, next) => {
 });
 
 export const addUserToOrganization = catchAsync(async (req, res, next) => {
-  const user = await User.findOne({ where: { email: req.body.emailAddress } });
+  const user = await User.findOne({ where: { email: req.body.email } });
 
   if (!user)
     return next(new AppError('No user found with that email address.', 404));
