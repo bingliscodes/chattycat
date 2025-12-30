@@ -45,7 +45,6 @@ export default function AddMemberForm() {
       await addUserPromise;
       setError(false);
       await refreshUserData();
-      nav('/');
     } catch (err) {
       setError(err);
       console.error(err);
@@ -80,7 +79,7 @@ export default function AddMemberForm() {
           </Field.Root>
 
           {error && (
-            <Text fontSize="sm" color="red.400">
+            <Text textAlign="center" fontSize="sm" color="red.400">
               {error.message}
             </Text>
           )}
