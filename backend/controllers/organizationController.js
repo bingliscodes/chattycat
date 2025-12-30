@@ -20,6 +20,31 @@ export const createOrganization = catchAsync(async (req, res, next) => {
   });
 });
 
+export const addUserToOrganization = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ where: { email: req.body.emailAddress } });
+
+  if (!user)
+    return next(new AppError('No user found with that email address.', 404));
+
+  const org = await Organization.findByPk(req.organizationId);
+
+  const isUserInOrg = await org.hasUser(user.id);
+
+  if (isUserInOrg)
+    return next(
+      new AppError('User is already a member of this organization!', 400),
+    );
+
+  await org.addUser(user.id, {
+    through: { role: 'member' },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    message: `User ${user.firstName} ${user.lastName} successfully added to organization ${org.organizationName} and assigned default role of member`,
+  });
+});
+
 export const deleteOrganization = deleteOne(Organization);
 export const getAllOrganizations = getAll(Organization);
 
