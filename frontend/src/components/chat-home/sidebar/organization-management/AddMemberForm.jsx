@@ -1,7 +1,6 @@
 'use client';
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { Text, Flex, Field, Input, Button } from '@chakra-ui/react';
-import { NavLink, useNavigate } from 'react-router';
 
 import { addUserToOrganization } from '@/utils/js/apiCalls';
 import { toaster } from '@/components/ui/toaster';
@@ -12,7 +11,7 @@ export default function AddMemberForm() {
   const [error, setError] = useState(false);
   const { refreshUserData } = useContext(UserContext);
   const { selectedOrganization } = useContext(OrganizationContext);
-  const nav = useNavigate();
+  const emailInput = useRef(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -44,6 +43,7 @@ export default function AddMemberForm() {
     try {
       await addUserPromise;
       setError(false);
+      emailInput.current.value = '';
       await refreshUserData();
     } catch (err) {
       setError(err);
@@ -69,6 +69,7 @@ export default function AddMemberForm() {
               borderColor="borders"
               type="email"
               placeholder="email address"
+              ref={emailInput}
               _placeholder={{
                 color: 'text.sidebar/60',
               }}
