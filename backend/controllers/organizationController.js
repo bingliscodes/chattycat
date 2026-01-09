@@ -80,3 +80,20 @@ export const getAllOrganizationUsers = catchAsync(async (req, res, next) => {
     data: orgRes.Users,
   });
 });
+
+export const assignRole = catchAsync(async (req, res, next) => {
+  // This function will only be available to the owner
+  const { userId, role } = req.body;
+  const orgId = req.headers['x-organization-id'];
+
+  const org = await Organization.findByPk(orgId);
+  const user = await User.findByPk(userId);
+
+  // addUser will create association if it doesn't exist, or update the through table if it does.
+  await org.addUser(user, { through: { role } });
+
+  res.status(200).json({
+    status: 'success',
+    message: `User ${user.firstName} ${user.lastName} was assigned role: ${role} in organization ${org.organizationName}`,
+  });
+});

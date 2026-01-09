@@ -6,6 +6,7 @@ import {
   getAllOrganizationChannels,
   getAllOrganizationUsers,
   addUserToOrganization,
+  assignRole,
 } from '../controllers/organizationController.js';
 import { protect, requireOrgRole } from '../controllers/authController.js';
 
@@ -21,5 +22,8 @@ router.post('/addUser', addUserToOrganization);
 
 router.use(requireOrgRole(['admin', 'owner', 'superuser']));
 router.route('/:id').delete(deleteOrganization);
+
+router.use(requireOrgRole(['owner']));
+router.post('/assignRole', assignRole);
 
 export default router;
