@@ -10,8 +10,7 @@ import {
   Stack,
   Button,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router';
-import { NavLink, useNavigate } from 'react-router';
+import { useParams, NavLink, useNavigate } from 'react-router';
 
 import { toaster } from '@/components/ui/toaster';
 import { resetPassword } from '../utils/js/authentication';
