@@ -27,10 +27,19 @@ export default function ChatInterface({
       );
     };
 
+    const handleMessageConfirmed = (msg) => {
+      // Replace optimistic message with confirmed one
+      setMessages((prev) =>
+        prev.map((m) => (m.tempId === msg.tempId ? msg : m))
+      );
+    };
+
     userSocket.on('receive-message', handleReceiveMessage);
+    userSocket.on('message-confirmed', handleMessageConfirmed);
 
     return () => {
       userSocket.off('receive-message', handleReceiveMessage);
+      userSocket.off('message-confirmed', handleMessageConfirmed);
     };
   }, [userSocket, setMessages]);
 

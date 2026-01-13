@@ -48,6 +48,7 @@ export const setupIO = (io) => {
       // Send message to DB
       const createdMessage = await createMessage(messageData);
       const messageId = createdMessage.id;
+
       if (messageContent.attachments?.length) {
         const attachments = await saveAttachmentRecords(
           messageContent.attachments,
@@ -55,21 +56,26 @@ export const setupIO = (io) => {
         );
       }
 
-      // TODO: Determine if we need to add tempId to messageContent, or if it's fine in messageData alone. Also make sure
-      // I understand what tempId is doing
-      console.log(
-        `📨 [SERVER] Message from ${socket.id}: ${messageContent.messageBody}`,
-      );
-      if (messageContent.channel) {
+      // Build confirmed message with real ID
+      const confirmedMessage = {
+        ...messageContent,
+        id: messageId,
+        tempId: messageData.tempId,
+        status: 'sent',
+      };
+
+      // Send confirmation to sender
+      socket.emit('message-confirmed', confirmedMessage);
+
+      // Broadcast to others in the room
+      if (messageData.type === 'channel' && messageData.channelId) {
         socket.broadcast
-          .to(messageContent.channel)
-          .emit('receive-message', messageContent);
-        console.log(
-          `📤 Broadcasted to room ${messageContent.channel}: ${messageContent.messageBody}`,
-        );
-      } else {
-        socket.broadcast.emit('receive-message', messageContent);
-        console.log('📤 Broadcasted globally:', messageContent.messageBody);
+          .to(messageData.channelId)
+          .emit('receive-message', confirmedMessage);
+      } else if (messageData.type === 'direct' && messageData.roomId) {
+        socket.broadcast
+          .to(messageData.roomId)
+          .emit('receive-message', confirmedMessage);
       }
     });
 
