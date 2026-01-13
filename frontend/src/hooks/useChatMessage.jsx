@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ChatContext } from '@/contexts/ChatContext';
 import { UserContext } from '@/contexts/UserContext';
-import { processAttachments } from '@/utils/js/helper';
 import { uploadAttachments } from '@/utils/js/fileUploads';
 
 export const useChatMessage = () => {

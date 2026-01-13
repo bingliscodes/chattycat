@@ -61,6 +61,11 @@ export default function ChatMessage({ msg, ...props }) {
           <Text fontSize="xs" fontWeight="light">
             {msg.timestamp}
           </Text>
+          {msg.status === 'sending' && (
+            <Text fontSize="xs" color="gray.400">
+              Sending...
+            </Text>
+          )}
         </Flex>
         <Text fontSize="sm">{msg.messageBody}</Text>
         {msg.isThread && (
