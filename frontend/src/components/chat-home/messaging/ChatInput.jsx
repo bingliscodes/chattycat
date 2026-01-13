@@ -17,7 +17,6 @@ export default function ChatInput({ onMessageSent, ...props }) {
   } = useForm();
 
   const { sendMessage, createOptimisticMessage } = useChatMessage();
-  // Merge the ref from register with our own ref
 
   const onSubmit = handleSubmit(async (data) => {
     const optimisticMsg = createOptimisticMessage({

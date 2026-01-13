@@ -44,12 +44,7 @@ export default function ChatInterface({
   }, [userSocket, setMessages]);
 
   const handleMessageSent = (msg) => {
-    setMessages((prev) =>
-      insertAndSortMessages([
-        ...prev.filter((m) => m.tempId !== msg.tempId),
-        msg,
-      ])
-    );
+    setMessages((prev) => insertAndSortMessages([...prev, msg]));
   };
 
   return (

@@ -1,3 +1,4 @@
+// messageModel.js
 import { DataTypes } from 'sequelize';
 import User from './userModel.js';
 import Organization from './organizationModel.js';
