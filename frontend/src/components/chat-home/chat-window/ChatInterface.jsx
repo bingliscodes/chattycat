@@ -19,12 +19,7 @@ export default function ChatInterface({
     if (!userSocket) return;
 
     const handleReceiveMessage = (msg) => {
-      setMessages((prev) =>
-        insertAndSortMessages([
-          ...prev.filter((m) => m.tempId !== msg.tempId),
-          msg,
-        ])
-      );
+      setMessages((prev) => insertAndSortMessages([...prev, msg]));
     };
 
     const handleMessageConfirmed = (msg) => {
