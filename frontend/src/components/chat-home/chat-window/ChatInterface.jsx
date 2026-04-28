@@ -24,8 +24,8 @@ export default function ChatInterface({
 
     const handleMessageConfirmed = (msg) => {
       // Replace optimistic message with confirmed one
-      setMessages((prev) =>2
-        prev.map((m) => (m.tempId === msg.tempId ? msg : m))
+      setMessages((prev) =>
+        prev.map((m) => (m.tempId === msg.tempId ? msg : m)),
       );
     };
 
