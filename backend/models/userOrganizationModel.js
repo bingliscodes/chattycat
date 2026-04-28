@@ -26,7 +26,6 @@ const UserOrganization = sequelize.define(
       allowNull: false,
       defaultValue: 'member',
     },
-
     joinedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

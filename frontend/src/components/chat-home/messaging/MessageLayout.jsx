@@ -1,3 +1,4 @@
+// MessageLayout.jsx
 import { Box } from '@chakra-ui/react';
 
 import ChatMessage from './ChatMessage';
