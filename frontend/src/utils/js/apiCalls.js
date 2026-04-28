@@ -1,13 +1,8 @@
-import axios from 'axios';
+import apiClient from './apiClient.js';
 
 export const fetchUserData = async () => {
   try {
-    const userData = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/me`,
-      {
-        withCredentials: true,
-      }
-    );
+    const userData = await apiClient.get('users/me');
 
     if (userData.status !== 200) throw new Error('Failed to fetch user data.');
 
@@ -20,12 +15,7 @@ export const fetchUserData = async () => {
 
 export const fetchUserOrganizations = async () => {
   try {
-    const organizationData = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/myOrganizations`,
-      {
-        withCredentials: true,
-      }
-    );
+    const organizationData = await apiClient.get('users/myOrganizations');
 
     if (organizationData.status !== 200)
       throw new Error('Failed to fetch organization data.');
@@ -39,15 +29,11 @@ export const fetchUserOrganizations = async () => {
 
 export const fetchOrganizationData = async (orgId) => {
   try {
-    const channelRes = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/${orgId}/channels`,
-      { withCredentials: true }
+    const channelRes = await apiClient.get(
+      `organizations/${orgId}/channels`
     );
 
-    const userRes = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/${orgId}/users`,
-      { withCredentials: true }
-    );
+    const userRes = await apiClient.get(`organizations/${orgId}/users`);
 
     return { channels: channelRes.data.data, users: userRes.data.data };
   } catch (err) {
@@ -57,11 +43,7 @@ export const fetchOrganizationData = async (orgId) => {
 };
 export const sendMessage = async (messageData) => {
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}messages`,
-      messageData,
-      { withCredentials: true }
-    );
+    const res = await apiClient.post('messages', messageData);
 
     if (res.status !== 201) throw new Error('Failed to create channel message');
 
@@ -74,15 +56,11 @@ export const sendMessage = async (messageData) => {
 
 export const fetchChannelMessageHistory = async (channelId, orgId) => {
   try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}channels/${channelId}/messages`,
-      {
-        withCredentials: true,
-        headers: {
-          'x-organization-id': orgId,
-        },
-      }
-    );
+    const res = await apiClient.get(`channels/${channelId}/messages`, {
+      headers: {
+        'x-organization-id': orgId,
+      },
+    });
 
     if (res.status !== 200)
       throw new Error('Failed to fetch channel message history');
@@ -99,10 +77,7 @@ export const fetchChannelMessageHistory = async (channelId, orgId) => {
 
 export const fetchUserMessageHistory = async (userId) => {
   try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/received/${userId}`,
-      { withCredentials: true }
-    );
+    const res = await apiClient.get(`users/received/${userId}`);
     if (res.status !== 200)
       throw new Error('Failed to fetch direct message history');
 
@@ -116,10 +91,7 @@ export const fetchUserMessageHistory = async (userId) => {
 export const fetchThreadMessageHistory = async (messageId) => {
   /* Returns an array of message objects containing all messages associated with the parent messageId*/
   try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}messages/${messageId}`,
-      { withCredentials: true }
-    );
+    const res = await apiClient.get(`messages/${messageId}`);
 
     return res.data;
   } catch (err) {
@@ -130,11 +102,8 @@ export const fetchThreadMessageHistory = async (messageId) => {
 
 export const fetchDirectMessageList = async (userId, orgId) => {
   try {
-    const res = await axios.get(
-      `${
-        import.meta.env.VITE_DEV_API_BASE_URL
-      }users/${userId}/directMessageList?orgId=${orgId}`,
-      { withCredentials: true }
+    const res = await apiClient.get(
+      `users/${userId}/directMessageList?orgId=${orgId}`
     );
 
     if (res.status !== 200)
@@ -152,16 +121,11 @@ export const updateAvatar = async (file) => {
     const formData = new FormData();
     formData.append('avatar', file);
 
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/avatar`,
-      formData,
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
+    const res = await apiClient.post('users/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
     if (res.status !== 200) throw new Error('Failed to update avatar');
 
@@ -180,14 +144,9 @@ export const uploadMessageFiles = async (files) => {
     const formData = new FormData();
     files.forEach((file) => formData.append('files', file));
 
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}messages/messageFiles`,
-      formData,
-      {
-        withCredentials: true,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }
-    );
+    const res = await apiClient.post('messages/messageFiles', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return res.data;
   } catch (err) {
     if (err.response && err.response.data && err.response.data.message) {
@@ -201,10 +160,9 @@ export const uploadMessageFiles = async (files) => {
 export const updateSettings = async (formData) => {
   const filteredFormData = removeBlankAttributes({ ...formData });
   try {
-    const updatedUser = await axios.patch(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/updateMe`,
-      filteredFormData,
-      { withCredentials: true }
+    const updatedUser = await apiClient.patch(
+      'users/updateMe',
+      filteredFormData
     );
 
     if (!updatedUser.status === 200) {
@@ -229,15 +187,11 @@ function removeBlankAttributes(obj) {
 export const fetchOrganizationUsers = async (orgId) => {
   // Retrieves a list of all users within an organization
   try {
-    const users = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users`,
-      {
-        withCredentials: true,
-        headers: {
-          'x-organization-id': orgId,
-        },
-      }
-    );
+    const users = await apiClient.get('users', {
+      headers: {
+        'x-organization-id': orgId,
+      },
+    });
 
     if (!users.status === 200) {
       throw new Error(`Failed to retrieve users in organization ${orgId}`);
@@ -255,16 +209,11 @@ export const fetchOrganizationUsers = async (orgId) => {
 
 export const addUserToOrganization = async (formData, orgId) => {
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations/addUser`,
-      formData,
-      {
-        withCredentials: true,
-        headers: {
-          'x-organization-id': orgId,
-        },
-      }
-    );
+    const res = await apiClient.post('organizations/addUser', formData, {
+      headers: {
+        'x-organization-id': orgId,
+      },
+    });
     return res.data;
   } catch (err) {
     if (err.response && err.response.data && err.response.data.message) {
@@ -277,11 +226,10 @@ export const addUserToOrganization = async (formData, orgId) => {
 
 export const addUserToChannel = async (userId, channelId, orgId) => {
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}users/addToChannel`,
+    const res = await apiClient.post(
+      'users/addToChannel',
       { userId, channelId },
       {
-        withCredentials: true,
         headers: {
           'x-organization-id': orgId,
         },
@@ -300,15 +248,11 @@ export const addUserToChannel = async (userId, channelId, orgId) => {
 
 export const fetchChannelUsers = async (channelId, orgId) => {
   try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}channels/${channelId}/allUsers`,
-      {
-        withCredentials: true,
-        headers: {
-          'x-organization-id': orgId,
-        },
-      }
-    );
+    const res = await apiClient.get(`channels/${channelId}/allUsers`, {
+      headers: {
+        'x-organization-id': orgId,
+      },
+    });
     if (!res.status === 200) {
       throw new Error('Failed to fetch users!');
     }
@@ -324,11 +268,11 @@ export const fetchChannelUsers = async (channelId, orgId) => {
 
 export const findOrCreateDMRoom = async (user1Id, user2Id, orgId) => {
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}messages/privateRoomId`,
-      { user1Id, user2Id, orgId },
-      { withCredentials: true }
-    );
+    const res = await apiClient.post('messages/privateRoomId', {
+      user1Id,
+      user2Id,
+      orgId,
+    });
 
     if (!res.status === 200) {
       throw new Error('Failed to get private room id!');
@@ -343,11 +287,7 @@ export const findOrCreateDMRoom = async (user1Id, user2Id, orgId) => {
 
 export const createOrganization = async (formData) => {
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}organizations`,
-      formData,
-      { withCredentials: true }
-    );
+    const res = await apiClient.post('organizations', formData);
 
     return res.data.data;
   } catch (err) {
@@ -361,16 +301,11 @@ export const createOrganization = async (formData) => {
 
 export const createChannel = async (formData, orgId) => {
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_DEV_API_BASE_URL}channels`,
-      formData,
-      {
-        withCredentials: true,
-        headers: {
-          'x-organization-id': orgId,
-        },
-      }
-    );
+    const res = await apiClient.post('channels', formData, {
+      headers: {
+        'x-organization-id': orgId,
+      },
+    });
     return res.data.data;
   } catch (err) {
     if (err.response && err.response.data && err.response.data.message) {

@@ -1,5 +1,6 @@
 // fileUploads.js
 import axios from 'axios';
+import apiClient from './apiClient.js';
 
 // Step 1: Get presigned URLs from backend
 const getPresignedUrls = async (files) => {
@@ -8,13 +9,9 @@ const getPresignedUrls = async (files) => {
     mimeType: file.type,
   }));
 
-  const res = await axios.post(
-    `${import.meta.env.VITE_DEV_API_BASE_URL}uploads/generateUploadUrls`,
-    {
-      files: fileMetadata,
-    },
-    { withCredentials: true }
-  );
+  const res = await apiClient.post('uploads/generateUploadUrls', {
+    files: fileMetadata,
+  });
   return res.data.data;
 };
 

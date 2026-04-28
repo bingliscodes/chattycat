@@ -79,8 +79,12 @@ export const logout = (req, res) => {
 };
 
 export const protect = catchAsync(async (req, res, next) => {
-  // 1) Get token and check if it's there
-  const token = req.cookies.jwt;
+  // 1) Get token from cookie or Authorization header
+  let token = req.cookies.jwt;
+
+  if (!token && req.headers.authorization?.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
   if (!token)
     return next(
