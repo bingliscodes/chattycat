@@ -2,11 +2,13 @@ import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import Channel from '../models/channelModel.js';
 import { createOne, deleteOne, getAll } from './handlerFactory.js';
+import userChannelMap from '../utils/userChannelMap.js';
 
 export const createChannel = catchAsync(async (req, res, next) => {
   const newChannel = await Channel.create(req.body);
 
   await newChannel.addMember(req.user.id);
+  userChannelMap.addChannel(req.user.id, newChannel.id);
 
   res.status(201).json({
     status: 'success',
