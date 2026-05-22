@@ -50,13 +50,26 @@ export const getAllOrganizations = getAll(Organization);
 
 export const getAllOrganizationChannels = catchAsync(async (req, res, next) => {
   const orgId = req.params.id;
-  const orgRes = await Organization.findByPk(orgId, {
-    include: { model: Channel },
+  const userId = req.user.id;
+
+  const channels = await Channel.findAll({
+    where: { organizationId: orgId },
+    include: [
+      {
+        model: User,
+        as: 'Members',
+        where: { id: userId },
+        attributes: [],
+        through: { atrributes: [] },
+        required: true,
+      },
+    ],
   });
+
   res.status(200).json({
     status: 'success',
-    results: orgRes.channels.length,
-    data: orgRes.channels,
+    results: channels.length,
+    data: channels,
   });
 });
 
