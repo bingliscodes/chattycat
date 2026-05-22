@@ -38,7 +38,7 @@ export const ChatContextProvider = ({ children }) => {
       try {
         const res = await fetchChannelUsers(
           channel.id,
-          selectedOrganization.id
+          selectedOrganization.id,
         );
         const channelUserIds = res.data.map((usr) => usr.id);
         setChannelUsers(channelUserIds);
@@ -54,7 +54,7 @@ export const ChatContextProvider = ({ children }) => {
     try {
       const res = await fetchDirectMessageList(
         userData.id,
-        selectedOrganization.id
+        selectedOrganization.id,
       );
       setDirectMessageList([...res.data]);
     } catch (err) {
@@ -90,12 +90,16 @@ export const ChatContextProvider = ({ children }) => {
       const res = await findOrCreateDMRoom(
         userData.id,
         user.id,
-        selectedOrganization.id
+        selectedOrganization.id,
       );
       setDirectMessage(user);
       setRoomId(res.data.id);
       setChannel(null);
       await fetchDirectMessages();
+      userSocket?.emit('new-dm', {
+        senderId: userData.id,
+        receiverId: user.id,
+      });
     } catch (err) {
       console.error('Failed to set DM room', err);
     }
