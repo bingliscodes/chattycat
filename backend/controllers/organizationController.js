@@ -85,7 +85,6 @@ export const getAllOrganizationUsers = catchAsync(async (req, res, next) => {
       },
     ],
   });
-  console.log('orgRes', orgRes);
   res.status(200).json({
     status: 'success',
     results: orgRes.Users.length,
