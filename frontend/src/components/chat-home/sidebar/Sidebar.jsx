@@ -53,7 +53,6 @@ export default function UserSidebar() {
     });
   };
 
-  console.log(directMessageList);
   return (
     <Flex
       align="flex-start"
