@@ -2,7 +2,7 @@ import { Message } from '../models/messageModel.js';
 import userChannelMap from '../utils/userChannelMap.js';
 import { saveAttachmentRecords } from './multerS3.js';
 import User from '../models/userModel.js';
-import Channel from '..models/channelModel.js';
+import Channel from '../models/channelModel.js';
 
 export const setupIO = (io) => {
   const userSocketMap = new Map(); // socketId -> userId
