@@ -44,7 +44,12 @@ export const setupIO = (io) => {
 
     socket.on('send-message', async (messageContent, messageData) => {
       // Security: Ensure user has permission to send message to the channel
-      if (!validateUserPermissions(messageData.senderId, messageData.channelId))
+      if (
+        !(await validateUserPermissions(
+          messageData.senderId,
+          messageData.channelId,
+        ))
+      )
         return;
 
       // Send message to DB
@@ -125,21 +130,20 @@ const createMessage = async (messageData) => {
   }
 };
 
-const validateUserPermissions = (userId, channelId) => {
+const validateUserPermissions = async (userId, channelId) => {
   if (!channelId) return true;
 
   let channels = userChannelMap.data.get(userId);
 
-  if (!channels){
+  if (!channels) {
     // Cache miss - hydrate from DB and store
     const user = await User.findByPk(userId, {
-      include: [{model: Channel, as: 'Channels', attributes: ['id']}],
-    })
-  if (!user) return false;
-  channels = user.Channels.map((ch) => ch.id);
-  userChannelMap.data.set(userId, channels);
+      include: [{ model: Channel, as: 'Channels', attributes: ['id'] }],
+    });
+    if (!user) return false;
+    channels = user.Channels.map((ch) => ch.id);
+    userChannelMap.data.set(userId, channels);
   }
-  
+
   return channels.includes(channelId);
 };
-
