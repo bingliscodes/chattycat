@@ -34,8 +34,6 @@ export default function UserSearch({ mode }) {
     fetchOrganizationUsersAsync();
   }, [setOrganizationUsers, selectedOrganization]);
 
-  console.log(organizationUsers);
-
   const debounceOnChange = debounce(async (e) => {
     const input = e.target.value.trim().toLowerCase();
     const filteredResults = organizationUsers.filter((usr) => {
