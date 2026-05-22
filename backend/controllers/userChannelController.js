@@ -9,12 +9,12 @@ export const addToChannel = catchAsync(async (req, res, next) => {
   const { userId, channelId } = req.body;
   const user = await User.findByPk(userId);
 
-  if (!user) return next(new AppError(`No user found with id ${userId}!`), 404);
+  if (!user) return next(new AppError(`No user found with id ${userId}!`, 400));
 
   const channel = await Channel.findByPk(channelId);
 
   if (!channel)
-    return next(new AppError(`No channel found with id ${channelId}`), 404);
+    return next(new AppError(`No channel found with id ${channelId}`, 404));
 
   await user.addChannels(channel);
   const updatedChannels = await user.getChannels({ attributes: ['id'] });
@@ -26,7 +26,6 @@ export const addToChannel = catchAsync(async (req, res, next) => {
     message: `Added user ${user.firstName} to channel ${channelId}`,
     data: null,
   });
-  next();
 });
 
 export const removeFromChannel = catchAsync(async (req, res, next) => {
@@ -34,7 +33,7 @@ export const removeFromChannel = catchAsync(async (req, res, next) => {
 
   const user = await User.findByPk(userId);
 
-  if (!user) return next(new AppError(`No user found with id ${userId}!`), 404);
+  if (!user) return next(new AppError(`No user found with id ${userId}!`, 404));
 
   const channel = await Channel.findByPk(channelId);
 
@@ -53,7 +52,6 @@ export const removeFromChannel = catchAsync(async (req, res, next) => {
     message: `Removed user ${user.firstName} from channel ${channelId}`,
     data: null,
   });
-  next();
 });
 
 export const getAllChannelUsers = catchAsync(async (req, res, next) => {
@@ -64,7 +62,7 @@ export const getAllChannelUsers = catchAsync(async (req, res, next) => {
   });
 
   if (!channel)
-    return next(new AppError(`No channel found with id ${channelId}!`), 404);
+    return next(new AppError(`No channel found with id ${channelId}!`, 404));
 
   res.status(200).json({
     status: 'success',
@@ -81,8 +79,8 @@ export const getPrivateMessageRoomId = catchAsync(async (req, res, next) => {
     return next(
       new AppError(
         `An unexpected error has occured creating the room. Please try again later`,
+        400,
       ),
-      400,
     );
 
   return res.status(200).json({

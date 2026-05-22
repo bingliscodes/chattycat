@@ -75,7 +75,7 @@ export const getAllOrganizationChannels = catchAsync(async (req, res, next) => {
 
 export const getAllOrganizationUsers = catchAsync(async (req, res, next) => {
   const orgId = req.params.id;
-
+  console.log('here');
   const orgRes = await Organization.findByPk(orgId, {
     include: [
       {

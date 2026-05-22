@@ -29,9 +29,7 @@ export const fetchUserOrganizations = async () => {
 
 export const fetchOrganizationData = async (orgId) => {
   try {
-    const channelRes = await apiClient.get(
-      `organizations/${orgId}/channels`
-    );
+    const channelRes = await apiClient.get(`organizations/${orgId}/channels`);
 
     const userRes = await apiClient.get(`organizations/${orgId}/users`);
 
@@ -103,7 +101,7 @@ export const fetchThreadMessageHistory = async (messageId) => {
 export const fetchDirectMessageList = async (userId, orgId) => {
   try {
     const res = await apiClient.get(
-      `users/${userId}/directMessageList?orgId=${orgId}`
+      `users/${userId}/directMessageList?orgId=${orgId}`,
     );
 
     if (res.status !== 200)
@@ -162,7 +160,7 @@ export const updateSettings = async (formData) => {
   try {
     const updatedUser = await apiClient.patch(
       'users/updateMe',
-      filteredFormData
+      filteredFormData,
     );
 
     if (!updatedUser.status === 200) {
@@ -187,7 +185,7 @@ function removeBlankAttributes(obj) {
 export const fetchOrganizationUsers = async (orgId) => {
   // Retrieves a list of all users within an organization
   try {
-    const users = await apiClient.get('users', {
+    const users = await apiClient.get(`${orgId}/users`, {
       headers: {
         'x-organization-id': orgId,
       },
@@ -202,7 +200,9 @@ export const fetchOrganizationUsers = async (orgId) => {
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error('Failed to create new organization: ' + err.message);
+      throw new Error(
+        'Failed to create fetch organization users: ' + err.message,
+      );
     }
   }
 };
@@ -233,7 +233,7 @@ export const addUserToChannel = async (userId, channelId, orgId) => {
         headers: {
           'x-organization-id': orgId,
         },
-      }
+      },
     );
 
     return res.data;
