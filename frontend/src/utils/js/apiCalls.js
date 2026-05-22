@@ -185,7 +185,7 @@ function removeBlankAttributes(obj) {
 export const fetchOrganizationUsers = async (orgId) => {
   // Retrieves a list of all users within an organization
   try {
-    const users = await apiClient.get(`${orgId}/users`, {
+    const users = await apiClient.get(`organizations/${orgId}/users`, {
       headers: {
         'x-organization-id': orgId,
       },
