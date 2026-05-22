@@ -31,12 +31,12 @@ export const setupIO = (io) => {
     });
 
     socket.on('new-dm', ({ senderId, receiverId }) => {
-      const senderSocketId = userSocketMap.get(senderId);
-      if (senderSocketId) {
+      const receiverSocketId = userSocketMap.get(receiverId);
+      if (receiverSocketId) {
         console.log(
-          `[SERVER] Notifying ${senderId} of new DM from ${receiverId}`,
+          `[SERVER] Notifying ${receiverId} of new DM from ${senderId}`,
         );
-        io.to(senderSocketId).emit('new-dm', { receiverId });
+        io.to(receiverSocketId).emit('new-dm', { senderId });
       }
     });
 
