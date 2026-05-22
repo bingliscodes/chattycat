@@ -39,8 +39,10 @@ const modelRelationships = async () => {
   Message.belongsTo(Channel, { foreignKey: 'channelId', as: 'Channel' });
 
   DirectMessageRoom.hasMany(Message, { foreignKey: 'roomId', as: 'Messages' });
-  Message.belongsTo(DirectMessageRoom, { foreignKey: 'roomId', as: 'Room' });
+  DirectMessageRoom.belongsTo(User, { foreignKey: 'user1Id', as: 'User1' });
+  DirectMessageRoom.belongsTo(User, { foreignKey: 'user2Id', as: 'User2' });
 
+  Message.belongsTo(DirectMessageRoom, { foreignKey: 'roomId', as: 'Room' });
   Message.hasMany(Message, {
     foreignKey: 'parentMessageId',
     as: 'ThreadReplies',

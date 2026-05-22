@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 import User from '../models/userModel.js';
 import Channel from '../models/channelModel.js';
 import catchAsync from '../utils/catchAsync.js';
@@ -95,60 +97,39 @@ export const updateMe = catchAsync(async (req, res, next) => {
 export const getDirectMessageList = catchAsync(async (req, res, next) => {
   // Retrieves a list of all users that the specified user has dm's with within the specified organization
   const orgId = req.query.orgId;
-  const user = await User.findByPk(req.params.userId);
+  const { userId } = req.params;
+
   if (!orgId) {
     return next(new AppError('Missing organization ID in query.', 400));
   }
 
-  const [receivedMessages, sentMessages] = await Promise.all([
-    user.getReceivedMessages({
-      include: [
-        {
-          model: User,
-          as: 'Sender',
-          attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
-        },
-        {
-          model: DirectMessageRoom,
-          as: 'Room',
-          where: { organizationId: orgId },
-          attributes: [],
-        },
-      ],
-    }),
-    user.getSentMessages({
-      include: [
-        {
-          model: User,
-          as: 'Receiver',
-          attributes: ['id', 'avatarUrl', 'firstName', 'lastName'],
-        },
-        {
-          model: DirectMessageRoom,
-          as: 'Room',
-          where: { organizationId: orgId },
-          attributes: [],
-        },
-      ],
-    }),
-  ]);
+  const rooms = await DirectMessageRoom.findAll({
+    where: {
+      organizationId: orgId,
+      [Op.or]: [{ user1Id: userId }, { user2Id: userId }],
+    },
+    include: [
+      {
+        model: User,
+        as: 'User1',
+        attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
+      },
+      {
+        model: User,
+        as: 'User2',
+        attributes: ['id', 'firstName', 'lastName', 'avatarUrl'],
+      },
+    ],
+  });
 
   const uniqueUsers = [];
-  const userIds = new Set();
+  const seen = new Set();
 
-  for (const msg of receivedMessages) {
-    const sender = msg.Sender;
-    if (sender && !userIds.has(sender.id)) {
-      userIds.add(sender.id);
-      uniqueUsers.push(sender);
-    }
-  }
-
-  for (const msg of sentMessages) {
-    const receiver = msg.Receiver;
-    if (receiver && !userIds.has(receiver.id)) {
-      userIds.add(receiver.id);
-      uniqueUsers.push(receiver);
+  for (const room of rooms) {
+    const other = room.user1Id === userId ? room.User2 : room.User1;
+    if (other && !seen.has(other.id)) {
+      seen.add(other.id);
+      uniqueUsers.push(other);
     }
   }
 
