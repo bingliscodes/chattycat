@@ -8,6 +8,7 @@ import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
 import UserOrganization from '../models/userOrganizationModel.js';
 import Email from '../utils/email.js';
+import userChannelMap from '../utils/userChannelMap.js';
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -51,6 +52,8 @@ export const signup = catchAsync(async (req, res, next) => {
   }
 
   const newUser = await User.create(req.body);
+  userChannelMap.addUser(newUser.id);
+
   createSendToken(newUser, 201, req, res);
 });
 
