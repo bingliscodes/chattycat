@@ -12,11 +12,11 @@ import { protect, requireOrgRole } from '../controllers/authController.js';
 
 const router = express.Router();
 
+router.use(protect);
 router.get('/', getAllOrganizations);
 router.get('/:id/channels', getAllOrganizationChannels);
 router.get('/:id/users', getAllOrganizationUsers);
 
-router.use(protect);
 router.post('/', createOrganization);
 router.post('/addUser', addUserToOrganization);
 
