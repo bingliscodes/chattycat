@@ -54,6 +54,8 @@ Anyone can `GET` an object — required because uploaded files are served via th
 }
 ```
 
+> **Trade-off worth knowing about.** This policy grants `s3:GetObject` only — not `s3:ListBucket` — so the bucket contents can't be enumerated. But it does mean *anyone with an object's URL* can fetch the file, indefinitely, with no auth check. That's appropriate for avatars and intentionally-public media, and acceptable for a demo project where chat attachments use unguessable keys. For a production deployment where attachments should stay truly private, the cleaner pattern is to keep the bucket fully private (turn all four Block Public Access toggles ON, remove this bucket policy) and have the backend issue short-lived **presigned GET URLs** the same way it already issues presigned PUT URLs for uploads — checking authorization on each request. That prevents exposure from leaked URLs (browser history, referrer headers, accidental copy/paste).
+
 ### 3. CORS configuration
 
 Allows the browser to `PUT` directly to S3 from each frontend origin. Without this the upload fails with a CORS error in the browser console — the request never reaches S3's auth check.
@@ -97,6 +99,35 @@ An IAM user holds the access key referenced by `AWS_ACCESS_KEY_ID`. It has a sin
 ```
 
 Reads don't need IAM permission — they're handled by the public bucket policy above. If the app ever starts deleting attachments, add `s3:DeleteObject` to the `Action` array.
+
+---
+
+## How the pieces fit together: the two-channel model
+
+It's helpful to separate the IAM permission from the presigned URL into two distinct channels:
+
+- **Permission channel (IAM):** long-lived authority. The IAM user's policy grants the backend `s3:PutObject` on this bucket. Set once, lives in AWS, used by every signing operation.
+- **Delegation channel (presigned URL):** short-lived, single-purpose proof. Each call to `getSignedUrl` produces a URL that delegates *one specific upload* — one method, one key, one content-type — for a few minutes. The browser uses it once; then it stops working.
+
+The IAM permission is the ceiling. The presigned URL is the precise hole the backend punches in it for one upload.
+
+### What "signing" actually does
+
+The IAM credentials never leave the backend. `getSignedUrl(...)` (called in `uploadController.js:34`) is a pure cryptographic operation — it doesn't talk to AWS. It takes the intended request (method, bucket, key, content-type, expiration) and hashes it with the IAM user's secret key. The signature is appended to the URL as query parameters (`X-Amz-Signature`, `X-Amz-Expires`, etc.).
+
+When the browser later `PUT`s to that URL, S3:
+
+1. Reads the signature off the URL.
+2. Recomputes what it should be using its own copy of the IAM user's secret.
+3. Verifies the signature matches, the URL hasn't expired, and the request matches the signed intent (right method, right key, right content-type).
+4. Verifies the IAM user actually has `s3:PutObject` on that resource.
+5. Only then accepts the upload.
+
+### Implications
+
+- The signed URL is **scope-locked.** It only works for `PUT` to that exact key with that exact content-type, for 5 minutes (`expiresIn: 300` in `uploadController.js:34`). It can't be repurposed to upload to a different key, or to `GET` an object.
+- A presigned URL **cannot grant more permission than the IAM user has.** If `s3:PutObject` were stripped off the IAM user, every presigned URL in flight would start failing with 403.
+- The frontend never holds AWS credentials. The worst a malicious user could do with a leaked presigned URL is upload one file to one already-determined key within 5 minutes, then it stops working.
 
 ---
 

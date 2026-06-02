@@ -39,8 +39,8 @@ export const uploadAttachments = async (files, messageId) => {
     // Upload each file to S3 using presigned URLs
     await Promise.all(
       files.map((file, index) =>
-        uploadToS3(file, presignedData[index].uploadUrl)
-      )
+        uploadToS3(file, presignedData[index].uploadUrl),
+      ),
     );
 
     // Return the file records to save in DB
